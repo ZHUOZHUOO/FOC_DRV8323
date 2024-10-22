@@ -361,7 +361,7 @@
 							<MiscControls/>
 							<Define>USE_HAL_DRIVER,STM32G431xx</Define>
 							<Undefine/>
-							<IncludePath>../Core/Inc;       ../Drivers/STM32G4xx_HAL_Driver/Inc;       ../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy;       ../Drivers/CMSIS/Device/ST/STM32G4xx/Include;       ../Drivers/CMSIS/Include;      ../Middlewares/Third_Party/FreeRTOS/Source/include;      ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2;      ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F</IncludePath>
+							<IncludePath>../Core/Inc;        ../Drivers/STM32G4xx_HAL_Driver/Inc;        ../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy;        ../Drivers/CMSIS/Device/ST/STM32G4xx/Include;        ../Drivers/CMSIS/Include;       ../Middlewares/Third_Party/FreeRTOS/Source/include;       ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2;       ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F</IncludePath>
 						</VariousControls>
 					</Cads>
 					<Aads>
