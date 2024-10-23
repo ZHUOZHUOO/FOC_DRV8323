@@ -1,0 +1,7 @@
+Removed Pin From Net: NetName=+3.3V Pin=LED1-1
+Removed Pin From Net: NetName=DGND Pin=Q1-2
+Added Pin To Net: NetName=DGND Pin=LED1-2
+Added Pin To Net: NetName=+3.3V Pin=R10-2
+Added Pin To Net: NetName=NetLED1_1 Pin=LED1-1
+Added Pin To Net: NetName=NetLED1_1 Pin=Q1-2
+Added Net: Name=NetLED1_1
