@@ -58,8 +58,8 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
-#define DRV8283_CAL_Pin GPIO_PIN_4
-#define DRV8283_CAL_GPIO_Port GPIOA
+#define VCC_ADC_Pin GPIO_PIN_3
+#define VCC_ADC_GPIO_Port GPIOA
 #define State_LED_Pin GPIO_PIN_5
 #define State_LED_GPIO_Port GPIOA
 #define nFAULT_Pin GPIO_PIN_6
