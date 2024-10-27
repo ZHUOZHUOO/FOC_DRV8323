@@ -11,7 +11,7 @@
                 "e:\\ZHUOZHUOO--Github\\FOC_DRV8323\\Software\\STM32G0 Cube\\FOC_DRV8323\\MDK-ARM",
                 "e:\\ZHUOZHUOO--Github\\FOC_DRV8323\\Software\\STM32G0 Cube\\FOC_DRV8323\\Core\\Src",
                 "e:\\ZHUOZHUOO--Github\\FOC_DRV8323\\Software\\STM32G0 Cube\\FOC_DRV8323\\Drivers\\STM32G4xx_HAL_Driver\\Src",
-                "e:\\ZHUOZHUOO--Github\\FOC_DRV8323\\Software\\STM32G0 Cube\\FOC_DRV8323\\USER\\Main"
+                "e:\\ZHUOZHUOO--Github\\FOC_DRV8323\\Software\\STM32G0 Cube\\FOC_DRV8323\\MDK-ARM\\USER\\Main"
             ],
             "defines": [
                 "USE_HAL_DRIVER",
