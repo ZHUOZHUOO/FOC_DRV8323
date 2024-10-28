@@ -335,7 +335,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32G431xx</Define>
               <Undefine></Undefine>
-              <IncludePath>../Core/Inc;           ../Drivers/STM32G4xx_HAL_Driver/Inc;           ../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy;           ../Drivers/CMSIS/Device/ST/STM32G4xx/Include;           ../Drivers/CMSIS/Include</IncludePath>
+              <IncludePath>../Core/Inc;            ../Drivers/STM32G4xx_HAL_Driver/Inc;            ../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy;            ../Drivers/CMSIS/Device/ST/STM32G4xx/Include;            ../Drivers/CMSIS/Include</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -403,6 +403,11 @@
               <FileName>adc.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Core/Src/adc.c</FilePath>
+            </File>
+            <File>
+              <FileName>dma.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../Core/Src/dma.c</FilePath>
             </File>
             <File>
               <FileName>fdcan.c</FileName>
@@ -557,17 +562,32 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>USER/Main</GroupName>
+          <GroupName>MDK-ARM/USER/Main</GroupName>
           <Files>
             <File>
               <FileName>Foc_Control.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\USER\Main\Foc_Control.c</FilePath>
+              <FilePath>.\USER\Main\Foc_Control.c</FilePath>
             </File>
             <File>
               <FileName>Foc_Control.h</FileName>
               <FileType>5</FileType>
-              <FilePath>..\USER\Main\Foc_Control.h</FilePath>
+              <FilePath>.\USER\Main\Foc_Control.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>MDK-ARM/USER/Utility</GroupName>
+          <Files>
+            <File>
+              <FileName>adc_util.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\USER\Utility\adc_util.c</FilePath>
+            </File>
+            <File>
+              <FileName>adc_util.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\USER\Utility\adc_util.h</FilePath>
             </File>
           </Files>
         </Group>

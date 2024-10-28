@@ -1,3 +1,84 @@
 #include "Foc_Control.h"
 
-uint8_t FOC_Control(float Iq_ref, float Id_ref, float Iq_mes, float Id_mes, float *Vd, float);
+FOC_Struct Motor_FOC;
+ADC_Struct Motor_ADC;
+
+float Vref_Offset = 1.0f;
+
+FOC_Main_Init(void)
+{
+    ADC_Vrefint_Init();
+}
+
+FOC_Main_Loop(void)
+{
+
+}
+
+//帕克变换，将αβ坐标系下的电流转换为dq坐标系下的电流
+void Park_transform(double Ialpha, double Ibeta, double *Id, double *Iq, double Theta)
+{
+    *Id = Ialpha * cos(Theta) + Ibeta * sin(Theta);
+    *Iq = -Ialpha * sin(Theta) + Ibeta * cos(Theta);
+}
+//克拉克变换，将Ia,Ib,Ic转换为Ialpha和Ibeta
+void Clarke_transform(double Ia, double Ib, double Ic, double *Ialpha, double *Ibeta)
+{
+    *Ialpha = TWO_THIRD * Ia;
+    *Ibeta = SQRT3_DIV3 * (Ib - Ic);
+}
+//逆帕克变换，将dq坐标系下的电流转换为αβ坐标系下的电流
+void Inv_Park_transform(double Id, double Iq, double *Ialpha, double *Ibeta, double Theta)
+{
+    *Ialpha = Id * cos(Theta) - Iq * sin(Theta);
+    *Ibeta = Id * sin(Theta) + Iq * cos(Theta);
+}
+//逆克拉克变换，将Ialpha和Ibeta转换为Ia,Ib,Ic
+void Inv_Clarke_transform(double Ialpha, double Ibeta, double *Ia, double *Ib, double *Ic)
+{
+    *Ia = Ialpha;
+    *Ib = -0.5 * Ialpha + SQRT3_DIV2 * Ibeta;
+    *Ic = -0.5 * Ialpha - SQRT3_DIV2 * Ibeta;
+}
+
+
+
+//ADC DMA中断回调函数
+void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc)
+{
+    if (hadc == &hadc1)
+    {
+        //读取ADC1的值
+        for(int i = 0; i < ADC1_CHANNEL_NUM; i++)
+        {
+            Adc_Sum_Val[i] = Adc_Val[i]/4095.0*3.3;
+        }//将ADC1的值转换为电压值
+        Motor_ADC.Valtage_Current_A = Adc_Val[0] * Vref_Offset;
+        Motor_ADC.Valtage_Current_B = Adc_Val[1] * Vref_Offset;
+        Motor_ADC.Valtage_Current_C = Adc_Val[2] * Vref_Offset;
+        Motor_ADC.Valtage_VCC = Adc_Val[3] * 11.0 * Vref_Offset;
+        Motor_ADC.Temperature = (Adc_Val[4] * Vref_Offset - 0.76) / 0.0025 + 25;
+        Motor_ADC.Internal_Vref = Adc_Val[5];
+    }
+}
+
+
+void ADC_Vrefint_Init(void)
+{
+	__IO uint16_t* VREFINT_CAL = (__IO uint16_t *)(0x1FFF75AA);
+
+	float VREFINT_CAL_DATA = 0;
+	float VREFINT_CAL_VAL  = 0;
+	float Vref_Offset_Sum  = 0.0f;
+	
+	VREFINT_CAL_DATA = (float)*VREFINT_CAL;
+	VREFINT_CAL_VAL = (VREFINT_CAL_DATA/4095.0f * 3.0f);
+	for(int flag=0;flag<1000;flag++)
+	{
+			Vref_Offset_Sum += VREFINT_CAL_VAL / Motor_ADC.Internal_Vref;
+			osDelay(1);
+	}
+	Vref_Offset = Vref_Offset_Sum / 1000;
+
+	HAL_Delay(20);
+}
