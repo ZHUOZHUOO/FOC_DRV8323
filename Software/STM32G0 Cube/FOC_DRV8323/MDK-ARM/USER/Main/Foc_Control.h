@@ -10,6 +10,7 @@
 #include "adc_util.h"
 #include "spi_util.h"
 #include "pid_util.h"
+#include "configure.h"
 
 #define PI 3.14159265358979323846
 #define TWO_PI 6.28318530717958647692
@@ -26,14 +27,21 @@
 
 typedef struct
 {
-    double Ia;
-    double Ib;
-    double Ic;
+    double Ia;//A相电流_反馈
+    double Ib;//B相电流_反馈
+    double Ic;//C相电流_反馈
     double Ialpha;
     double Ibeta;
     double Id;
     double Iq;
-    double Theta;
+    double Vd;
+    double Vq;
+    double Valpha;
+    double Vbeta;
+    double Va;//A相电压_期望
+    double Vb;//B相电压_期望
+    double Vc;//C相电压_期望
+    double Theta;//电角度_反馈
 } FOC_Struct;
 
 
@@ -48,7 +56,8 @@ typedef struct
     float Internal_Vref;
 } ADC_Struct;
 
-extern FOC_Struct Motor1_FOC;
-extern ADC_Struct Motor1_ADC;
+extern FOC_Struct Motor_FOC_Expect;
+extern FOC_Struct Motor_FOC_FeedBack;
+extern ADC_Struct Motor_ADC;
 
 #endif

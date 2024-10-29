@@ -1,9 +1,13 @@
 #include "Foc_Control.h"
 
-FOC_Struct Motor_FOC_Expect={0 , 0 , 0 , 0 , 0 , 0 , 0 , 0};
-FOC_Struct Motor_FOC_FeedBack={0 , 0 , 0 , 0 , 0 , 0 , 0 , 0};
-ADC_Struct Motor_ADC={0 , 0 , 0 , 0 , 0 , 0, 0, 0};
-PID_Struct Current_PID;
+#define Min(a, b) ((a) < (b) ? (a) : (b))
+#define Max(a, b) ((a) > (b) ? (a) : (b))
+#define Max(a, b, c) Max(Max(a, b), c)
+
+FOC_Struct Motor_FOC;
+ADC_Struct Motor_ADC;
+PID_Struct Current_Id_PID;
+PID_Struct Current_Iq_PID;
 PID_Struct Speed_PID;
 PID_Struct Position_PID;
 
@@ -11,6 +15,9 @@ float Vref_Offset = 1.0f;
 
 FOC_Main_Init(void)
 {
+    FOC_Struct_Init(&Motor_FOC);
+    ADC_Struct_Init(&Motor_ADC);
+
     Adc_Init();
     SPI_Init();
     ADC_Vrefint_Init();
@@ -24,19 +31,34 @@ FOC_Main_Loop(void)
 {
     //获取电机反馈数据
     MT6816_SPI_Get_AngleData();
-    Motor_FOC_FeedBack.Theta = mt6816_spi.angle / 16384.0 * TWO_PI;
-    Motor_FOC_FeedBack.Ia = Motor_ADC.Valtage_Current_A;
-    Motor_FOC_FeedBack.Ib = Motor_ADC.Valtage_Current_B;
-    Motor_FOC_FeedBack.Ic = Motor_ADC.Valtage_Current_C;
-
-    //位置环
+    Motor_FOC.Theta = mt6816_spi.angle / 16384.0 * TWO_PI;
+    Motor_FOC.Ia = Motor_ADC.Valtage_Current_A;
+    Motor_FOC.Ib = Motor_ADC.Valtage_Current_B;
+    Motor_FOC.Ic = Motor_ADC.Valtage_Current_C;
 
     //克拉克变换
-    Clarke_transform(Motor_FOC_FeedBack.Ia, Motor_FOC_FeedBack.Ib, Motor_FOC_FeedBack.Ic, &Motor_FOC_FeedBack.Ialpha, &Motor_FOC_FeedBack.Ibeta);
+    Clarke_transform(Motor_FOC.Ia, Motor_FOC.Ib, Motor_FOC.Ic, &Motor_FOC.Ialpha, &Motor_FOC.Ibeta);
     //帕克变换
-    Park_transform(Motor_FOC_FeedBack.Ialpha, Motor_FOC_FeedBack.Ibeta, &Motor_FOC_FeedBack.Id, &Motor_FOC_FeedBack.Iq, Motor_FOC_FeedBack.Theta);
+    Park_transform(Motor_FOC.Ialpha, Motor_FOC.Ibeta, &Motor_FOC.Id, &Motor_FOC.Iq, Motor_FOC.Theta);
     
+    //电流环PID计算
+    PID_Calc(&Current_Id_PID, Motor_FOC.Id, Motor_FOC.Id);
+    PID_Calc(&Current_Iq_PID, Motor_FOC.Iq, Motor_FOC.Iq);
+    //逆帕克变换
+    Inv_Park_transform(Current_Id_PID.Output, Current_Iq_PID.Output, &Motor_FOC.Valpha, &Motor_FOC.Vbeta, Motor_FOC.Theta);
+    //SVPWM计算
+    SVPWM_Calc(Motor_FOC.Valpha, Motor_FOC.Vbeta);
 
+}
+
+//电角度计算
+void FOC_Calc_Electrical_Angle(void)
+{
+    Motor_FOC.Theta = Motor_FOC.Theta + Motor_FOC.Speed * 0.001;
+    if (Motor_FOC.Theta > TWO_PI)
+    {
+        Motor_FOC.Theta -= TWO_PI; 
+    }
 }
 
 //帕克变换，将αβ坐标系下的电流转换为dq坐标系下的电流
@@ -64,46 +86,41 @@ void Inv_Clarke_transform(double Ialpha, double Ibeta, double *Ia, double *Ib, d
     *Ib = -0.5 * Ialpha + SQRT3_DIV2 * Ibeta;
     *Ic = -0.5 * Ialpha - SQRT3_DIV2 * Ibeta;
 }
-
-//ADC DMA中断回调函数
-void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc)
+//快速SVPWM算法
+void SVPWM_Calc(double Valpha, double Vbeta, double *Va, double *Vb, double *Vc)
 {
-    if (hadc == &hadc1)
-    {
-        //读取ADC1的值
-        for(int i = 0; i < ADC1_CHANNEL_NUM; i++)
-        {
-            Adc_Sum_Val[i] = Adc_Val[i]/4095.0*3.3;
-        }//将ADC1的值转换为电压值
-        Motor_ADC.Valtage_Current_A = Adc_Val[0] * Vref_Offset;
-        Motor_ADC.Valtage_Current_B = Adc_Val[1] * Vref_Offset;
-        Motor_ADC.Valtage_Current_C = Adc_Val[2] * Vref_Offset;
-        Motor_ADC.Valtage_VCC = Adc_Val[3] * 11.0 * Vref_Offset;
-        Motor_ADC.Temperature = (Adc_Val[4] * Vref_Offset - 0.76) / 0.0025 + 25;
-        Motor_ADC.Internal_Vref = Adc_Val[5];
-    }
+    Inv_Clarke_transform(Valpha, Vbeta, Va, Vb, Vc);
+
 }
 
-
-void ADC_Vrefint_Init(void)
+void FOC_Struct_Init(FOC_Struct *foc)
 {
-	__IO uint16_t* VREFINT_CAL = (__IO uint16_t *)(0x1FFF75AA);
-
-	float VREFINT_CAL_DATA = 0;
-	float VREFINT_CAL_VAL  = 0;
-	float Vref_Offset_Sum  = 0.0f;
-	
-	VREFINT_CAL_DATA = (float)*VREFINT_CAL;
-	VREFINT_CAL_VAL = (VREFINT_CAL_DATA/4095.0f * 3.0f);
-	for(int flag=0;flag<1000;flag++)
-	{
-			Vref_Offset_Sum += VREFINT_CAL_VAL / Motor_ADC.Internal_Vref;
-			osDelay(1);
-	}
-	Vref_Offset = Vref_Offset_Sum / 1000;
-
-	HAL_Delay(20);
+    foc->Ia = 0;
+    foc->Ib = 0;
+    foc->Ic = 0;
+    foc->Ialpha = 0;
+    foc->Ibeta = 0;
+    foc->Id = 0;
+    foc->Iq = 0;
+    foc->Vd = 0;
+    foc->Vq = 0;
+    foc->Valpha = 0;
+    foc->Vbeta = 0;
+    foc->Va = 0;
+    foc->Vb = 0;
+    foc->Vc = 0;
+    foc->Theta = 0;
 }
- 
+
+void ADC_Struct_Init(ADC_Struct *adc)
+{
+    adc->Valtage_Current_A = 0;
+    adc->Valtage_Current_B = 0;
+    adc->Valtage_Current_C = 0;
+    adc->Valtage_VCC = 0;
+    adc->Temperature = 0;
+    adc->Internal_Vref = 0;
+}
+
 
 
