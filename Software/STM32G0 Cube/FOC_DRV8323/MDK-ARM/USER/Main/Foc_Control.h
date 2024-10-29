@@ -8,9 +8,15 @@
 #include "tim.h"
 #include "adc.h"
 #include "adc_util.h"
+#include "spi_util.h"
+#include "pid_util.h"
 
 #define PI 3.14159265358979323846
+#define TWO_PI 6.28318530717958647692
 #define SQRT3 1.73205080756887729352
+#define SQRT3_DIV2 0.86602540378443864626
+#define SQRT3_DIV3 0.57735026918962576451
+#define TWO_THIRD 0.66666666666666666666
 
 #define PWM_MAX 1000
 #define PWM_MIN -1000
@@ -20,26 +26,29 @@
 
 typedef struct
 {
-    float Kp;
-    float Ki;
-    float Kd;
-    float Integral;
-    float PreError;
-    float PrePreError;
-} PID_Struct;
-
-typedef struct
-{
-    float Ia;
-    float Ib;
-    float Ic;
-    float Ialpha;
-    float Ibeta;
-    float Id;
-    float Iq;
-    float Theta;
+    double Ia;
+    double Ib;
+    double Ic;
+    double Ialpha;
+    double Ibeta;
+    double Id;
+    double Iq;
+    double Theta;
 } FOC_Struct;
 
-uint8_t FOC_Control(float Iq_ref, float Id_ref, float Iq_mes, float Id_mes, float *Vd, float);
+
+typedef struct 
+{
+    /* data */
+    float Valtage_Current_A;
+    float Valtage_Current_B;
+    float Valtage_Current_C;
+    float Valtage_VCC;
+    float Temperature;
+    float Internal_Vref;
+} ADC_Struct;
+
+extern FOC_Struct Motor1_FOC;
+extern ADC_Struct Motor1_ADC;
 
 #endif

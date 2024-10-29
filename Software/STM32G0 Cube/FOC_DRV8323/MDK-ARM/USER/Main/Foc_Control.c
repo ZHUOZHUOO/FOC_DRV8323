@@ -1,17 +1,41 @@
 #include "Foc_Control.h"
 
-FOC_Struct Motor_FOC;
-ADC_Struct Motor_ADC;
+FOC_Struct Motor_FOC_Expect={0 , 0 , 0 , 0 , 0 , 0 , 0 , 0};
+FOC_Struct Motor_FOC_FeedBack={0 , 0 , 0 , 0 , 0 , 0 , 0 , 0};
+ADC_Struct Motor_ADC={0 , 0 , 0 , 0 , 0 , 0, 0, 0};
+PID_Struct Current_PID;
+PID_Struct Speed_PID;
+PID_Struct Position_PID;
 
 float Vref_Offset = 1.0f;
 
 FOC_Main_Init(void)
 {
+    Adc_Init();
+    SPI_Init();
     ADC_Vrefint_Init();
+
+    PID_Init(&Current_PID, 0.001, 0.001, 0.0, 1);
+    PID_Init(&Speed_PID, 0.001, 0.001, 0.0, 1);
+    PID_Init(&Position_PID, 0.001, 0.001, 0.0, 1);
 }
 
 FOC_Main_Loop(void)
 {
+    //获取电机反馈数据
+    MT6816_SPI_Get_AngleData();
+    Motor_FOC_FeedBack.Theta = mt6816_spi.angle / 16384.0 * TWO_PI;
+    Motor_FOC_FeedBack.Ia = Motor_ADC.Valtage_Current_A;
+    Motor_FOC_FeedBack.Ib = Motor_ADC.Valtage_Current_B;
+    Motor_FOC_FeedBack.Ic = Motor_ADC.Valtage_Current_C;
+
+    //位置环
+
+    //克拉克变换
+    Clarke_transform(Motor_FOC_FeedBack.Ia, Motor_FOC_FeedBack.Ib, Motor_FOC_FeedBack.Ic, &Motor_FOC_FeedBack.Ialpha, &Motor_FOC_FeedBack.Ibeta);
+    //帕克变换
+    Park_transform(Motor_FOC_FeedBack.Ialpha, Motor_FOC_FeedBack.Ibeta, &Motor_FOC_FeedBack.Id, &Motor_FOC_FeedBack.Iq, Motor_FOC_FeedBack.Theta);
+    
 
 }
 
@@ -40,8 +64,6 @@ void Inv_Clarke_transform(double Ialpha, double Ibeta, double *Ia, double *Ib, d
     *Ib = -0.5 * Ialpha + SQRT3_DIV2 * Ibeta;
     *Ic = -0.5 * Ialpha - SQRT3_DIV2 * Ibeta;
 }
-
-
 
 //ADC DMA中断回调函数
 void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc)
@@ -82,3 +104,6 @@ void ADC_Vrefint_Init(void)
 
 	HAL_Delay(20);
 }
+ 
+
+
