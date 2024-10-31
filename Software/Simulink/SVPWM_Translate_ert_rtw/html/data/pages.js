@@ -1,0 +1,1 @@
+var reportPages = [["摘要","SVPWM_Translate_survey.html"],["子系统报告","SVPWM_Translate_subsystems.html"],["代码接口报告","SVPWM_Translate_interface.html"],["可追溯性报告","SVPWM_Translate_trace.html"],["静态代码度量报告","SVPWM_Translate_metrics.html"],["代码替换报告","SVPWM_Translate_replacements.html"],["代码生成器假设","SVPWM_Translate_coderassumptions.html"]];

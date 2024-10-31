@@ -1,0 +1,1 @@
+var modelInfo = {model:"SVPWM_Translate"};var modelHierarchy=[{model:"SVPWM_Translate",relativePath:"_internal.html",parent:"null"},];
