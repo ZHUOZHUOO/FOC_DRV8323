@@ -58,6 +58,13 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
+#define CKTIM 170000000
+#define PWM_RPSC 0
+#define PWM_FREQ 25000
+#define PWM_PERIOD CKTIM/(2*PWM_FREQ*(PWM_PRSC+1))
+#define REP_RATE 1
+#define DEADTIME_NS 1000
+#define DEADTIME CKTIM/1000000/2*DEADTIME_NS/1000
 #define VCC_ADC_Pin GPIO_PIN_3
 #define VCC_ADC_GPIO_Port GPIOA
 #define State_LED_Pin GPIO_PIN_5

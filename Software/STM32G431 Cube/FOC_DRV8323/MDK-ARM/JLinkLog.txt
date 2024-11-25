@@ -1,0 +1,145 @@
+TA244 000:359.201   SEGGER J-Link V8.10h Log File
+TA244 000:359.334   DLL Compiled: Nov 20 2024 12:12:20
+TA244 000:359.341   Logging started @ 2024-11-25 09:50
+TA244 000:359.348   Process: C:\Keil_v5\UV4\UV4.exe
+TA244 000:359.360 - 359.355ms 
+TA244 000:359.371 JLINK_SetWarnOutHandler(...)
+TA244 000:359.377 - 0.008ms 
+TA244 000:359.385 JLINK_OpenEx(...)
+TA244 000:363.868   Firmware: J-Link EDU Mini V1 compiled Apr 23 2024 10:43:13
+TA244 000:364.433   Firmware: J-Link EDU Mini V1 compiled Apr 23 2024 10:43:13
+TA244 000:392.455   Hardware: V1.00
+TA244 000:392.493   S/N: 801039055
+TA244 000:392.511   OEM: SEGGER
+TA244 000:392.528   Feature(s): FlashBP, GDB
+TA244 000:394.130   Bootloader: 2016 Nov 30
+TA244 000:411.072   USB speed mode: Full speed (12 MBit/s)
+TA244 000:411.512   TELNET listener socket opened on port 19021
+TA244 000:411.756   WEBSRV WEBSRV_Init(): Starting webserver thread(s)
+TA244 000:411.957   WEBSRV Webserver running on local port 19080
+TA244 000:412.063   Looking for J-Link GUI Server exe at: C:\Keil_v5\ARM\Segger\JLinkGUIServer.exe
+TA244 000:412.114   Looking for J-Link GUI Server exe at: C:\Program Files\SEGGER\JLink\JLinkGUIServer.exe
+TA244 000:412.151   Forking J-Link GUI Server: C:\Program Files\SEGGER\JLink\JLinkGUIServer.exe
+TA244 000:416.662   J-Link GUI Server info: "J-Link GUI server V8.10h "
+TA244 000:417.054 - 57.660ms returns "O.K."
+TA244 000:417.076 JLINK_SetErrorOutHandler(...)
+TA244 000:417.083 - 0.007ms 
+TA244 000:417.105 JLINK_ExecCommand("ProjectFile = "E:\ZHUOZHUOO--Github\FOC_DRV8323\Software\STM32G431 Cube\FOC_DRV8323\MDK-ARM\JLinkSettings.ini"", ...). 
+TA244 000:428.906   Ref file found at: C:\Keil_v5\ARM\Segger\JLinkDevices.ref
+TA244 000:429.069   REF file references invalid XML file: C:\Program Files\SEGGER\JLink\JLinkDevices.xml
+TA244 000:430.647   Device "ARM7" selected.
+TA244 000:431.207 - 14.097ms returns 0x00
+TA244 000:431.239 JLINK_ExecCommand("Device = STM32G431K6Ux", ...). 
+TA244 000:431.639   Flash bank @ 0x08000000: SFL: Parsing sectorization info from ELF file
+TA244 000:431.669     FlashDevice.SectorInfo[0]: .SectorSize = 0x00000800, .SectorStartAddr = 0x00000000
+TA244 000:431.682   FlashBank @0x08000000: Sectorization info from SFL ELF file ignored because sectorization override from DLL / XML file is active.
+TA244 000:431.761   Device "STM32G431K6" selected.
+TA244 000:432.651 - 1.397ms returns 0x00
+TA244 000:432.680 JLINK_ExecCommand("DisableConnectionTimeout", ...). 
+TA244 000:432.697   ERROR: Unknown command
+TA244 000:432.708 - 0.017ms returns 0x01
+TA244 000:432.718 JLINK_GetHardwareVersion()
+TA244 000:432.726 - 0.007ms returns 10000
+TA244 000:432.735 JLINK_GetDLLVersion()
+TA244 000:432.741 - 0.006ms returns 81008
+TA244 000:432.750 JLINK_GetOEMString(...)
+TA244 000:432.759 JLINK_GetFirmwareString(...)
+TA244 000:432.765 - 0.006ms 
+TA244 000:432.779 JLINK_GetDLLVersion()
+TA244 000:432.786 - 0.006ms returns 81008
+TA244 000:432.793 JLINK_GetCompileDateTime()
+TA244 000:432.799 - 0.006ms 
+TA244 000:432.808 JLINK_GetFirmwareString(...)
+TA244 000:432.814 - 0.006ms 
+TA244 000:432.822 JLINK_GetHardwareVersion()
+TA244 000:432.828 - 0.006ms returns 10000
+TA244 000:432.835 JLINK_GetSN()
+TA244 000:432.842 - 0.006ms returns 801039055
+TA244 000:432.850 JLINK_GetOEMString(...)
+TA244 000:432.860 JLINK_TIF_Select(JLINKARM_TIF_SWD)
+TA244 000:433.320 - 0.458ms returns 0x00
+TA244 000:433.342 JLINK_HasError()
+TA244 000:433.358 JLINK_SetSpeed(5000)
+TA244 000:433.435 - 0.078ms 
+TA244 000:433.921 JLINK_HasError()
+TA244 000:433.941 JLINK_SetResetType(JLINKARM_RESET_TYPE_NORMAL)
+TA244 000:433.949 - 0.008ms returns JLINKARM_RESET_TYPE_NORMAL
+TA244 000:433.958 JLINK_Reset()
+TA244 000:434.165   InitTarget() start
+TA244 000:434.194    J-Link Script File: Executing InitTarget()
+TA244 000:434.341   SWD selected. Executing JTAG -> SWD switching sequence.
+TA244 000:436.021   DAP initialized successfully.
+TA244 000:441.890   InitTarget() end - Took 7.69ms
+TA244 000:442.486   Found SW-DP with ID 0x2BA01477
+TA244 000:444.124   DPIDR: 0x2BA01477
+TA244 000:444.190   CoreSight SoC-400 or earlier
+TA244 000:444.203   Scanning AP map to find all available APs
+TA244 000:444.749   AP[1]: Stopped AP scan as end of AP map has been reached
+TA244 000:444.790   AP[0]: AHB-AP (IDR: 0x24770011, ADDR: 0x00000000)
+TA244 000:444.812   Iterating through AP map to find AHB-AP to use
+TA244 000:445.594   AP[0]: Core found
+TA244 000:445.609   AP[0]: AHB-AP ROM base: 0xE00FF000
+TA244 000:446.051   CPUID register: 0x410FC241. Implementer code: 0x41 (ARM)
+TA244 000:446.083   Found Cortex-M4 r0p1, Little endian.
+TA244 000:446.387   -- Max. mem block: 0x00002938
+TA244 000:446.955   Cortex-M: The connected J-Link (S/N 801039055) uses an old firmware module: V2 (current is 3)
+TA244 000:446.982   CPU_ReadMem(4 bytes @ 0xE000EDF0)
+TA244 000:447.307   CPU_ReadMem(4 bytes @ 0xE0002000)
+TA244 000:447.657   FPUnit: 6 code (BP) slots and 2 literal slots
+TA244 000:447.687   CPU_ReadMem(4 bytes @ 0xE000EDFC)
+TA244 000:448.013   CPU_WriteMem(4 bytes @ 0xE000EDFC)
+TA244 000:448.338   CPU_ReadMem(4 bytes @ 0xE0001000)
+TA244 000:448.732   CPU_WriteMem(4 bytes @ 0xE0001000)
+TA244 000:449.052   CPU_ReadMem(4 bytes @ 0xE000ED88)
+TA244 000:449.324   CPU_WriteMem(4 bytes @ 0xE000ED88)
+TA244 000:449.636   CPU_ReadMem(4 bytes @ 0xE000ED88)
+TA244 000:449.969   CPU_WriteMem(4 bytes @ 0xE000ED88)
+TA244 000:450.293   CoreSight components:
+TA244 000:450.316   ROMTbl[0] @ E00FF000
+TA244 000:450.337   CPU_ReadMem(64 bytes @ 0xE00FF000)
+TA244 000:451.002   CPU_ReadMem(32 bytes @ 0xE000EFE0)
+TA244 000:451.494   [0][0]: E000E000 CID B105E00D PID 000BB00C SCS-M7
+TA244 000:451.505   CPU_ReadMem(32 bytes @ 0xE0001FE0)
+TA244 000:451.999   [0][1]: E0001000 CID B105E00D PID 003BB002 DWT
+TA244 000:452.012   CPU_ReadMem(32 bytes @ 0xE0002FE0)
+TA244 000:452.486   [0][2]: E0002000 CID B105E00D PID 002BB003 FPB
+TA244 000:452.514   CPU_ReadMem(32 bytes @ 0xE0000FE0)
+TA244 000:452.981   [0][3]: E0000000 CID B105E00D PID 003BB001 ITM
+TA244 000:453.003   CPU_ReadMem(32 bytes @ 0xE0040FE0)
+TA244 000:453.489   [0][4]: E0040000 CID B105900D PID 000BB9A1 TPIU
+TA244 000:453.505   CPU_ReadMem(32 bytes @ 0xE0041FE0)
+TA244 000:453.999   [0][5]: E0041000 CID B105900D PID 000BB925 ETM
+TA244 000:454.065   JLINK_GetResetTypeDesc
+TA244 000:454.072   - 0.007ms 
+TA244 000:454.082   Reset type: NORMAL (https://wiki.segger.com/J-Link_Reset_Strategies)
+TA244 000:454.091   CPU is running
+TA244 000:454.102   CPU_WriteMem(4 bytes @ 0xE000EDF0)
+TA244 000:454.406   CPU is running
+TA244 000:454.417   CPU_WriteMem(4 bytes @ 0xE000EDFC)
+TA244 000:454.753   Reset: Halt core after reset via DEMCR.VC_CORERESET.
+TA244 000:455.100   Reset: Reset device via AIRCR.SYSRESETREQ.
+TA244 000:455.112   CPU is running
+TA244 000:455.122   CPU_WriteMem(4 bytes @ 0xE000ED0C)
+TA244 000:508.777   CPU_ReadMem(4 bytes @ 0xE000EDF0)
+TA244 000:509.162   CPU_ReadMem(4 bytes @ 0xE000EDF0)
+TA244 000:512.502   CPU_WriteMem(4 bytes @ 0xE000EDFC)
+TA244 000:519.135   CPU_ReadMem(4 bytes @ 0xE000EDF0)
+TA244 000:522.548   CPU_WriteMem(4 bytes @ 0xE0002000)
+TA244 000:522.939   CPU_ReadMem(4 bytes @ 0xE000EDFC)
+TA244 000:523.290   CPU_ReadMem(4 bytes @ 0xE0001000)
+TA244 000:523.660 - 89.701ms 
+TA244 000:523.695 JLINK_GetId()
+TA244 000:523.913 - 0.217ms returns 0x2BA01477
+TA244 000:533.811 JLINK_GetFirmwareString(...)
+TA244 000:533.833 - 0.021ms 
+TA244 001:875.569 JLINK_Close()
+TA244 001:875.947   OnDisconnectTarget() start
+TA244 001:875.963    J-Link Script File: Executing OnDisconnectTarget()
+TA244 001:875.991   CPU_WriteMem(4 bytes @ 0xE0042004)
+TA244 001:876.318   CPU_WriteMem(4 bytes @ 0xE0042008)
+TA244 001:876.736   OnDisconnectTarget() end - Took 770us
+TA244 001:876.754   CPU_ReadMem(4 bytes @ 0xE0001000)
+TA244 001:877.106   CPU_WriteMem(4 bytes @ 0xE0001004)
+TA244 001:887.251 - 11.678ms
+TA244 001:887.301   
+TA244 001:887.308   Closed

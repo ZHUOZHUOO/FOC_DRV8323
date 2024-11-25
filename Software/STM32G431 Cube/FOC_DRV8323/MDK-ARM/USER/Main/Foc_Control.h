@@ -57,8 +57,8 @@ typedef struct
     float Internal_Vref;
 } ADC_Struct;
 
-extern FOC_Struct Motor_FOC_Expect;
-extern FOC_Struct Motor_FOC_FeedBack;
+extern FOC_Struct Motor_FOC;
 extern ADC_Struct Motor_ADC;
+extern float Vref_Offset;
 
 #endif

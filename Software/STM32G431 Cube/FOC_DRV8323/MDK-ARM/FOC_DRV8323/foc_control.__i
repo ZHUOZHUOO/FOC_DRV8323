@@ -1,6 +1,0 @@
---c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32G4xx_HAL_Driver/Inc -I ../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I ../Drivers/CMSIS/Include
--I.\RTE\_FOC_DRV8323
--IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include
--IC:\Keil_v5\ARM\PACK\Keil\STM32G4xx_DFP\1.4.0\Drivers\CMSIS\Device\ST\STM32G4xx\Include
--D__UVISION_VERSION="523" -D_RTE_ -DSTM32G431xx -DUSE_HAL_DRIVER -DSTM32G431xx
--o foc_drv8323\foc_control.o --omf_browse foc_drv8323\foc_control.crf --depend foc_drv8323\foc_control.d "..\USER\Main\Foc_Control.c"

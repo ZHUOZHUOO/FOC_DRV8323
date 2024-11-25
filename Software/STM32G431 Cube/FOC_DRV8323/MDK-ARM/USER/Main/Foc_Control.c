@@ -22,9 +22,21 @@ FOC_Main_Init(void)
     SPI_Init();
     ADC_Vrefint_Init();
 
-    PID_Init(&Current_PID, 0.001, 0.001, 0.0, 1);
+    //PID初始化
+    PID_Init(&Current_Id_PID, 0.001, 0.001, 0.0, 1);
+    PID_Init(&Current_Iq_PID, 0.001, 0.001, 0.0, 1);
     PID_Init(&Speed_PID, 0.001, 0.001, 0.0, 1);
     PID_Init(&Position_PID, 0.001, 0.001, 0.0, 1);
+
+    //设置PWM
+    HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1);
+    HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_2);
+    HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_3);
+    HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_1);
+    HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_2);
+    HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_3);
+
+
 }
 
 FOC_Main_Loop(void)

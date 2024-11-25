@@ -17,21 +17,26 @@ Library Manager: ArmAr.exe V5.06 update 4 (build 422)
 Hex Converter:   FromElf.exe V5.06 update 4 (build 422)
 CPU DLL:         SARMCM3.DLL V5.23
 Dialog DLL:      DCM.DLL V1.15.0.0
-Target DLL:      STLink\ST-LINKIII-KEIL_SWO.dll V2.0.18.0
+Target DLL:      Segger\JL2CM3.dll V2.99.23.0
 Dialog DLL:      TCM.DLL V1.27.0.0
  
 <h2>Project:</h2>
-E:\ZHUOZHUOO--Github\FOC_DRV8323\Software\STM32G0 Cube\FOC_DRV8323\MDK-ARM\FOC_DRV8323.uvprojx
-Project File Date:  10/27/2024
+E:\ZHUOZHUOO--Github\FOC_DRV8323\Software\STM32G431 Cube\FOC_DRV8323\MDK-ARM\FOC_DRV8323.uvprojx
+Project File Date:  10/31/2024
 
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 4 (build 422)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
 Build target 'FOC_DRV8323'
-compiling main.c...
-linking...
-Program Size: Code=11358 RO-data=530 RW-data=16 ZI-data=1488  
-FromELF: creating hex file...
-"FOC_DRV8323\FOC_DRV8323.axf" - 0 Error(s), 0 Warning(s).
+compiling spi_util.c...
+compiling adc_util.c...
+USER\Utility\adc_util.h(10): error:  #5: cannot open source input file "Foc_Control.h": No such file or directory
+  #include "Foc_Control.h"
+USER\Utility\adc_util.c: 0 warnings, 1 error
+compiling Foc_Control.c...
+USER\Main\Foc_Control.h(10): error:  #5: cannot open source input file "adc_util.h": No such file or directory
+  #include "adc_util.h"
+USER\Main\Foc_Control.c: 0 warnings, 1 error
+"FOC_DRV8323\FOC_DRV8323.axf" - 2 Error(s), 0 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -49,7 +54,8 @@ Package Vendor: ARM
 <h2>Collection of Component Files used:</h2>
 
    * Component: ARM::CMSIS:CORE:5.0.1
-Build Time Elapsed:  00:00:02
+Target not created.
+Build Time Elapsed:  00:00:03
 </pre>
 </body>
 </html>
