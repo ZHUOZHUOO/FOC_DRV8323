@@ -5,7 +5,7 @@
 <h2>Tool Versions:</h2>
 IDE-Version: ��Vision V5.23.0.0
 Copyright (C) 2017 ARM Ltd and ARM Germany GmbH. All rights reserved.
-License Information: 11 lzq6200066@163.com, 111, LIC=KRMW3-AHNYE-X7JRZ-J3JU3-F58IE-J8THF
+License Information: user user, user, LIC=RC93N-YVX4K-SBJEJ-UIIS7-Y6SJT-WKQ31
  
 Tool Versions:
 Toolchain:       MDK-ARM Plus  Version: 5.23
@@ -21,22 +21,32 @@ Target DLL:      Segger\JL2CM3.dll V2.99.23.0
 Dialog DLL:      TCM.DLL V1.27.0.0
  
 <h2>Project:</h2>
-E:\ZHUOZHUOO--Github\FOC_DRV8323\Software\STM32G431 Cube\FOC_DRV8323\MDK-ARM\FOC_DRV8323.uvprojx
-Project File Date:  10/31/2024
+F:\ZHUOZHUOO--Github\FOC_DRV8323\Software\STM32G431 Cube\FOC_DRV8323\MDK-ARM\FOC_DRV8323.uvprojx
+Project File Date:  12/11/2024
 
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 4 (build 422)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
 Build target 'FOC_DRV8323'
-compiling spi_util.c...
-compiling adc_util.c...
-USER\Utility\adc_util.h(10): error:  #5: cannot open source input file "Foc_Control.h": No such file or directory
-  #include "Foc_Control.h"
-USER\Utility\adc_util.c: 0 warnings, 1 error
 compiling Foc_Control.c...
-USER\Main\Foc_Control.h(10): error:  #5: cannot open source input file "adc_util.h": No such file or directory
-  #include "adc_util.h"
-USER\Main\Foc_Control.c: 0 warnings, 1 error
-"FOC_DRV8323\FOC_DRV8323.axf" - 2 Error(s), 0 Warning(s).
+../MDK-ARM/USER/Main/Foc_Control.h(71): warning:  #1-D: last line of file ends without a newline
+  #endif
+../MDK-ARM/USER/configure.h(20): warning:  #47-D: incompatible redefinition of macro "PWM_FREQ"  (declared at line 63 of "../Core/Inc/main.h")
+  #define PWM_FREQ 17000//PWM频率, T=400us
+../MDK-ARM/USER/configure.h(21): warning:  #47-D: incompatible redefinition of macro "PWM_PERIOD"  (declared at line 64 of "../Core/Inc/main.h")
+  #define PWM_PERIOD 1000 //CKTIM/(2*PWM_FREQ*(PWM_PRSC+1))
+../MDK-ARM/USER/configure.h(24): warning:  #47-D: incompatible redefinition of macro "DEADTIME"  (declared at line 67 of "../Core/Inc/main.h")
+  #define DEADTIME 85 //CKTIM/1000000/2*DEADTIME_NS/1000死区时间计数�?
+../MDK-ARM/USER/configure.h(29): warning:  #1-D: last line of file ends without a newline
+  #endif
+USER\Main\Foc_Control.h(71): warning:  #1-D: last line of file ends without a newline
+  #endif
+USER\Main\Foc_Control.c(5): warning:  #47-D: incompatible redefinition of macro "Max"  (declared at line 4)
+  #define Max(a, b, c) Max(Max(a, b), c)
+USER\Main\Foc_Control.c: 7 warnings, 0 errors
+linking...
+Program Size: Code=22414 RO-data=818 RW-data=84 ZI-data=2052  
+FromELF: creating hex file...
+"FOC_DRV8323\FOC_DRV8323.axf" - 0 Error(s), 7 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -49,13 +59,12 @@ Package Vendor: ARM
 <h2>Collection of Component include folders:</h2>
   .\RTE\_FOC_DRV8323
   C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include
-  C:\Keil_v5\ARM\PACK\Keil\STM32G4xx_DFP\1.4.0\Drivers\CMSIS\Device\ST\STM32G4xx\Include
+  C:\Keil_v5\ARM\PACK\Keil\STM32G4xx_DFP\1.5.0\Drivers\CMSIS\Device\ST\STM32G4xx\Include
 
 <h2>Collection of Component Files used:</h2>
 
    * Component: ARM::CMSIS:CORE:5.0.1
-Target not created.
-Build Time Elapsed:  00:00:03
+Build Time Elapsed:  00:00:02
 </pre>
 </body>
 </html>

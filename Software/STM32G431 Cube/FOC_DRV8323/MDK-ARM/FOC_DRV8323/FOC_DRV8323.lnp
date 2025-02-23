@@ -3,6 +3,7 @@
 "foc_drv8323\main.o"
 "foc_drv8323\gpio.o"
 "foc_drv8323\adc.o"
+"foc_drv8323\dma.o"
 "foc_drv8323\fdcan.o"
 "foc_drv8323\spi.o"
 "foc_drv8323\tim.o"
@@ -31,6 +32,10 @@
 "foc_drv8323\stm32g4xx_hal_tim.o"
 "foc_drv8323\stm32g4xx_hal_tim_ex.o"
 "foc_drv8323\system_stm32g4xx.o"
+"foc_drv8323\foc_control.o"
+"foc_drv8323\adc_util.o"
+"foc_drv8323\pid_util.o"
+"foc_drv8323\spi_util.o"
 --library_type=microlib --strict --scatter "FOC_DRV8323\FOC_DRV8323.sct"
 --summary_stderr --info summarysizes --map --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers

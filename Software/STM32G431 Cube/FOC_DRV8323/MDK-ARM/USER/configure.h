@@ -16,9 +16,9 @@
 #define MOTOR_ENCODER_DIR 1 //电机编码器方向
 
 #define CKTIM 170000000//定时器时钟频率
-#define PWM_PRSC 0
-#define PWM_FREQ 25000//PWM频率, T=400us
-#define PWM_PERIOD 3400 //CKTIM/(2*PWM_FREQ*(PWM_PRSC+1))
+#define PWM_PRSC 10//PWM预分频
+#define PWM_FREQ 17000//PWM频率, T=400us
+#define PWM_PERIOD 1000 //CKTIM/(2*PWM_FREQ*(PWM_PRSC+1))
 #define REP_RATE 1 //电流环刷新频率为(REP_RATE+1)/(2*PWM_FREQ)=40us, f=25kHz
 #define DEADTIME_NS 1000//死区时间ns
 #define DEADTIME 85 //CKTIM/1000000/2*DEADTIME_NS/1000死区时间计数值

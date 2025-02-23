@@ -67,8 +67,6 @@ void Error_Handler(void);
 #define DEADTIME CKTIM/1000000/2*DEADTIME_NS/1000
 #define VCC_ADC_Pin GPIO_PIN_3
 #define VCC_ADC_GPIO_Port GPIOA
-#define State_LED_Pin GPIO_PIN_5
-#define State_LED_GPIO_Port GPIOA
 #define nFAULT_Pin GPIO_PIN_6
 #define nFAULT_GPIO_Port GPIOA
 #define SPI1_CS_Pin GPIO_PIN_15

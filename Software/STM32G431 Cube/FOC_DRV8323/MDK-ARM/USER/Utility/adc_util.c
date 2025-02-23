@@ -6,8 +6,14 @@ double   Adc_Sum_Val[ADC1_CHANNEL_NUM];		            //Adc decode data
 void Adc_Init(void) { 
 	HAL_ADCEx_Calibration_Start(&hadc1, ADC_SINGLE_ENDED);
     HAL_Delay(10);
+
+    HAL_ADC_Start_IT(&hadc1);
+    HAL_ADC_Start(&hadc1);
+}
+
+void Get_ADC_Value(void)
+{
     HAL_ADC_Start_DMA(&hadc1, Adc_Val, ADC1_CHANNEL_NUM);
-    HAL_Delay(10);
 }
 
 //ADC DMA中断回调函数
@@ -43,7 +49,7 @@ void ADC_Vrefint_Init(void)
 	for(int flag=0;flag<1000;flag++)
 	{
 			Vref_Offset_Sum += VREFINT_CAL_VAL / Motor_ADC.Internal_Vref;
-			osDelay(1);
+			HAL_Delay(1);
 	}
 	Vref_Offset = Vref_Offset_Sum / 1000;
 

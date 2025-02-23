@@ -14,6 +14,7 @@ extern uint32_t Adc_Val[ADC1_CHANNEL_NUM];                   //Adc data array
 
 void Adc_Init(void);
 void ADC_Vrefint_Init(void);
+void Get_ADC_Value(void);
 void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hdac);
 
 #endif

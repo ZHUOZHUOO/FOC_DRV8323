@@ -43,6 +43,10 @@ typedef struct
     double Vb;//B相电压_期望
     double Vc;//C相电压_期望
     double Theta;//电角度_反馈
+    double Speed;//速度
+    double PWM_A_DutyCycle;//占空比A相
+    double PWM_B_DutyCycle;//占空比B相
+    double PWM_C_DutyCycle;//占空比C相
 } FOC_Struct;
 
 
@@ -60,5 +64,8 @@ typedef struct
 extern FOC_Struct Motor_FOC;
 extern ADC_Struct Motor_ADC;
 extern float Vref_Offset;
+
+void FOC_Struct_Init(FOC_Struct *foc);
+void FOC_Main_Init(void);
 
 #endif
