@@ -19,8 +19,6 @@ void Park_transform(double Ialpha, double Ibeta, double *Id, double *Iq, double 
 void Clarke_transform(double Ia, double Ib, double Ic, double *Ialpha, double *Ibeta);
 void Inv_Park_transform(double Id, double Iq, double *Ialpha, double *Ibeta, double Theta);
 void Inv_Clarke_transform(double Ialpha, double Ibeta, double *Ia, double *Ib, double *Ic);
-// void SVPWM_Calc(double Valpha, double Vbeta, double *Va, double *Vb, double *Vc);
-// void Set_PWM(double Duty_Cycle_A, double Duty_Cycle_B, double Duty_Cycle_C);
 void CALC_SVPWM(double Valpha, double Vbeta);
 void ADC_Struct_Init(ADC_Struct *adc);
 
@@ -55,10 +53,10 @@ void FOC_Main_Init(void)
     HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_1);
     HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_2);
     HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_3);
-    // 计数上限: 500
-    __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_1, 250);
-    __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_2, 300);
-    __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_3, 100);
+    // // 计数上限: 500
+    // __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_1, 250);
+    // __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_2, 300);
+    // __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_3, 100);
 }
 
 uint16_t state_led_flag = 0;
@@ -248,21 +246,12 @@ void CALC_SVPWM(double Valpha, double Vbeta)
         break;
     }
  
-    TIM1->CCR1 = hTimePhA;
-    TIM1->CCR2 = hTimePhB;
-    TIM1->CCR3 = hTimePhC;
+    // TIM1->CCR1 = hTimePhA;
+    // TIM1->CCR2 = hTimePhB;
+    // TIM1->CCR3 = hTimePhC;
+    // 计数上限: 500
+    __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_1, hTimePhA);
+    __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_2, hTimePhB);
+    __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_3, hTimePhC);
 }
 
-// // 快速SVPWM算法
-// void SVPWM_Calc(double Valpha, double Vbeta, double *Va, double *Vb, double *Vc)
-// {
-//     double Va_temp, Vb_temp, Vc_temp;
-//     Inv_Clarke_transform(Valpha, Vbeta, &Va_temp, &Vb_temp, &Vc_temp);
-
-//     double rtb_Add2;
-//     rtb_Add2 = (fmax(fmax(Va_temp, Vb_temp), Vc_temp) + fmin(fmin(Va_temp, Vb_temp), Vc_temp)) * -0.5;
-
-//     *Va = (Va_temp + rtb_Add2) * TWO_DIV_SQRT3;
-//     *Vb = (Vb_temp + rtb_Add2) * TWO_DIV_SQRT3;  
-//     *Vc = (Vc_temp + rtb_Add2) * TWO_DIV_SQRT3;
-// }
