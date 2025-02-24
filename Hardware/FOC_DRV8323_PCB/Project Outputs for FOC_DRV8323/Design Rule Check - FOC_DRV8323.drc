@@ -1,7 +1,7 @@
 Protel Design System Design Rule Check
 PCB File : F:\ZHUOZHUOO--Github\FOC_DRV8323\Hardware\FOC_DRV8323_PCB\FOC_DRV8323.PcbDoc
-Date     : 2025/2/23
-Time     : 16:09:15
+Date     : 2025/2/24
+Time     : 20:12:04
 
 Processing Rule : Clearance Constraint (Gap=6mil) (All),(All)
 Rule Violations :0
@@ -45,4 +45,4 @@ Rule Violations :0
 
 Violations Detected : 0
 Waived Violations : 0
-Time Elapsed        : 00:00:02
+Time Elapsed        : 00:00:01

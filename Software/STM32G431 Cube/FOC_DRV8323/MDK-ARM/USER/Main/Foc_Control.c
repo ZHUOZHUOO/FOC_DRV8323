@@ -89,6 +89,7 @@ void FOC_Main_Loop(void)
     {
         state_led_flag = 0;
         HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_5);
+				//HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_6);
     }
     state_led_flag++;
 }
