@@ -10,11 +10,13 @@ extern "C"
 #include "Foc_Control.h"
 #define ADC1_CHANNEL_NUM  6
 
-extern uint32_t Adc_Val[ADC1_CHANNEL_NUM];                   //Adc data array    
+extern uint16_t Adc_Val[ADC1_CHANNEL_NUM];                   //Adc data array    
+extern uint16_t Adc_flag;
 
 void Adc_Init(void);
 void ADC_Vrefint_Init(void);
 void Get_ADC_Value(void);
 void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hdac);
+void Adc_Val_Decode(void);
 
 #endif

@@ -2,7 +2,6 @@
 #define __FOC_CONTROL_H
 
 #include "stm32g4xx_hal.h"
-#include "math.h"
 #include "stdbool.h"
 #include "stdint.h"
 #include "tim.h"
@@ -11,15 +10,17 @@
 #include "spi_util.h"
 #include "pid_util.h"
 #include "configure.h"
+#include "arm_math.h"
+#include "arm_const_structs.h"
 
 
-#define PI 3.14159265358979323846
-#define TWO_PI 6.28318530717958647692
-#define SQRT3 1.73205080756887729352
-#define SQRT3_DIV2 0.86602540378443864626
-#define SQRT3_DIV3 0.57735026918962576451
-#define TWO_THIRD 0.66666666666666666666
-#define TWO_DIV_SQRT3 1.1547005383792517
+#define PI 3.1415926535898
+#define TWO_PI 6.2831853071796
+#define SQRT3 1.7320508075689
+#define SQRT3_DIV2 0.8660254037844
+#define SQRT3_DIV3 0.5773502691896
+#define TWO_THIRD 0.6666666666667
+#define TWO_DIV_SQRT3 1.1547005383793
 
 #define PWM_MAX 1000
 #define PWM_MIN -1000
@@ -29,25 +30,25 @@
 
 typedef struct
 {
-    double Ia;//A相电流_反馈
-    double Ib;//B相电流_反馈
-    double Ic;//C相电流_反馈
-    double Ialpha;
-    double Ibeta;
-    double Id;
-    double Iq;
-    double Vd;
-    double Vq;
-    double Valpha;
-    double Vbeta;
-    double Va;//A相电压_期望
-    double Vb;//B相电压_期望
-    double Vc;//C相电压_期望
-    double Theta;//电角度_反馈
-    double Speed;//速度
-    double PWM_A_DutyCycle;//占空比A相
-    double PWM_B_DutyCycle;//占空比B相
-    double PWM_C_DutyCycle;//占空比C相
+    float Ia;//A相电流_反馈
+    float Ib;//B相电流_反馈
+    float Ic;//C相电流_反馈
+    float Ialpha;
+    float Ibeta;
+    float Id;
+    float Iq;
+    float Vd;
+    float Vq;
+    float Valpha;
+    float Vbeta;
+    float Va;//A相电压_期望
+    float Vb;//B相电压_期望
+    float Vc;//C相电压_期望
+    float Theta;//电角度_反馈
+    float Speed;//速度
+    float PWM_A_DutyCycle;//占空比A相
+    float PWM_B_DutyCycle;//占空比B相
+    float PWM_C_DutyCycle;//占空比C相
 } FOC_Struct;
 
 
@@ -65,6 +66,8 @@ typedef struct
 extern FOC_Struct Motor_FOC;
 extern ADC_Struct Motor_ADC;
 extern float Vref_Offset;
+
+extern uint32_t run_flag;
 
 void FOC_Struct_Init(FOC_Struct *foc);
 void FOC_Main_Init(void);

@@ -1,3 +1,10 @@
+/*
+ * @Date: 2025-02-25 15:17:49
+ * @LastEditors: ZHUOZHUOO
+ * @LastEditTime: 2025-02-25 22:35:07
+ * @FilePath: \undefinedf:\ZHUOZHUOO--Github\FOC_DRV8323\Software\STM32G431 Cube\FOC_DRV8323\MDK-ARM\USER\Main\Foc_Control.c
+ * @Description: Do not edit
+ */
 #include "Foc_Control.h"
 
 #define Min(a, b) ((a) < (b) ? (a) : (b))
@@ -15,11 +22,11 @@ float Vref_Offset = 1.0f;
 
 //--------------------函数声明--------------------
 void FOC_Calc_Electrical_Angle(void);
-void Park_transform(double Ialpha, double Ibeta, double *Id, double *Iq, double Theta);
-void Clarke_transform(double Ia, double Ib, double Ic, double *Ialpha, double *Ibeta);
-void Inv_Park_transform(double Id, double Iq, double *Ialpha, double *Ibeta, double Theta);
-void Inv_Clarke_transform(double Ialpha, double Ibeta, double *Ia, double *Ib, double *Ic);
-void CALC_SVPWM(double Valpha, double Vbeta);
+void Park_transform(float Ialpha, float Ibeta, float *Id, float *Iq, float Theta);
+void Clarke_transform(float Ia, float Ib, float Ic, float *Ialpha, float *Ibeta);
+void Inv_Park_transform(float Id, float Iq, float *Ialpha, float *Ibeta, float Theta);
+void Inv_Clarke_transform(float Ialpha, float Ibeta, float *Ia, float *Ib, float *Ic);
+void CALC_SVPWM(float Valpha, float Vbeta);
 void ADC_Struct_Init(ADC_Struct *adc);
 
 //------------------------------------------------
@@ -34,10 +41,10 @@ void FOC_Main_Init(void)
     ADC_Vrefint_Init();
 
     // PID初始化
-    PID_Init(&Current_Id_PID, 0.001, 0.001, 0.0, 1);
-    PID_Init(&Current_Iq_PID, 0.001, 0.001, 0.0, 1);
-    PID_Init(&Speed_PID, 0.001, 0.001, 0.0, 1);
-    PID_Init(&Position_PID, 0.001, 0.001, 0.0, 1);
+    PID_Init(&Current_Id_PID, 0.001f, 0.001f, 0.0f, 1);
+    PID_Init(&Current_Iq_PID, 0.001f, 0.001f, 0.0f, 1);
+    PID_Init(&Speed_PID, 0.001f, 0.001f, 0.0f, 1);
+    PID_Init(&Position_PID, 0.001f, 0.001f, 0.0f, 1);
 
     // 设置PWM
 
@@ -53,84 +60,101 @@ void FOC_Main_Init(void)
     HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_1);
     HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_2);
     HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_3);
-    // // 计数上限: 500
-    // __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_1, 250);
-    // __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_2, 300);
-    // __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_3, 100);
 }
-
+uint32_t run_flag = 0;
 uint16_t state_led_flag = 0;
-double x = 0, y = 1;
+float x = 0, y = 1;
 void FOC_Main_Loop(void)
 {
-
+    // 开环模式：生成模拟电角度信号
+    #if FOC_CLOSE_LOOP_MODE == MODE_OFF
+    static float t = 0.0;                         // 时间变量
+    Motor_FOC.Theta = PI * t;                 // 生成 sin(πt) 信号             
+    t += 0.001;                                    // 时间步进（假设循环周期为1ms）
+    if (t >= 2.0) t -= 2.0;                       // 周期2秒
+    // 闭环模式：读取实际编码器角度
+    #elif FOC_CLOSE_LOOP_MODE == MODE_ON
     MT6816_SPI_Get_AngleData();
     Motor_FOC.Theta = mt6816_spi.angle / 16384.0 * TWO_PI;
-    Motor_FOC.Ia = Motor_ADC.Valtage_Current_A;
-    Motor_FOC.Ib = Motor_ADC.Valtage_Current_B;
-    Motor_FOC.Ic = Motor_ADC.Valtage_Current_C;
+    #endif
+
+    FOC_Calc_Electrical_Angle(); 
+		
+    Motor_FOC.Ia = Motor_ADC.Valtage_Current_A / CURRENT_DETECTION_RES;
+    Motor_FOC.Ib = Motor_ADC.Valtage_Current_B / CURRENT_DETECTION_RES;
+    Motor_FOC.Ic = Motor_ADC.Valtage_Current_C / CURRENT_DETECTION_RES;
 
     // 克拉克变换
     Clarke_transform(Motor_FOC.Ia, Motor_FOC.Ib, Motor_FOC.Ic, &Motor_FOC.Ialpha, &Motor_FOC.Ibeta);
     // 帕克变换
     Park_transform(Motor_FOC.Ialpha, Motor_FOC.Ibeta, &Motor_FOC.Id, &Motor_FOC.Iq, Motor_FOC.Theta);
 
-    // 电流环PID计算
+    // 开环模式：设置固定 Vd/Vq 或禁用 PID
+    #if FOC_CLOSE_LOOP_MODE == MODE_OFF
+    Motor_FOC.Vd = 0.01;  // 示例：设置固定 Vd
+    Motor_FOC.Vq = 0.1;  // 示例：设置固定 Vq
+    #elif FOC_CLOSE_LOOP_MODE == MODE_ON
+    // 闭环模式：执行 PID 计算
     PID_Calc(&Current_Id_PID, 0, Motor_FOC.Id);
     PID_Calc(&Current_Iq_PID, 1, Motor_FOC.Iq);
+    Motor_FOC.Vd = Current_Id_PID.Output;
+    Motor_FOC.Vq = Current_Iq_PID.Output;
+    #endif
 	
     // 逆帕克变换
-    Inv_Park_transform(Current_Id_PID.Output, Current_Iq_PID.Output, &Motor_FOC.Valpha, &Motor_FOC.Vbeta, Motor_FOC.Theta);
+    Inv_Park_transform(Motor_FOC.Vd, Motor_FOC.Vq, &Motor_FOC.Valpha, &Motor_FOC.Vbeta, Motor_FOC.Theta);
     
-    // Inv_Park_transform(x, y, &Motor_FOC.Valpha, &Motor_FOC.Vbeta, Motor_FOC.Theta);
     // SVPWM计算
     CALC_SVPWM(Motor_FOC.Valpha, Motor_FOC.Vbeta);
 
-    if (state_led_flag == 1000)
+    if (state_led_flag == 10000)
     {
         state_led_flag = 0;
         HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_5);
-				//HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_6);
+	    //HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_6);
     }
     state_led_flag++;
+    run_flag++;
 }
 
 // 电角度计算
 void FOC_Calc_Electrical_Angle(void)
 {
-    Motor_FOC.Theta = Motor_FOC.Theta + Motor_FOC.Speed * 0.001;
     if (Motor_FOC.Theta > TWO_PI)
     {
         Motor_FOC.Theta -= TWO_PI;
     }
+    else if (Motor_FOC.Theta < 0)
+    {
+        Motor_FOC.Theta += TWO_PI;
+    }
 }
 
 // 帕克变换，将αβ坐标系下的电流转换为dq坐标系下的电流
-void Park_transform(double Ialpha, double Ibeta, double *Id, double *Iq, double Theta)
+void Park_transform(float Ialpha, float Ibeta, float *Id, float *Iq, float Theta)
 {
-    *Id = Ialpha * cos(Theta) + Ibeta * sin(Theta);
-    *Iq = -Ialpha * sin(Theta) + Ibeta * cos(Theta);
+    *Id = Ialpha * arm_cos_f32(Theta) + Ibeta * arm_sin_f32(Theta);
+    *Iq = -Ialpha * arm_sin_f32(Theta) + Ibeta * arm_cos_f32(Theta);
 }
 // 克拉克变换，将Ia,Ib,Ic转换为Ialpha和Ibeta
-void Clarke_transform(double Ia, double Ib, double Ic, double *Ialpha, double *Ibeta)
+void Clarke_transform(float Ia, float Ib, float Ic, float *Ialpha, float *Ibeta)
 {
     *Ialpha = TWO_THIRD * Ia;
     *Ibeta = SQRT3_DIV3 * (Ib - Ic);
 }
 // 逆帕克变换，将dq坐标系下的电流转换为αβ坐标系下的电流
-void Inv_Park_transform(double Id, double Iq, double *Ialpha, double *Ibeta, double Theta)
+void Inv_Park_transform(float Id, float Iq, float *Ialpha, float *Ibeta, float Theta)
 {
-    *Ialpha = Id * cos(Theta) - Iq * sin(Theta);
-    *Ibeta = Id * sin(Theta) + Iq * cos(Theta);
+    *Ialpha = Id * arm_cos_f32(Theta) - Iq * arm_sin_f32(Theta);
+    *Ibeta = Id * arm_sin_f32(Theta) + Iq * arm_cos_f32(Theta);
 }
 // 逆克拉克变换，将Ialpha和Ibeta转换为Ia,Ib,Ic
-void Inv_Clarke_transform(double Ialpha, double Ibeta, double *Ia, double *Ib, double *Ic)
+void Inv_Clarke_transform(float Ialpha, float Ibeta, float *Ia, float *Ib, float *Ic)
 {
     *Ia = Ialpha;
     *Ib = -0.5 * Ialpha + SQRT3_DIV2 * Ibeta;
     *Ic = -0.5 * Ialpha - SQRT3_DIV2 * Ibeta;
 }
-
 
 void FOC_Struct_Init(FOC_Struct *foc)
 {
@@ -161,19 +185,17 @@ void ADC_Struct_Init(ADC_Struct *adc)
     adc->Internal_Vref = 0;
 }
 
-
 #define SQRT_3		1.732051           //根号3
 #define T		    (PWM_PERIOD * 4)   //TIM1 ARR值的4倍
 #define T_SQRT3     (uint16_t)(T * SQRT_3)
-#define SECTOR_1	(uint32_t)1
-#define SECTOR_2	(uint32_t)2
-#define SECTOR_3	(uint32_t)3
-#define SECTOR_4	(uint32_t)4
-#define SECTOR_5	(uint32_t)5
-#define SECTOR_6	(uint32_t)6
+#define SECTOR_1	(uint8_t)1
+#define SECTOR_2	(uint8_t)2
+#define SECTOR_3	(uint8_t)3
+#define SECTOR_4	(uint8_t)4
+#define SECTOR_5	(uint8_t)5
+#define SECTOR_6	(uint8_t)6
 
-
-void CALC_SVPWM(double Valpha, double Vbeta)
+void CALC_SVPWM(float Valpha, float Vbeta)
 {
     uint8_t bSector;
     int32_t wX, wY, wZ, wUAlpha, wUBeta;

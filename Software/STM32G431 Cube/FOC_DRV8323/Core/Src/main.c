@@ -59,7 +59,8 @@ void SystemClock_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
+  static uint32_t run_Hz = 0;
+	static uint16_t Adc_Hz = 0;
 /* USER CODE END 0 */
 
 /**
@@ -95,9 +96,10 @@ int main(void)
   MX_ADC1_Init();
   MX_FDCAN1_Init();
   MX_SPI1_Init();
+  MX_TIM3_Init();
   /* USER CODE BEGIN 2 */
     FOC_Main_Init();
-
+		HAL_TIM_Base_Start_IT(&htim3);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -183,9 +185,17 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
   /* USER CODE BEGIN Callback 0 */
 	if (htim->Instance == TIM1)
 	{
-			//ADC采样
-			Get_ADC_Value();
+        //ADC采样
+        Get_ADC_Value();
 	}
+    else if (htim->Instance == TIM3)
+    {
+        run_Hz = run_flag;
+        run_flag = 0;
+				Adc_Hz = Adc_flag;
+				Adc_flag = 0;
+    }
+    
   /* USER CODE END Callback 0 */
   if (htim->Instance == TIM2) {
     HAL_IncTick();

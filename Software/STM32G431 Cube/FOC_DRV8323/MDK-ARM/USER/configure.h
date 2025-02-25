@@ -1,11 +1,14 @@
 #ifndef __CONFIGURE_H
 #define __CONFIGURE_H
 
-#define FOC_MODE OPEN_LOOP
+#define FOC_CLOSE_LOOP_MODE MODE_OFF
+#define ADC_VREF_MODE MODE_ON
+#defien ADC_FILTER_MODE MODE_ON
 
-#define OPEN_LOOP 0
-#define CLOSE_LOOP 1
+#define MODE_ON 1
+#define MODE_OFF 0
 
+#define CURRENT_DETECTION_RES 0.002f//检流电阻
 #define MOTOR_POLE_PAIRS 14 //电机极对数
 #define MOTOR_RESISTANCE 16.5 //电机电阻
 #define MOTOR_VOLTAGE 24 //电机电压
@@ -17,8 +20,8 @@
 
 #define CKTIM 170000000//定时器时钟频率
 #define PWM_PRSC 4//PWM预分频
-#define PWM_FREQ 34000//PWM频率, T=1000us
-#define PWM_PERIOD CKTIM/(2*PWM_FREQ*(PWM_PRSC+1))  //计数器计数上限 ARR=500
+#define PWM_FREQ 25000//PWM频率, T=1000us
+#define PWM_PERIOD CKTIM/(2*PWM_FREQ*(PWM_PRSC+1))  //计数器计数上限 ARR=680
 #define REP_RATE 1 //电流环刷新频率为(REP_RATE+1)/(2*PWM_FREQ)=40us, f=25kHz
 #define DEADTIME_NS 1000//死区时间ns
 #define DEADTIME CKTIM/1000000/2*DEADTIME_NS/1000  //死区时间计数值 85us
