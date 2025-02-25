@@ -1,14 +1,15 @@
 #include "adc_util.h"
 
 uint32_t Adc_Val[ADC1_CHANNEL_NUM];                   //Adc data array    
-double   Adc_Sum_Val[ADC1_CHANNEL_NUM];		            //Adc decode data
+float   Adc_Sum_Val[ADC1_CHANNEL_NUM];		            //Adc decode data
 
 void Adc_Init(void) { 
 	HAL_ADCEx_Calibration_Start(&hadc1, ADC_SINGLE_ENDED);
     HAL_Delay(10);
 
-    HAL_ADC_Start_IT(&hadc1);
-    HAL_ADC_Start(&hadc1);
+//    HAL_ADC_Start_IT(&hadc1);//开启ADC中断
+		HAL_ADC_Start_DMA(&hadc1, Adc_Val, ADC1_CHANNEL_NUM);//开启ADC DMA
+    HAL_ADC_Start(&hadc1);//开启ADC1
 }
 
 void Get_ADC_Value(void)
@@ -16,7 +17,7 @@ void Get_ADC_Value(void)
     HAL_ADC_Start_DMA(&hadc1, Adc_Val, ADC1_CHANNEL_NUM);
 }
 
-//ADC DMA中断回调函数
+//ADC 中断回调函数
 void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc)
 {
     if (hadc == &hadc1)
@@ -29,12 +30,11 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc)
         Motor_ADC.Valtage_Current_A = Adc_Val[0] * Vref_Offset;
         Motor_ADC.Valtage_Current_B = Adc_Val[1] * Vref_Offset;
         Motor_ADC.Valtage_Current_C = Adc_Val[2] * Vref_Offset;
-        Motor_ADC.Valtage_VCC = Adc_Val[3] * 11.0 * Vref_Offset;
-        Motor_ADC.Temperature = (Adc_Val[4] * Vref_Offset - 0.76) / 0.0025 + 25;
+        Motor_ADC.Valtage_VCC = Adc_Val[3] * 11.0f * Vref_Offset;
+        Motor_ADC.Temperature = (Adc_Val[4] * Vref_Offset - 0.76f) / 0.0025f + 25.0f;
         Motor_ADC.Internal_Vref = Adc_Val[5];
     }
 }
-
 
 void ADC_Vrefint_Init(void)
 {
@@ -45,8 +45,8 @@ void ADC_Vrefint_Init(void)
 	float Vref_Offset_Sum  = 0.0f;
 	
 	VREFINT_CAL_DATA = (float)*VREFINT_CAL;
-	VREFINT_CAL_VAL = (VREFINT_CAL_DATA/4095.0f * 3.0f);
-	for(int flag=0;flag<1000;flag++)
+	VREFINT_CAL_VAL = (VREFINT_CAL_DATA / 4095.0f * 3.0f);
+	for(int flag = 0; flag < 1000; flag++)
 	{
 			Vref_Offset_Sum += VREFINT_CAL_VAL / Motor_ADC.Internal_Vref;
 			HAL_Delay(1);

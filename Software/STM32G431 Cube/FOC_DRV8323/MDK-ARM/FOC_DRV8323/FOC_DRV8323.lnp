@@ -36,6 +36,7 @@
 "foc_drv8323\adc_util.o"
 "foc_drv8323\pid_util.o"
 "foc_drv8323\spi_util.o"
+"foc_drv8323\tim_util.o"
 --library_type=microlib --strict --scatter "FOC_DRV8323\FOC_DRV8323.sct"
 --summary_stderr --info summarysizes --map --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers

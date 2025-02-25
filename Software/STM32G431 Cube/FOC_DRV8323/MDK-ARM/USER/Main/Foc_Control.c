@@ -78,10 +78,11 @@ void FOC_Main_Loop(void)
     // 电流环PID计算
     PID_Calc(&Current_Id_PID, 0, Motor_FOC.Id);
     PID_Calc(&Current_Iq_PID, 1, Motor_FOC.Iq);
+	
     // 逆帕克变换
-    // Inv_Park_transform(Current_Id_PID.Output, Current_Iq_PID.Output, &Motor_FOC.Valpha, &Motor_FOC.Vbeta, Motor_FOC.Theta);
+    Inv_Park_transform(Current_Id_PID.Output, Current_Iq_PID.Output, &Motor_FOC.Valpha, &Motor_FOC.Vbeta, Motor_FOC.Theta);
     
-    Inv_Park_transform(x, y, &Motor_FOC.Valpha, &Motor_FOC.Vbeta, Motor_FOC.Theta);
+    // Inv_Park_transform(x, y, &Motor_FOC.Valpha, &Motor_FOC.Vbeta, Motor_FOC.Theta);
     // SVPWM计算
     CALC_SVPWM(Motor_FOC.Valpha, Motor_FOC.Vbeta);
 
@@ -171,15 +172,12 @@ void ADC_Struct_Init(ADC_Struct *adc)
 #define SECTOR_5	(uint32_t)5
 #define SECTOR_6	(uint32_t)6
 
-int32_t wX, wY, wZ, wUAlpha, wUBeta;
-uint16_t  hTimePhA=0, hTimePhB=0, hTimePhC=0;		
-uint8_t bSector;
 
 void CALC_SVPWM(double Valpha, double Vbeta)
 {
-    // uint8_t bSector;
-    // uint32_t wX, wY, wZ, wUAlpha, wUBeta;
-    // uint16_t  hTimePhA=0, hTimePhB=0, hTimePhC=0;		
+    uint8_t bSector;
+    int32_t wX, wY, wZ, wUAlpha, wUBeta;
+    uint16_t  hTimePhA=0, hTimePhB=0, hTimePhC=0;		
  
     wUAlpha = Valpha * T_SQRT3;
     wUBeta = -(Vbeta * T);
@@ -246,13 +244,9 @@ void CALC_SVPWM(double Valpha, double Vbeta)
     default:
         break;
     }
- 
-    // TIM1->CCR1 = hTimePhA;
-    // TIM1->CCR2 = hTimePhB;
-    // TIM1->CCR3 = hTimePhC;
-    // 计数上限: 500
-    __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_1, hTimePhA);
-    __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_2, hTimePhB);
-    __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_3, hTimePhC);
+    // 计数上限: 500 
+    TIM1->CCR1 = hTimePhA;
+    TIM1->CCR2 = hTimePhB;
+    TIM1->CCR3 = hTimePhC;
 }
 

@@ -181,11 +181,11 @@ void SystemClock_Config(void)
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
   /* USER CODE BEGIN Callback 0 */
-    if (htim->Instance == TIM1)
-    {
-        //ADC采样
-        Get_ADC_Value();
-    }
+	if (htim->Instance == TIM1)
+	{
+			//ADC采样
+			Get_ADC_Value();
+	}
   /* USER CODE END Callback 0 */
   if (htim->Instance == TIM2) {
     HAL_IncTick();

@@ -12,6 +12,7 @@
 #include "pid_util.h"
 #include "configure.h"
 
+
 #define PI 3.14159265358979323846
 #define TWO_PI 6.28318530717958647692
 #define SQRT3 1.73205080756887729352
@@ -67,5 +68,7 @@ extern float Vref_Offset;
 
 void FOC_Struct_Init(FOC_Struct *foc);
 void FOC_Main_Init(void);
+void FOC_Main_Loop(void);
+
 
 #endif
