@@ -1,9 +1,12 @@
 #ifndef __CONFIGURE_H
 #define __CONFIGURE_H
-
+//闭环模式
 #define FOC_CLOSE_LOOP_MODE MODE_OFF
+//ADC电压校准模式
 #define ADC_VREF_MODE MODE_ON
-#defien ADC_FILTER_MODE MODE_ON
+//滤波模式, Sliding Window Filter
+#define ADC_FILTER_MODE MODE_ON
+#define SLIDING_WINDOW_SIZE 8
 
 #define MODE_ON 1
 #define MODE_OFF 0

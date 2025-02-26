@@ -27,6 +27,7 @@ void Clarke_transform(float Ia, float Ib, float Ic, float *Ialpha, float *Ibeta)
 void Inv_Park_transform(float Id, float Iq, float *Ialpha, float *Ibeta, float Theta);
 void Inv_Clarke_transform(float Ialpha, float Ibeta, float *Ia, float *Ib, float *Ic);
 void CALC_SVPWM(float Valpha, float Vbeta);
+void FOC_Struct_Init(FOC_Struct *foc);
 void ADC_Struct_Init(ADC_Struct *adc);
 
 //------------------------------------------------
@@ -47,7 +48,6 @@ void FOC_Main_Init(void)
     PID_Init(&Position_PID, 0.001f, 0.001f, 0.0f, 1);
 
     // 设置PWM
-
     HAL_TIM_Base_Start_IT(&htim1);
     HAL_TIM_PWM_Start_IT(&htim1, TIM_CHANNEL_1);
     HAL_TIM_PWM_Start_IT(&htim1, TIM_CHANNEL_2);
