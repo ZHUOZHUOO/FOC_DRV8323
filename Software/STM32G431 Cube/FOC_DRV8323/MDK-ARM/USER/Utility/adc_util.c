@@ -10,11 +10,10 @@ uint8_t filter_flag = 0;
 #endif
 
 void Adc_Init(void) { 
-		HAL_ADCEx_Calibration_Start(&hadc1, ADC_SINGLE_ENDED);
+	HAL_ADCEx_Calibration_Start(&hadc1, ADC_SINGLE_ENDED);
     HAL_Delay(10);
 
-//    HAL_ADC_Start_IT(&hadc1);//开启ADC中断
-		HAL_ADC_Start_DMA(&hadc1, (uint32_t*)Adc_Val, ADC1_CHANNEL_NUM);//开启ADC DMA
+	HAL_ADC_Start_DMA(&hadc1, (uint32_t*)Adc_Val, ADC1_CHANNEL_NUM);//开启ADC DMA
     HAL_ADC_Start(&hadc1);//开启ADC1
 }
 

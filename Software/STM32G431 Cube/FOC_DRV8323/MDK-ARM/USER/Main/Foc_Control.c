@@ -246,15 +246,15 @@ void CALC_SVPWM(float Valpha, float Vbeta)
     {
     case SECTOR_1:
     case SECTOR_4:
-        hTimePhA = (T/8) + ((((T + wX) - wZ)/2)/24);
-        hTimePhB = hTimePhA + wZ/24;
-        hTimePhC = hTimePhB - wX/24;
+        hTimePhA = (T/8) + ((((T + wX) - wZ)/2)/131072);
+        hTimePhB = hTimePhA + wZ/131072;
+        hTimePhC = hTimePhB - wX/131072;
         break;
     case SECTOR_2:
     case SECTOR_5:
-        hTimePhA = (T/8) + ((((T + wY) - wZ)/2)/24);
-        hTimePhB = hTimePhA + wZ/24;
-        hTimePhC = hTimePhA - wY/24;
+        hTimePhA = (T/8) + ((((T + wY) - wZ)/2)/131072);
+        hTimePhB = hTimePhA + wZ/131072;
+        hTimePhC = hTimePhA - wY/131072;
         break;
  
     case SECTOR_3:
@@ -266,7 +266,7 @@ void CALC_SVPWM(float Valpha, float Vbeta)
     default:
         break;
     }
-    // 计数上限: 500 
+    // 计数上限: 680
     TIM1->CCR1 = hTimePhA;
     TIM1->CCR2 = hTimePhB;
     TIM1->CCR3 = hTimePhC;
