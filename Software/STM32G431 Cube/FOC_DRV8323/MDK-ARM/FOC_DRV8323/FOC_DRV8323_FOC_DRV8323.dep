@@ -1,6 +1,6 @@
 Dependencies for Project 'FOC_DRV8323', Target 'FOC_DRV8323': (DO NOT MODIFY !)
 F (startup_stm32g431xx.s)(0x67BDE819)(--cpu Cortex-M4.fp -g --apcs=interwork --pd "__MICROLIB SETA 1"-I.\RTE\_FOC_DRV8323-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.6.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32G4xx_DFP\1.5.0\Drivers\CMSIS\Device\ST\STM32G4xx\Include--pd "__UVISION_VERSION SETA 523" --pd "_RTE_ SETA 1" --pd "STM32G431xx SETA 1"--list startup_stm32g431xx.lst --xref -o foc_drv8323\startup_stm32g431xx.o --depend foc_drv8323\startup_stm32g431xx.d)
-F (../Core/Src/main.c)(0x67BDE818)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32G4xx_HAL_Driver/Inc -I ../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I ../Drivers/CMSIS/Include -I ../MDK-ARM/USER -I ../MDK-ARM/USER/Utility -I ../MDK-ARM/USER/Main -I .\DSP_Lib -I .\DSP_Lib\Include-I.\RTE\_FOC_DRV8323-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.6.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32G4xx_DFP\1.5.0\Drivers\CMSIS\Device\ST\STM32G4xx\Include-D__UVISION_VERSION="523" -D_RTE_ -DSTM32G431xx -DUSE_HAL_DRIVER -DSTM32G431xx -DARM_MATH_CM4 -D__CC_ARM -DARM_MATH_MATRIX_CHECK -DARM_MATH_ROUNDING-o foc_drv8323\main.o --omf_browse foc_drv8323\main.crf --depend foc_drv8323\main.d)
+F (../Core/Src/main.c)(0x67BEEC37)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32G4xx_HAL_Driver/Inc -I ../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I ../Drivers/CMSIS/Include -I ../MDK-ARM/USER -I ../MDK-ARM/USER/Utility -I ../MDK-ARM/USER/Main -I .\DSP_Lib -I .\DSP_Lib\Include-I.\RTE\_FOC_DRV8323-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.6.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32G4xx_DFP\1.5.0\Drivers\CMSIS\Device\ST\STM32G4xx\Include-D__UVISION_VERSION="523" -D_RTE_ -DSTM32G431xx -DUSE_HAL_DRIVER -DSTM32G431xx -DARM_MATH_CM4 -D__CC_ARM -DARM_MATH_MATRIX_CHECK -DARM_MATH_ROUNDING-o foc_drv8323\main.o --omf_browse foc_drv8323\main.crf --depend foc_drv8323\main.d)
 I (../Core/Inc/main.h)(0x67BDE818)
 I (../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal.h)(0x66CAF09C)
 I (../Core/Inc/stm32g4xx_hal_conf.h)(0x67BDE818)
@@ -49,7 +49,7 @@ I (../MDK-ARM/USER/Utility/adc_util.h)(0x67BDE47D)
 I (../MDK-ARM/USER/Utility/spi_util.h)(0x674706A9)
 I (../MDK-ARM/USER/Utility/pid_util.h)(0x67BDBF4D)
 I (C:\Keil_v5\ARM\ARMCC\include\math.h)(0x57F606B6)
-I (../MDK-ARM/USER/configure.h)(0x67BDECF8)
+I (../MDK-ARM/USER/configure.h)(0x67BF00C8)
 I (.\DSP_Lib\Include\arm_math.h)(0x5625A350)
 I (.\DSP_Lib\Include\core_cm4.h)(0x5625B70C)
 I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x57F606B8)
@@ -169,7 +169,7 @@ I (../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_spi.h)(0x66CAF09C)
 I (../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_spi_ex.h)(0x66CAF09C)
 I (../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_tim.h)(0x66CAF09C)
 I (../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_tim_ex.h)(0x66CAF09C)
-F (../Core/Src/fdcan.c)(0x67BDE818)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32G4xx_HAL_Driver/Inc -I ../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I ../Drivers/CMSIS/Include -I ../MDK-ARM/USER -I ../MDK-ARM/USER/Utility -I ../MDK-ARM/USER/Main -I .\DSP_Lib -I .\DSP_Lib\Include-I.\RTE\_FOC_DRV8323-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.6.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32G4xx_DFP\1.5.0\Drivers\CMSIS\Device\ST\STM32G4xx\Include-D__UVISION_VERSION="523" -D_RTE_ -DSTM32G431xx -DUSE_HAL_DRIVER -DSTM32G431xx -DARM_MATH_CM4 -D__CC_ARM -DARM_MATH_MATRIX_CHECK -DARM_MATH_ROUNDING-o foc_drv8323\fdcan.o --omf_browse foc_drv8323\fdcan.crf --depend foc_drv8323\fdcan.d)
+F (../Core/Src/fdcan.c)(0x67BEEC37)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32G4xx_HAL_Driver/Inc -I ../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I ../Drivers/CMSIS/Include -I ../MDK-ARM/USER -I ../MDK-ARM/USER/Utility -I ../MDK-ARM/USER/Main -I .\DSP_Lib -I .\DSP_Lib\Include-I.\RTE\_FOC_DRV8323-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.6.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32G4xx_DFP\1.5.0\Drivers\CMSIS\Device\ST\STM32G4xx\Include-D__UVISION_VERSION="523" -D_RTE_ -DSTM32G431xx -DUSE_HAL_DRIVER -DSTM32G431xx -DARM_MATH_CM4 -D__CC_ARM -DARM_MATH_MATRIX_CHECK -DARM_MATH_ROUNDING-o foc_drv8323\fdcan.o --omf_browse foc_drv8323\fdcan.crf --depend foc_drv8323\fdcan.d)
 I (../Core/Inc/fdcan.h)(0x67BDE818)
 I (../Core/Inc/main.h)(0x67BDE818)
 I (../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal.h)(0x66CAF09C)
@@ -207,7 +207,7 @@ I (../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_spi.h)(0x66CAF09C)
 I (../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_spi_ex.h)(0x66CAF09C)
 I (../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_tim.h)(0x66CAF09C)
 I (../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_tim_ex.h)(0x66CAF09C)
-F (../Core/Src/spi.c)(0x67BDE818)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32G4xx_HAL_Driver/Inc -I ../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I ../Drivers/CMSIS/Include -I ../MDK-ARM/USER -I ../MDK-ARM/USER/Utility -I ../MDK-ARM/USER/Main -I .\DSP_Lib -I .\DSP_Lib\Include-I.\RTE\_FOC_DRV8323-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.6.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32G4xx_DFP\1.5.0\Drivers\CMSIS\Device\ST\STM32G4xx\Include-D__UVISION_VERSION="523" -D_RTE_ -DSTM32G431xx -DUSE_HAL_DRIVER -DSTM32G431xx -DARM_MATH_CM4 -D__CC_ARM -DARM_MATH_MATRIX_CHECK -DARM_MATH_ROUNDING-o foc_drv8323\spi.o --omf_browse foc_drv8323\spi.crf --depend foc_drv8323\spi.d)
+F (../Core/Src/spi.c)(0x67BEEC37)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32G4xx_HAL_Driver/Inc -I ../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I ../Drivers/CMSIS/Include -I ../MDK-ARM/USER -I ../MDK-ARM/USER/Utility -I ../MDK-ARM/USER/Main -I .\DSP_Lib -I .\DSP_Lib\Include-I.\RTE\_FOC_DRV8323-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.6.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32G4xx_DFP\1.5.0\Drivers\CMSIS\Device\ST\STM32G4xx\Include-D__UVISION_VERSION="523" -D_RTE_ -DSTM32G431xx -DUSE_HAL_DRIVER -DSTM32G431xx -DARM_MATH_CM4 -D__CC_ARM -DARM_MATH_MATRIX_CHECK -DARM_MATH_ROUNDING-o foc_drv8323\spi.o --omf_browse foc_drv8323\spi.crf --depend foc_drv8323\spi.d)
 I (../Core/Inc/spi.h)(0x67BDE818)
 I (../Core/Inc/main.h)(0x67BDE818)
 I (../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal.h)(0x66CAF09C)
@@ -245,7 +245,7 @@ I (../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_spi.h)(0x66CAF09C)
 I (../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_spi_ex.h)(0x66CAF09C)
 I (../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_tim.h)(0x66CAF09C)
 I (../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_tim_ex.h)(0x66CAF09C)
-F (../Core/Src/tim.c)(0x67BDE818)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32G4xx_HAL_Driver/Inc -I ../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I ../Drivers/CMSIS/Include -I ../MDK-ARM/USER -I ../MDK-ARM/USER/Utility -I ../MDK-ARM/USER/Main -I .\DSP_Lib -I .\DSP_Lib\Include-I.\RTE\_FOC_DRV8323-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.6.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32G4xx_DFP\1.5.0\Drivers\CMSIS\Device\ST\STM32G4xx\Include-D__UVISION_VERSION="523" -D_RTE_ -DSTM32G431xx -DUSE_HAL_DRIVER -DSTM32G431xx -DARM_MATH_CM4 -D__CC_ARM -DARM_MATH_MATRIX_CHECK -DARM_MATH_ROUNDING-o foc_drv8323\tim.o --omf_browse foc_drv8323\tim.crf --depend foc_drv8323\tim.d)
+F (../Core/Src/tim.c)(0x67BEEC37)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32G4xx_HAL_Driver/Inc -I ../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I ../Drivers/CMSIS/Include -I ../MDK-ARM/USER -I ../MDK-ARM/USER/Utility -I ../MDK-ARM/USER/Main -I .\DSP_Lib -I .\DSP_Lib\Include-I.\RTE\_FOC_DRV8323-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.6.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32G4xx_DFP\1.5.0\Drivers\CMSIS\Device\ST\STM32G4xx\Include-D__UVISION_VERSION="523" -D_RTE_ -DSTM32G431xx -DUSE_HAL_DRIVER -DSTM32G431xx -DARM_MATH_CM4 -D__CC_ARM -DARM_MATH_MATRIX_CHECK -DARM_MATH_ROUNDING-o foc_drv8323\tim.o --omf_browse foc_drv8323\tim.crf --depend foc_drv8323\tim.d)
 I (../Core/Inc/tim.h)(0x67BDE818)
 I (../Core/Inc/main.h)(0x67BDE818)
 I (../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal.h)(0x66CAF09C)
@@ -283,7 +283,7 @@ I (../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_spi.h)(0x66CAF09C)
 I (../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_spi_ex.h)(0x66CAF09C)
 I (../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_tim.h)(0x66CAF09C)
 I (../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_tim_ex.h)(0x66CAF09C)
-F (../Core/Src/stm32g4xx_it.c)(0x67BDE818)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32G4xx_HAL_Driver/Inc -I ../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I ../Drivers/CMSIS/Include -I ../MDK-ARM/USER -I ../MDK-ARM/USER/Utility -I ../MDK-ARM/USER/Main -I .\DSP_Lib -I .\DSP_Lib\Include-I.\RTE\_FOC_DRV8323-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.6.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32G4xx_DFP\1.5.0\Drivers\CMSIS\Device\ST\STM32G4xx\Include-D__UVISION_VERSION="523" -D_RTE_ -DSTM32G431xx -DUSE_HAL_DRIVER -DSTM32G431xx -DARM_MATH_CM4 -D__CC_ARM -DARM_MATH_MATRIX_CHECK -DARM_MATH_ROUNDING-o foc_drv8323\stm32g4xx_it.o --omf_browse foc_drv8323\stm32g4xx_it.crf --depend foc_drv8323\stm32g4xx_it.d)
+F (../Core/Src/stm32g4xx_it.c)(0x67BEEC37)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32G4xx_HAL_Driver/Inc -I ../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I ../Drivers/CMSIS/Include -I ../MDK-ARM/USER -I ../MDK-ARM/USER/Utility -I ../MDK-ARM/USER/Main -I .\DSP_Lib -I .\DSP_Lib\Include-I.\RTE\_FOC_DRV8323-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.6.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32G4xx_DFP\1.5.0\Drivers\CMSIS\Device\ST\STM32G4xx\Include-D__UVISION_VERSION="523" -D_RTE_ -DSTM32G431xx -DUSE_HAL_DRIVER -DSTM32G431xx -DARM_MATH_CM4 -D__CC_ARM -DARM_MATH_MATRIX_CHECK -DARM_MATH_ROUNDING-o foc_drv8323\stm32g4xx_it.o --omf_browse foc_drv8323\stm32g4xx_it.crf --depend foc_drv8323\stm32g4xx_it.d)
 I (../Core/Inc/main.h)(0x67BDE818)
 I (../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal.h)(0x66CAF09C)
 I (../Core/Inc/stm32g4xx_hal_conf.h)(0x67BDE818)
@@ -320,7 +320,7 @@ I (../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_spi.h)(0x66CAF09C)
 I (../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_spi_ex.h)(0x66CAF09C)
 I (../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_tim.h)(0x66CAF09C)
 I (../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_tim_ex.h)(0x66CAF09C)
-I (../Core/Inc/stm32g4xx_it.h)(0x67BDE818)
+I (../Core/Inc/stm32g4xx_it.h)(0x67BEEC37)
 F (../Core/Src/stm32g4xx_hal_msp.c)(0x67BDE818)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32G4xx_HAL_Driver/Inc -I ../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I ../Drivers/CMSIS/Include -I ../MDK-ARM/USER -I ../MDK-ARM/USER/Utility -I ../MDK-ARM/USER/Main -I .\DSP_Lib -I .\DSP_Lib\Include-I.\RTE\_FOC_DRV8323-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.6.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32G4xx_DFP\1.5.0\Drivers\CMSIS\Device\ST\STM32G4xx\Include-D__UVISION_VERSION="523" -D_RTE_ -DSTM32G431xx -DUSE_HAL_DRIVER -DSTM32G431xx -DARM_MATH_CM4 -D__CC_ARM -DARM_MATH_MATRIX_CHECK -DARM_MATH_ROUNDING-o foc_drv8323\stm32g4xx_hal_msp.o --omf_browse foc_drv8323\stm32g4xx_hal_msp.crf --depend foc_drv8323\stm32g4xx_hal_msp.d)
 I (../Core/Inc/main.h)(0x67BDE818)
 I (../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal.h)(0x66CAF09C)
@@ -1151,7 +1151,7 @@ I (../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_spi.h)(0x66CAF09C)
 I (../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_spi_ex.h)(0x66CAF09C)
 I (../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_tim.h)(0x66CAF09C)
 I (../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_tim_ex.h)(0x66CAF09C)
-F (.\USER\Main\Foc_Control.c)(0x67BDEB2A)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32G4xx_HAL_Driver/Inc -I ../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I ../Drivers/CMSIS/Include -I ../MDK-ARM/USER -I ../MDK-ARM/USER/Utility -I ../MDK-ARM/USER/Main -I .\DSP_Lib -I .\DSP_Lib\Include-I.\RTE\_FOC_DRV8323-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.6.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32G4xx_DFP\1.5.0\Drivers\CMSIS\Device\ST\STM32G4xx\Include-D__UVISION_VERSION="523" -D_RTE_ -DSTM32G431xx -DUSE_HAL_DRIVER -DSTM32G431xx -DARM_MATH_CM4 -D__CC_ARM -DARM_MATH_MATRIX_CHECK -DARM_MATH_ROUNDING-o foc_drv8323\foc_control.o --omf_browse foc_drv8323\foc_control.crf --depend foc_drv8323\foc_control.d)
+F (.\USER\Main\Foc_Control.c)(0x67BF03CE)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32G4xx_HAL_Driver/Inc -I ../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I ../Drivers/CMSIS/Include -I ../MDK-ARM/USER -I ../MDK-ARM/USER/Utility -I ../MDK-ARM/USER/Main -I .\DSP_Lib -I .\DSP_Lib\Include-I.\RTE\_FOC_DRV8323-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.6.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32G4xx_DFP\1.5.0\Drivers\CMSIS\Device\ST\STM32G4xx\Include-D__UVISION_VERSION="523" -D_RTE_ -DSTM32G431xx -DUSE_HAL_DRIVER -DSTM32G431xx -DARM_MATH_CM4 -D__CC_ARM -DARM_MATH_MATRIX_CHECK -DARM_MATH_ROUNDING-o foc_drv8323\foc_control.o --omf_browse foc_drv8323\foc_control.crf --depend foc_drv8323\foc_control.d)
 I (USER\Main\Foc_Control.h)(0x67BDDED1)
 I (../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal.h)(0x66CAF09C)
 I (../Core/Inc/stm32g4xx_hal_conf.h)(0x67BDE818)
@@ -1198,14 +1198,14 @@ I (../MDK-ARM/USER/Utility/spi_util.h)(0x674706A9)
 I (../Core/Inc/spi.h)(0x67BDE818)
 I (../MDK-ARM/USER/Utility/pid_util.h)(0x67BDBF4D)
 I (C:\Keil_v5\ARM\ARMCC\include\math.h)(0x57F606B6)
-I (../MDK-ARM/USER/configure.h)(0x67BDECF8)
+I (../MDK-ARM/USER/configure.h)(0x67BF00C8)
 I (.\DSP_Lib\Include\arm_math.h)(0x5625A350)
 I (.\DSP_Lib\Include\core_cm4.h)(0x5625B70C)
 I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x57F606B8)
 I (.\DSP_Lib\Include\arm_const_structs.h)(0x550B8088)
 I (.\DSP_Lib\Include\arm_common_tables.h)(0x56249EA4)
 F (.\USER\Main\Foc_Control.h)(0x67BDDED1)()
-F (.\USER\Utility\adc_util.c)(0x67BDECF8)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32G4xx_HAL_Driver/Inc -I ../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I ../Drivers/CMSIS/Include -I ../MDK-ARM/USER -I ../MDK-ARM/USER/Utility -I ../MDK-ARM/USER/Main -I .\DSP_Lib -I .\DSP_Lib\Include-I.\RTE\_FOC_DRV8323-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.6.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32G4xx_DFP\1.5.0\Drivers\CMSIS\Device\ST\STM32G4xx\Include-D__UVISION_VERSION="523" -D_RTE_ -DSTM32G431xx -DUSE_HAL_DRIVER -DSTM32G431xx -DARM_MATH_CM4 -D__CC_ARM -DARM_MATH_MATRIX_CHECK -DARM_MATH_ROUNDING-o foc_drv8323\adc_util.o --omf_browse foc_drv8323\adc_util.crf --depend foc_drv8323\adc_util.d)
+F (.\USER\Utility\adc_util.c)(0x67BEEC37)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32G4xx_HAL_Driver/Inc -I ../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I ../Drivers/CMSIS/Include -I ../MDK-ARM/USER -I ../MDK-ARM/USER/Utility -I ../MDK-ARM/USER/Main -I .\DSP_Lib -I .\DSP_Lib\Include-I.\RTE\_FOC_DRV8323-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.6.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32G4xx_DFP\1.5.0\Drivers\CMSIS\Device\ST\STM32G4xx\Include-D__UVISION_VERSION="523" -D_RTE_ -DSTM32G431xx -DUSE_HAL_DRIVER -DSTM32G431xx -DARM_MATH_CM4 -D__CC_ARM -DARM_MATH_MATRIX_CHECK -DARM_MATH_ROUNDING-o foc_drv8323\adc_util.o --omf_browse foc_drv8323\adc_util.crf --depend foc_drv8323\adc_util.d)
 I (USER\Utility\adc_util.h)(0x67BDE47D)
 I (../Core/Inc/adc.h)(0x67BDE817)
 I (../Core/Inc/main.h)(0x67BDE818)
@@ -1252,7 +1252,7 @@ I (../MDK-ARM/USER/Utility/spi_util.h)(0x674706A9)
 I (../Core/Inc/spi.h)(0x67BDE818)
 I (../MDK-ARM/USER/Utility/pid_util.h)(0x67BDBF4D)
 I (C:\Keil_v5\ARM\ARMCC\include\math.h)(0x57F606B6)
-I (../MDK-ARM/USER/configure.h)(0x67BDECF8)
+I (../MDK-ARM/USER/configure.h)(0x67BF00C8)
 I (.\DSP_Lib\Include\arm_math.h)(0x5625A350)
 I (.\DSP_Lib\Include\core_cm4.h)(0x5625B70C)
 I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x57F606B8)
@@ -1336,5 +1336,5 @@ I (../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_tim_ex.h)(0x66CAF09C)
 I (../Core/Inc/spi.h)(0x67BDE818)
 I (../Core/Inc/main.h)(0x67BDE818)
 I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x57F606B8)
-F (.\USER\configure.h)(0x67BDECF8)()
-F (.\DSP_Lib\arm_cortexM4lf_math.lib)(0x56283F70)()
+F (.\USER\configure.h)(0x67BF00C8)()
+F (.\DSP_Lib\arm_cortexM4lf_math.lib)(0x67BEEC37)()

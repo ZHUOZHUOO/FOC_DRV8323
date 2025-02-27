@@ -109,7 +109,6 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-        FOC_Main_Loop();
     }
   /* USER CODE END 3 */
 }
@@ -185,16 +184,17 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
   /* USER CODE BEGIN Callback 0 */
 	if (htim->Instance == TIM1)
 	{
-        //ADC采样
-        Get_ADC_Value();
+      //ADC采样
+      Get_ADC_Value();
+      FOC_Main_Loop();
 	}
-    else if (htim->Instance == TIM3)
-    {
-        run_Hz = run_flag;
-        run_flag = 0;
-				Adc_Hz = Adc_flag;
-				Adc_flag = 0;
-    }
+  else if (htim->Instance == TIM3)
+  {
+      run_Hz = run_flag;
+      run_flag = 0;
+      Adc_Hz = Adc_flag;
+      Adc_flag = 0;
+  }
     
   /* USER CODE END Callback 0 */
   if (htim->Instance == TIM2) {
