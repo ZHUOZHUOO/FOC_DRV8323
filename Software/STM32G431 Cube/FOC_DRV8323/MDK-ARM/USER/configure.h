@@ -8,6 +8,8 @@
 #define ADC_FILTER_MODE MODE_ON
 #define SLIDING_WINDOW_SIZE 8
 
+
+
 #define MODE_ON 1
 #define MODE_OFF 0
 

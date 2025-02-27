@@ -3,7 +3,7 @@
 <title>Static Call Graph - [FOC_DRV8323\FOC_DRV8323.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image FOC_DRV8323\FOC_DRV8323.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060422: Last Updated: Thu Feb 27 14:10:57 2025
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060422: Last Updated: Thu Feb 27 16:35:08 2025
 <BR><P>
 <H3>Maximum Stack Usage =        260 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -480,9 +480,9 @@ Global Symbols
 <P><STRONG><a name="[53]"></a>ADC_DMAConvCplt</STRONG> (Thumb, 104 bytes, Stack size 8 bytes, stm32g4xx_hal_adc.o(i.ADC_DMAConvCplt))
 <BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = ADC_DMAConvCplt &rArr; HAL_ADC_ConvCpltCallback &rArr; Adc_Val_Decode
 </UL>
-<BR>[Calls]<UL><LI><a href="#[6a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_ADC_ConvCpltCallback
-<LI><a href="#[68]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_ADC_ErrorCallback
+<BR>[Calls]<UL><LI><a href="#[68]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_ADC_ErrorCallback
 <LI><a href="#[69]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LL_ADC_REG_IsTriggerSourceSWStart
+<LI><a href="#[6a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_ADC_ConvCpltCallback
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> stm32g4xx_hal_adc.o(i.HAL_ADC_Start_DMA)
 </UL>
@@ -644,7 +644,8 @@ Global Symbols
 <P><STRONG><a name="[85]"></a>FOC_Main_Loop</STRONG> (Thumb, 244 bytes, Stack size 16 bytes, foc_control.o(i.FOC_Main_Loop))
 <BR><BR>[Stack]<UL><LI>Max Depth = 128<LI>Call Chain = FOC_Main_Loop &rArr; Clarke_transform &rArr; __aeabi_dmul &rArr; _double_epilogue &rArr; _double_round
 </UL>
-<BR>[Calls]<UL><LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2d
+<BR>[Calls]<UL><LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_TogglePin
+<LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2d
 <LI><a href="#[63]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dmul
 <LI><a href="#[5c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dadd
 <LI><a href="#[64]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_d2f
@@ -653,7 +654,6 @@ Global Symbols
 <LI><a href="#[7b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FOC_Calc_Electrical_Angle
 <LI><a href="#[75]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Clarke_transform
 <LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CALC_SVPWM
-<LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_TogglePin
 </UL>
 <BR>[Called By]<UL><LI><a href="#[cb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_TIM_PeriodElapsedCallback
 </UL>
@@ -991,8 +991,8 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 108<LI>Call Chain = HAL_RCC_ClockConfig &rArr; HAL_InitTick &rArr; HAL_TIM_Base_Init &rArr; TIM_Base_SetConfig
 </UL>
 <BR>[Calls]<UL><LI><a href="#[af]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_InitTick
-<LI><a href="#[6d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GetTick
 <LI><a href="#[b8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_RCC_GetSysClockFreq
+<LI><a href="#[6d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GetTick
 </UL>
 <BR>[Called By]<UL><LI><a href="#[ef]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SystemClock_Config
 </UL>
@@ -1357,7 +1357,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[50]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[ee]"></a>MX_TIM3_Init</STRONG> (Thumb, 108 bytes, Stack size 48 bytes, tim.o(i.MX_TIM3_Init))
+<P><STRONG><a name="[ee]"></a>MX_TIM3_Init</STRONG> (Thumb, 106 bytes, Stack size 48 bytes, tim.o(i.MX_TIM3_Init))
 <BR><BR>[Stack]<UL><LI>Max Depth = 84<LI>Call Chain = MX_TIM3_Init &rArr; HAL_TIM_OC_Init &rArr; TIM_Base_SetConfig
 </UL>
 <BR>[Calls]<UL><LI><a href="#[dc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_TIM_OC_Init

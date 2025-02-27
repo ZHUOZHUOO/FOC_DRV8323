@@ -52,3 +52,5 @@ foc_drv8323\adc_util.o: .\DSP_Lib\Include\core_cm4.h
 foc_drv8323\adc_util.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
 foc_drv8323\adc_util.o: .\DSP_Lib\Include\arm_const_structs.h
 foc_drv8323\adc_util.o: .\DSP_Lib\Include\arm_common_tables.h
+foc_drv8323\adc_util.o: ../MDK-ARM/USER/Main/Foc_Error.h
+foc_drv8323\adc_util.o: ../MDK-ARM/USER/Main/Foc_Control.h

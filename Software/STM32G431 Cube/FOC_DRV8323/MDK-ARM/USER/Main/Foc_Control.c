@@ -38,8 +38,9 @@ void FOC_Main_Init(void)
 {
     FOC_Struct_Init(&Motor_FOC);
     ADC_Struct_Init(&Motor_ADC);
+    Error_Struct_Init(&Motor_Error);
 
-		DRV8323_CAL_Init();
+	DRV8323_CAL_Init();
     Adc_Init();
     SPI_Init();
     ADC_Vrefint_Init();
@@ -78,7 +79,7 @@ void FOC_Main_Loop(void)
     // 闭环模式：读取实际编码器角度
     #elif FOC_CLOSE_LOOP_MODE == MODE_ON
     MT6816_SPI_Get_AngleData();
-    Motor_FOC.Theta = mt6816_spi.angle / 16384.0 * TWO_PI;
+    Motor_FOC.Theta = mt6816_spi.angle * ( TWO_PI / 16384.0f );
     #endif
 
     FOC_Calc_Electrical_Angle(); 
@@ -119,92 +120,6 @@ void FOC_Main_Loop(void)
     state_led_flag++;
     run_flag++;
 }
-
-// 电角度计算
-void FOC_Calc_Electrical_Angle(void)
-{
-    if (Motor_FOC.Theta > TWO_PI)
-    {
-        Motor_FOC.Theta -= TWO_PI;
-    }
-    else if (Motor_FOC.Theta < 0)
-    {
-        Motor_FOC.Theta += TWO_PI;
-    }
-}
-
-// 帕克变换，将αβ坐标系下的电流转换为dq坐标系下的电流
-void Park_transform(float Ialpha, float Ibeta, float *Id, float *Iq, float Theta)
-{
-    *Id = Ialpha * arm_cos_f32(Theta) + Ibeta * arm_sin_f32(Theta);
-    *Iq = -Ialpha * arm_sin_f32(Theta) + Ibeta * arm_cos_f32(Theta);
-}
-// 克拉克变换，将Ia,Ib,Ic转换为Ialpha和Ibeta
-void Clarke_transform(float Ia, float Ib, float Ic, float *Ialpha, float *Ibeta)
-{
-    *Ialpha = TWO_THIRD * Ia;
-    *Ibeta = SQRT3_DIV3 * (Ib - Ic);
-}
-// 逆帕克变换，将dq坐标系下的电流转换为αβ坐标系下的电流
-void Inv_Park_transform(float Id, float Iq, float *Ialpha, float *Ibeta, float Theta)
-{
-    *Ialpha = Id * arm_cos_f32(Theta) - Iq * arm_sin_f32(Theta);
-    *Ibeta = Id * arm_sin_f32(Theta) + Iq * arm_cos_f32(Theta);
-}
-// 逆克拉克变换，将Ialpha和Ibeta转换为Ia,Ib,Ic
-void Inv_Clarke_transform(float Ialpha, float Ibeta, float *Ia, float *Ib, float *Ic)
-{
-    *Ia = Ialpha;
-    *Ib = -0.5 * Ialpha + SQRT3_DIV2 * Ibeta;
-    *Ic = -0.5 * Ialpha - SQRT3_DIV2 * Ibeta;
-}
-
-void FOC_Struct_Init(FOC_Struct *foc)
-{
-    foc->Ia = 0;
-    foc->Ib = 0;
-    foc->Ic = 0;
-    foc->Ialpha = 0;
-    foc->Ibeta = 0;
-    foc->Id = 0;
-    foc->Iq = 0;
-    foc->Vd = 0;
-    foc->Vq = 0;
-    foc->Valpha = 0;
-    foc->Vbeta = 0;
-    foc->Va = 0;
-    foc->Vb = 0;
-    foc->Vc = 0;
-    foc->Theta = 0;
-}
-
-void ADC_Struct_Init(ADC_Struct *adc)
-{
-    adc->Valtage_Current_A = 0;
-    adc->Valtage_Current_B = 0;
-    adc->Valtage_Current_C = 0;
-    adc->Valtage_VCC = 0;
-    adc->Temperature = 0;
-    adc->Internal_Vref = 0;
-}
-
-void DRV8323_CAL_Init(void)
-{
-		HAL_GPIO_WritePin(DRV8323_PORT,DRV8323_CAL,1);
-		HAL_Delay(1000);
-		HAL_GPIO_WritePin(DRV8323_PORT,DRV8323_CAL,0);
-}
-
-#define SQRT_3		1.732051           //根号3
-#define T		    (PWM_PERIOD * 4)   //TIM1 ARR值的4倍
-#define T_SQRT3     (uint16_t)(T * SQRT_3)
-#define SECTOR_1	(uint8_t)1
-#define SECTOR_2	(uint8_t)2
-#define SECTOR_3	(uint8_t)3
-#define SECTOR_4	(uint8_t)4
-#define SECTOR_5	(uint8_t)5
-#define SECTOR_6	(uint8_t)6
-#define zeta		(uint16_t)540
 
 uint8_t bSector;
 int32_t wX, wY, wZ, wUAlpha, wUBeta;
@@ -288,3 +203,78 @@ void CALC_SVPWM(float Valpha, float Vbeta)
     TIM1->CCR3 = hTimePhC;
 }
 
+
+// 电角度计算
+void FOC_Calc_Electrical_Angle(void)
+{
+    if (Motor_FOC.Theta > TWO_PI)
+    {
+        Motor_FOC.Theta -= TWO_PI;
+    }
+    else if (Motor_FOC.Theta < 0)
+    {
+        Motor_FOC.Theta += TWO_PI;
+    }
+}
+
+// 帕克变换，将αβ坐标系下的电流转换为dq坐标系下的电流
+void Park_transform(float Ialpha, float Ibeta, float *Id, float *Iq, float Theta)
+{
+    *Id = Ialpha * arm_cos_f32(Theta) + Ibeta * arm_sin_f32(Theta);
+    *Iq = -Ialpha * arm_sin_f32(Theta) + Ibeta * arm_cos_f32(Theta);
+}
+// 克拉克变换，将Ia,Ib,Ic转换为Ialpha和Ibeta
+void Clarke_transform(float Ia, float Ib, float Ic, float *Ialpha, float *Ibeta)
+{
+    *Ialpha = TWO_THIRD * Ia;
+    *Ibeta = SQRT3_DIV3 * (Ib - Ic);
+}
+// 逆帕克变换，将dq坐标系下的电流转换为αβ坐标系下的电流
+void Inv_Park_transform(float Id, float Iq, float *Ialpha, float *Ibeta, float Theta)
+{
+    *Ialpha = Id * arm_cos_f32(Theta) - Iq * arm_sin_f32(Theta);
+    *Ibeta = Id * arm_sin_f32(Theta) + Iq * arm_cos_f32(Theta);
+}
+// 逆克拉克变换，将Ialpha和Ibeta转换为Ia,Ib,Ic
+void Inv_Clarke_transform(float Ialpha, float Ibeta, float *Ia, float *Ib, float *Ic)
+{
+    *Ia = Ialpha;
+    *Ib = -0.5 * Ialpha + SQRT3_DIV2 * Ibeta;
+    *Ic = -0.5 * Ialpha - SQRT3_DIV2 * Ibeta;
+}
+
+void FOC_Struct_Init(FOC_Struct *foc)
+{
+    foc->Ia = 0;
+    foc->Ib = 0;
+    foc->Ic = 0;
+    foc->Ialpha = 0;
+    foc->Ibeta = 0;
+    foc->Id = 0;
+    foc->Iq = 0;
+    foc->Vd = 0;
+    foc->Vq = 0;
+    foc->Valpha = 0;
+    foc->Vbeta = 0;
+    foc->Va = 0;
+    foc->Vb = 0;
+    foc->Vc = 0;
+    foc->Theta = 0;
+}
+
+void ADC_Struct_Init(ADC_Struct *adc)
+{
+    adc->Valtage_Current_A = 0;
+    adc->Valtage_Current_B = 0;
+    adc->Valtage_Current_C = 0;
+    adc->Valtage_VCC = 0;
+    adc->Temperature = 0;
+    adc->Internal_Vref = 0;
+}
+
+void DRV8323_CAL_Init(void)
+{
+    HAL_GPIO_WritePin(DRV8323_PORT, DRV8323_CAL, 1);
+    HAL_Delay(1000);
+    HAL_GPIO_WritePin(DRV8323_PORT, DRV8323_CAL, 0);
+}

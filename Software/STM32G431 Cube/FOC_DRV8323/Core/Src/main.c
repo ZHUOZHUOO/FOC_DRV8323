@@ -29,6 +29,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "Foc_Control.h"
+#include "Foc_Error.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -190,10 +191,16 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	}
   else if (htim->Instance == TIM3)
   {
-      run_Hz = run_flag;
-      run_flag = 0;
-      Adc_Hz = Adc_flag;
-      Adc_flag = 0;
+      FOC_Error_Handler();
+      static uint16_t cnt = 0;
+      if(cnt++ >= 1000)
+      {
+          cnt = 0;
+          Adc_Hz = Adc_flag;
+          Adc_flag = 0;
+          run_Hz = run_flag;
+          run_flag = 0;
+      }
   }
     
   /* USER CODE END Callback 0 */

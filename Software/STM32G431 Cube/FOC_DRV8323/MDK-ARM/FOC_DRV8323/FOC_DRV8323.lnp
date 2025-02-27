@@ -33,6 +33,7 @@
 "foc_drv8323\stm32g4xx_hal_tim_ex.o"
 "foc_drv8323\system_stm32g4xx.o"
 "foc_drv8323\foc_control.o"
+"foc_drv8323\foc_error.o"
 "foc_drv8323\adc_util.o"
 "foc_drv8323\pid_util.o"
 "foc_drv8323\spi_util.o"
