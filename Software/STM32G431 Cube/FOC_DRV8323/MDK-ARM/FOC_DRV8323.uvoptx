@@ -181,7 +181,7 @@
         <Ww>
           <count>5</count>
           <WinNumber>1</WinNumber>
-          <ItemText>Adc_Val,0x10</ItemText>
+          <ItemText>Adc_Val,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>6</count>
@@ -192,6 +192,16 @@
           <count>7</count>
           <WinNumber>1</WinNumber>
           <ItemText>Motor_FOC</ItemText>
+        </Ww>
+        <Ww>
+          <count>8</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>Adc_Sum_Val</ItemText>
+        </Ww>
+        <Ww>
+          <count>9</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>Adc_Sum_Temp,0x0A</ItemText>
         </Ww>
       </WatchWindow1>
       <Tracepoint>

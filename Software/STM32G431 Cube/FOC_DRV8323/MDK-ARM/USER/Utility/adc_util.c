@@ -4,7 +4,7 @@ uint16_t Adc_Val[ADC1_CHANNEL_NUM];                   //Adc data array
 float   Adc_Sum_Val[ADC1_CHANNEL_NUM];		            //Adc decode data
 uint16_t Adc_flag;
 
-#if ADC_VREF_MODE == MODE_ON
+#if ADC_FILTER_MODE == MODE_ON
 float Adc_Sum_Temp[ADC1_CHANNEL_NUM][SLIDING_WINDOW_SIZE];
 uint8_t filter_flag = 0;
 #endif
@@ -27,16 +27,18 @@ void Adc_Val_Decode(void)
 #if ADC_FILTER_MODE == MODE_OFF
 	for(int i = 0; i < ADC1_CHANNEL_NUM; i++)
 	{
-		Adc_Sum_Val[i] = (float)Adc_Val[i] * (3.3f / 4095.0f);
+		Adc_Sum_Val[i] = Adc_Val[i] * (3.3f / 4095.0f);
 	}//将ADC1的值转换为电压值
 #elif ADC_FILTER_MODE == MODE_ON
 	for(int i = 0; i < ADC1_CHANNEL_NUM; i++)
 	{
-		Adc_Sum_Temp[i][filter_flag] = (float)Adc_Val[i] * (3.3f / 4095.0f / SLIDING_WINDOW_SIZE);
+		Adc_Sum_Temp[i][filter_flag] = Adc_Val[i] * (3.3f / 4095.0f / (float)SLIDING_WINDOW_SIZE);
+		float sum_temp = 0.0f;
 		for(int j = 0; j < SLIDING_WINDOW_SIZE; j++)
 		{
-			Adc_Sum_Val[i] += Adc_Sum_Temp[i][j];
+			sum_temp += Adc_Sum_Temp[i][j];
 		}
+		Adc_Sum_Val[i] = sum_temp;
 	}
 	filter_flag = (filter_flag + 1) % SLIDING_WINDOW_SIZE;
 #endif

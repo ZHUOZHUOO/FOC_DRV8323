@@ -30,6 +30,7 @@ void Inv_Clarke_transform(float Ialpha, float Ibeta, float *Ia, float *Ib, float
 void CALC_SVPWM(float Valpha, float Vbeta);
 void FOC_Struct_Init(FOC_Struct *foc);
 void ADC_Struct_Init(ADC_Struct *adc);
+void DRV8323_CAL_Init(void);
 
 //------------------------------------------------
 
@@ -38,6 +39,7 @@ void FOC_Main_Init(void)
     FOC_Struct_Init(&Motor_FOC);
     ADC_Struct_Init(&Motor_ADC);
 
+		DRV8323_CAL_Init();
     Adc_Init();
     SPI_Init();
     ADC_Vrefint_Init();
@@ -184,6 +186,13 @@ void ADC_Struct_Init(ADC_Struct *adc)
     adc->Valtage_VCC = 0;
     adc->Temperature = 0;
     adc->Internal_Vref = 0;
+}
+
+void DRV8323_CAL_Init(void)
+{
+		HAL_GPIO_WritePin(DRV8323_PORT,DRV8323_CAL,1);
+		HAL_Delay(1000);
+		HAL_GPIO_WritePin(DRV8323_PORT,DRV8323_CAL,0);
 }
 
 #define SQRT_3		1.732051           //根号3

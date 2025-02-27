@@ -28,6 +28,9 @@
 #define VOLTAGE_MAX 24
 #define CURRENT_MAX 10
 
+#define DRV8323_PORT GPIOA
+#define DRV8323_CAL 4
+
 typedef struct
 {
     float Ia;//A相电流_反馈
