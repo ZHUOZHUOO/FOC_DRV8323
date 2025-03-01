@@ -20,6 +20,19 @@
 
 typedef struct
 {
+    uint8_t SAFETY_STATE_WINDOW;
+    uint8_t OVER_VOLTAGE_STATE_WINDOW;
+    uint8_t UNDER_VOLTAGE_STATE_WINDOW;
+    uint8_t OVER_CURRENT_STATE_WINDOW;
+    uint8_t OVER_SPEED_STATE_WINDOW;
+    uint8_t OVER_TEMPERATURE_STATE_WINDOW;
+    uint8_t OVER_LOAD_STATE_WINDOW;
+    uint8_t DRV8323_Error_State_Window;
+}Error_State_Window;
+
+
+typedef struct
+{
     uint8_t SAFETY_STATE;           //0:Safety expired  1:Normal
     uint8_t OVER_VOLTAGE_STATE;     //0:OverVoltage     1:Normal
     uint8_t UNDER_VOLTAGE_STATE;    //0:UnderVoltage    1:Normal
@@ -28,6 +41,7 @@ typedef struct
     uint8_t OVER_TEMPERATURE_STATE; //0:OverTemperature 1:Normal
     uint8_t OVER_LOAD_STATE;        //0:OverLoad        1:Normal
     uint8_t DRV8323_ERROR_STATE;    //0:DRV8323 Error   1:Normal
+    Error_State_Window STATE_WINDOW;
 } ERROR_Struct;
 
 extern ERROR_Struct Motor_Error;

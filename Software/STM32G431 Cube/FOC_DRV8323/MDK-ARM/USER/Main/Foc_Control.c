@@ -13,13 +13,11 @@
 #define Max_3(a, b, c) Max(Max(a, b), c)
 
 FOC_Struct Motor_FOC;
-ADC_Struct Motor_ADC;
 PID_Struct Current_Id_PID;
 PID_Struct Current_Iq_PID;
 PID_Struct Speed_PID;
 PID_Struct Position_PID;
 
-float Vref_Offset = 1.0f;
 
 //--------------------函数声明--------------------
 void FOC_Calc_Electrical_Angle(void);
@@ -29,7 +27,6 @@ void Inv_Park_transform(float Id, float Iq, float *Ialpha, float *Ibeta, float T
 void Inv_Clarke_transform(float Ialpha, float Ibeta, float *Ia, float *Ib, float *Ic);
 void CALC_SVPWM(float Valpha, float Vbeta);
 void FOC_Struct_Init(FOC_Struct *foc);
-void ADC_Struct_Init(ADC_Struct *adc);
 void DRV8323_CAL_Init(void);
 
 //------------------------------------------------
@@ -41,10 +38,9 @@ void FOC_Main_Init(void)
     Error_Struct_Init(&Motor_Error);
 
     DRV8323_GPIO_Init();
-		DRV8323_CAL_Init();
+	DRV8323_CAL_Init();
     Adc_Init();
     SPI_Init();
-    ADC_Vrefint_Init();
 
     // PID初始化
     PID_Init(&Current_Id_PID, 0.001f, 0.001f, 0.0f, 1);
@@ -265,17 +261,5 @@ void FOC_Struct_Init(FOC_Struct *foc)
     foc->Theta = 0;
 }
 
-void ADC_Struct_Init(ADC_Struct *adc)
-{
-    adc->Valtage_Current_A = 0;
-    adc->Valtage_Current_B = 0;
-    adc->Valtage_Current_C = 0;
-    adc->Valtage_VCC = 0;
-    adc->Temperature = 0;
-    adc->Internal_Vref = 0;
-    adc->A_Offset = (0.005149f+0.1659f);
-    adc->B_Offset = (0.000277f+0.0379f);
-    adc->C_Offset = (0.000584f+0.00418f);
-}
 
 

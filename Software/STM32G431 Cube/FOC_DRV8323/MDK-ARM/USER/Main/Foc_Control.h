@@ -60,24 +60,7 @@ typedef struct
     float PWM_C_DutyCycle;//占空比C相
 } FOC_Struct;
 
-typedef struct 
-{
-    /* data */
-    float Valtage_Current_A;
-    float Valtage_Current_B;
-    float Valtage_Current_C;
-    float Valtage_VCC;
-    float Temperature;
-    float Internal_Vref;
-    float A_Offset;
-    float B_Offset;
-    float C_Offset;
-} ADC_Struct;
-
 extern FOC_Struct Motor_FOC;
-extern ADC_Struct Motor_ADC;
-extern float Vref_Offset;
-
 extern uint32_t run_flag;
 
 void FOC_Struct_Init(FOC_Struct *foc);
