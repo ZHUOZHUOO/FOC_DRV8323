@@ -46,6 +46,7 @@ foc_drv8323\adc_util.o: ../MDK-ARM/USER/Utility/spi_util.h
 foc_drv8323\adc_util.o: ../Core/Inc/spi.h
 foc_drv8323\adc_util.o: ../MDK-ARM/USER/Utility/pid_util.h
 foc_drv8323\adc_util.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
+foc_drv8323\adc_util.o: ../MDK-ARM/USER/Utility/drv8323_util.h
 foc_drv8323\adc_util.o: ../MDK-ARM/USER/configure.h
 foc_drv8323\adc_util.o: .\DSP_Lib\Include\arm_math.h
 foc_drv8323\adc_util.o: .\DSP_Lib\Include\core_cm4.h

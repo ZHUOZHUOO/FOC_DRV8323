@@ -9,6 +9,7 @@
 #include "adc_util.h"
 #include "spi_util.h"
 #include "pid_util.h"
+#include "drv8323_util.h"
 #include "configure.h"
 #include "arm_math.h"
 #include "arm_const_structs.h"
@@ -34,8 +35,6 @@
 #define SECTOR_6	(uint8_t)6
 #define zeta		(uint16_t)540 //SVPWM力矩线性灵敏度
 
-#define DRV8323_PORT GPIOA
-#define DRV8323_CAL 4
 
 typedef struct
 {
@@ -61,7 +60,6 @@ typedef struct
     float PWM_C_DutyCycle;//占空比C相
 } FOC_Struct;
 
-
 typedef struct 
 {
     /* data */
@@ -71,6 +69,9 @@ typedef struct
     float Valtage_VCC;
     float Temperature;
     float Internal_Vref;
+    float A_Offset;
+    float B_Offset;
+    float C_Offset;
 } ADC_Struct;
 
 extern FOC_Struct Motor_FOC;

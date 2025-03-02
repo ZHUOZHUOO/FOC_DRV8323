@@ -69,6 +69,8 @@ void Error_Handler(void);
 #define VCC_ADC_GPIO_Port GPIOA
 #define CAL_Pin GPIO_PIN_4
 #define CAL_GPIO_Port GPIOA
+#define nFault_Pin GPIO_PIN_5
+#define nFault_GPIO_Port GPIOA
 #define LED_CTRL_Pin GPIO_PIN_6
 #define LED_CTRL_GPIO_Port GPIOA
 #define SPI1_CS_Pin GPIO_PIN_15

@@ -1,14 +1,23 @@
 #ifndef __CONFIGURE_H
 #define __CONFIGURE_H
+
+//硬件版本
+#define HARDWARE_VERSION VERSION_1
+
+#define VERSION_1 1 //三相电路错误
+#define VERSION_2 2 //M2固定
+
 //闭环模式
 #define FOC_CLOSE_LOOP_MODE MODE_OFF
 //ADC电压校准模式
-#define ADC_VREF_MODE MODE_ON
+#define ADC_VREF_MODE MODE_OFF
 //滤波模式, Sliding Window Filter
 #define ADC_FILTER_MODE MODE_ON
-#define SLIDING_WINDOW_SIZE 8
-
-
+#define SLIDING_WINDOW_SIZE 32
+//错误处理模式
+#define ERROR_MODE MODE_OFF
+//nFAULT中断处理模式 MODE_ON:中断 MODE_OFF:轮询
+#define N_FAULT_MODE MODE_OFF
 
 #define MODE_ON 1
 #define MODE_OFF 0

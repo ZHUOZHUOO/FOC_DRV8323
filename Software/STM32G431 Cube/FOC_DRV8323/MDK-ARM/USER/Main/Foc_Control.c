@@ -1,7 +1,7 @@
 /*
  * @Date: 2025-02-26 18:25:59
  * @LastEditors: ZHUOZHUOO
- * @LastEditTime: 2025-02-26 20:06:38
+ * @LastEditTime: 2025-03-01 16:57:17
  * @FilePath: \undefinedf:\ZHUOZHUOO--Github\FOC_DRV8323\Software\STM32G431 Cube\FOC_DRV8323\MDK-ARM\USER\Main\Foc_Control.c
  * @Description: Do not edit
  */
@@ -10,7 +10,7 @@
 
 #define Min(a, b) ((a) < (b) ? (a) : (b))
 #define Max(a, b) ((a) > (b) ? (a) : (b))
-#define Max(a, b, c) Max(Max(a, b), c)
+#define Max_3(a, b, c) Max(Max(a, b), c)
 
 FOC_Struct Motor_FOC;
 ADC_Struct Motor_ADC;
@@ -40,7 +40,8 @@ void FOC_Main_Init(void)
     ADC_Struct_Init(&Motor_ADC);
     Error_Struct_Init(&Motor_Error);
 
-	DRV8323_CAL_Init();
+    DRV8323_GPIO_Init();
+		DRV8323_CAL_Init();
     Adc_Init();
     SPI_Init();
     ADC_Vrefint_Init();
@@ -64,6 +65,8 @@ void FOC_Main_Init(void)
     HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_1);
     HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_2);
     HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_3);
+		
+		HAL_TIM_Base_Start_IT(&htim3);
 }
 uint32_t run_flag = 0;
 uint16_t state_led_flag = 0;
@@ -84,9 +87,9 @@ void FOC_Main_Loop(void)
 
     FOC_Calc_Electrical_Angle(); 
 		
-    Motor_FOC.Ia = Motor_ADC.Valtage_Current_A / CURRENT_DETECTION_RES;
-    Motor_FOC.Ib = Motor_ADC.Valtage_Current_B / CURRENT_DETECTION_RES;
-    Motor_FOC.Ic = Motor_ADC.Valtage_Current_C / CURRENT_DETECTION_RES;
+    Motor_FOC.Ia = Max(Motor_ADC.Valtage_Current_A / CURRENT_DETECTION_RES, 0);
+    Motor_FOC.Ib = Max(Motor_ADC.Valtage_Current_B / CURRENT_DETECTION_RES, 0);
+    Motor_FOC.Ic = Max(Motor_ADC.Valtage_Current_C / CURRENT_DETECTION_RES, 0);
 
     // 克拉克变换
     Clarke_transform(Motor_FOC.Ia, Motor_FOC.Ib, Motor_FOC.Ic, &Motor_FOC.Ialpha, &Motor_FOC.Ibeta);
@@ -114,8 +117,8 @@ void FOC_Main_Loop(void)
     if (state_led_flag == 10000)
     {
         state_led_flag = 0;
-        HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_5);
-	    //HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_6);
+        HAL_GPIO_TogglePin(DRV8323_PORT, LED_Pin);
+	    //HAL_GPIO_TogglePin(DRV8323_PORT, LED_Pin);
     }
     state_led_flag++;
     run_flag++;
@@ -270,11 +273,9 @@ void ADC_Struct_Init(ADC_Struct *adc)
     adc->Valtage_VCC = 0;
     adc->Temperature = 0;
     adc->Internal_Vref = 0;
+    adc->A_Offset = (0.005149f+0.1659f);
+    adc->B_Offset = (0.000277f+0.0379f);
+    adc->C_Offset = (0.000584f+0.00418f);
 }
 
-void DRV8323_CAL_Init(void)
-{
-    HAL_GPIO_WritePin(DRV8323_PORT, DRV8323_CAL, 1);
-    HAL_Delay(1000);
-    HAL_GPIO_WritePin(DRV8323_PORT, DRV8323_CAL, 0);
-}
+

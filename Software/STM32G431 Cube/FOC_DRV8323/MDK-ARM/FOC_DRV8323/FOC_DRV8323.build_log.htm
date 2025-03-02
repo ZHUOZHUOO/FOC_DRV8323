@@ -5,7 +5,7 @@
 <h2>Tool Versions:</h2>
 IDE-Version: ��Vision V5.23.0.0
 Copyright (C) 2017 ARM Ltd and ARM Germany GmbH. All rights reserved.
-License Information: 11 lzq6200066@163.com, 111, LIC=KRMW3-AHNYE-X7JRZ-J3JU3-F58IE-J8THF
+License Information: user user, user, LIC=RC93N-YVX4K-SBJEJ-UIIS7-Y6SJT-WKQ31
  
 Tool Versions:
 Toolchain:       MDK-ARM Plus  Version: 5.23
@@ -21,95 +21,40 @@ Target DLL:      Segger\JL2CM3.dll V2.99.23.0
 Dialog DLL:      TCM.DLL V1.27.0.0
  
 <h2>Project:</h2>
-H:\ZHUOZHUOO--Github\FOC_DRV8323\Software\STM32G431 Cube\FOC_DRV8323\MDK-ARM\FOC_DRV8323.uvprojx
-Project File Date:  02/27/2025
+F:\ZHUOZHUOO--Github\FOC_DRV8323\Software\STM32G431 Cube\FOC_DRV8323\MDK-ARM\FOC_DRV8323.uvprojx
+Project File Date:  03/02/2025
 
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 4 (build 422)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
 Build target 'FOC_DRV8323'
-compiling adc_util.c...
-../MDK-ARM/USER/Main/Foc_Control.h(18): warning:  #47-D: incompatible redefinition of macro "PI"  (declared at line 334 of ".\DSP_Lib\Include\arm_math.h")
-  #define PI 3.1415926535898
-USER\Utility\adc_util.c: 1 warning, 0 errors
-compiling main.c...
-../MDK-ARM/USER/Main/Foc_Control.h(18): warning:  #47-D: incompatible redefinition of macro "PI"  (declared at line 334 of ".\DSP_Lib\Include\arm_math.h")
-  #define PI 3.1415926535898
-../Core/Src/main.c(63): warning:  #550-D: variable "run_Hz"  was set but never used
-    static uint32_t run_Hz = 0;
-../Core/Src/main.c(64): warning:  #550-D: variable "Adc_Hz"  was set but never used
-  	static uint16_t Adc_Hz = 0;
-../Core/Src/main.c: 3 warnings, 0 errors
-compiling Foc_Error.c...
-USER\Main\Foc_Control.h(18): warning:  #47-D: incompatible redefinition of macro "PI"  (declared at line 334 of ".\DSP_Lib\Include\arm_math.h")
-  #define PI 3.1415926535898
-USER\Main\Foc_Error.c(30): warning:  #1-D: last line of file ends without a newline
-  }
-USER\Main\Foc_Error.c: 2 warnings, 0 errors
 compiling Foc_Control.c...
-USER\Main\Foc_Control.h(18): warning:  #47-D: incompatible redefinition of macro "PI"  (declared at line 334 of ".\DSP_Lib\Include\arm_math.h")
-  #define PI 3.1415926535898
-USER\Main\Foc_Control.c(13): warning:  #47-D: incompatible redefinition of macro "Max"  (declared at line 12)
-  #define Max(a, b, c) Max(Max(a, b), c)
-USER\Main\Foc_Control.c(76): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-      Motor_FOC.Theta = 
-I * t;                 // 生成 sin(πt) 信号             
-USER\Main\Foc_Control.c(77): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+USER\Main\Foc_Control.h(19): warning:  #47-D: incompatible redefinition of macro "PI"  (declared at line 334 of ".\DSP_Lib\Include\arm_math.h")
+  #define PI              (float)3.1415926535898
+USER\Main\Foc_Control.c(80): warning:  #1035-D: single-precision operand implicitly converted to double-precision
       t += 0.0001;                                    // 时间步进（假设循环周期为1ms�?
-USER\Main\Foc_Control.c(222): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-      if (Motor_FOC.Theta > 
-WO_PI)
-USER\Main\Foc_Control.c(224): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-          Motor_FOC.Theta -= 
-WO_PI;
-USER\Main\Foc_Control.c(228): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-          Motor_FOC.Theta += 
-WO_PI;
-USER\Main\Foc_Control.c(241): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-      *Ialpha = 
-WO_THIRD * Ia;
-USER\Main\Foc_Control.c(242): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-      *Ibeta = 
-QRT3_DIV3 * (Ib - Ic);
-USER\Main\Foc_Control.c(254): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-      *Ib = -0.5 * Ialpha + 
-QRT3_DIV2 * Ibeta;
-USER\Main\Foc_Control.c(255): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-      *Ic = -0.5 * Ialpha - 
-QRT3_DIV2 * Ibeta;
-USER\Main\Foc_Control.c(289): warning:  #188-D: enumerated type mixed with another type
-      HAL_GPIO_WritePin(
-RV8323_PORT, 
-RV8323_CAL, 1);
-USER\Main\Foc_Control.c(291): warning:  #188-D: enumerated type mixed with another type
-      HAL_GPIO_WritePin(
-RV8323_PORT, 
-RV8323_CAL, 0);
-USER\Main\Foc_Control.c: 13 warnings, 0 errors
+USER\Main\Foc_Control.c: 2 warnings, 0 errors
 linking...
-FOC_DRV8323\FOC_DRV8323.axf: Error: L6200E: Symbol Error_Handler multiply defined (by foc_error.o and main.o).
-Not enough information to list image symbols.
-Not enough information to list the image map.
-Finished: 2 information, 0 warning and 1 error messages.
-"FOC_DRV8323\FOC_DRV8323.axf" - 1 Error(s), 19 Warning(s).
+Program Size: Code=18120 RO-data=2580 RW-data=76 ZI-data=2804  
+FromELF: creating hex file...
+"FOC_DRV8323\FOC_DRV8323.axf" - 0 Error(s), 2 Warning(s).
 
 <h2>Software Packages used:</h2>
 
 Package Vendor: ARM
-                http://www.keil.com/pack/ARM.CMSIS.5.0.1.pack
-                ARM::CMSIS:CORE:5.0.1
+                http://www.keil.com/pack/ARM.CMSIS.5.6.0.pack
+                ARM::CMSIS:CORE:5.3.0
                 CMSIS (Cortex Microcontroller Software Interface Standard)
-   * Component: CORE Version: 5.0.1
+   * Component: CORE Version: 5.3.0
 
 <h2>Collection of Component include folders:</h2>
   .\RTE\_FOC_DRV8323
-  C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include
-  C:\Keil_v5\ARM\PACK\Keil\STM32G4xx_DFP\1.4.0\Drivers\CMSIS\Device\ST\STM32G4xx\Include
+  C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.6.0\CMSIS\Core\Include
+  C:\Keil_v5\ARM\PACK\Keil\STM32G4xx_DFP\1.5.0\Drivers\CMSIS\Device\ST\STM32G4xx\Include
 
 <h2>Collection of Component Files used:</h2>
 
-   * Component: ARM::CMSIS:CORE:5.0.1
-Target not created.
-Build Time Elapsed:  00:00:07
+   * Component: ARM::CMSIS:CORE:5.3.0
+Build Time Elapsed:  00:00:02
 </pre>
 </body>
 </html>

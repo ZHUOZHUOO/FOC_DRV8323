@@ -100,7 +100,7 @@ int main(void)
   MX_TIM3_Init();
   /* USER CODE BEGIN 2 */
     FOC_Main_Init();
-		HAL_TIM_Base_Start_IT(&htim3);
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -191,7 +191,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	}
   else if (htim->Instance == TIM3)
   {
-      FOC_Error_Handler();
+      Error_Main_Loop();
       static uint16_t cnt = 0;
       if(cnt++ >= 1000)
       {

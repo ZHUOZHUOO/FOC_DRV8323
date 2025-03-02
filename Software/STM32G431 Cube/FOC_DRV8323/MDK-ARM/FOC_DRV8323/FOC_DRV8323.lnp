@@ -37,6 +37,7 @@
 "foc_drv8323\adc_util.o"
 "foc_drv8323\pid_util.o"
 "foc_drv8323\spi_util.o"
+"foc_drv8323\drv8323_util.o"
 ".\DSP_Lib\arm_cortexM4lf_math.lib"
 --library_type=microlib --strict --scatter "FOC_DRV8323\FOC_DRV8323.sct"
 --summary_stderr --info summarysizes --map --xref --callgraph --symbols
