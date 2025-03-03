@@ -90,7 +90,7 @@ void ADC_Vrefint_Init(void)
 
 	float VREFINT_CAL_DATA = 0;
 	float VREFINT_CAL_VAL  = 0;
-	float Motor_ADC.Vref_Offset_Sum  = 0.0f;
+	float Vref_Offset_Sum  = 0.0f;
 
 	VREFINT_CAL_DATA = (float)*VREFINT_CAL;
 	VREFINT_CAL_VAL = (VREFINT_CAL_DATA / 4095.0f * 3.0f);
@@ -102,10 +102,10 @@ void ADC_Vrefint_Init(void)
 	for(int flag = 0; flag < 1200; flag++)
 	{
 			Get_ADC_Value();
-			Motor_ADC.Vref_Offset_Sum += VREFINT_CAL_VAL / Motor_ADC.Internal_Vref;
+			Vref_Offset_Sum += VREFINT_CAL_VAL / Motor_ADC.Internal_Vref;
 			HAL_Delay(1);
 	}
-	Motor_ADC.Vref_Offset = Motor_ADC.Vref_Offset_Sum / 1200.0f;
+	Motor_ADC.Vref_Offset = Vref_Offset_Sum / 1200.0f;
 	HAL_Delay(20);
 	#endif
 }

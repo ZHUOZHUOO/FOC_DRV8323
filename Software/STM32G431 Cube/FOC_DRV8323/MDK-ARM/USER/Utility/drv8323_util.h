@@ -24,6 +24,8 @@
 	#define LED_Pin GPIO_PIN_6
 #endif
 
+#define DRV8323_GAIN 40
+
 void DRV8323_GPIO_Init(void);						//初始化GPIO
 void DRV8323_CAL_Init(void);						//放大器初始化, 保持高电平
 

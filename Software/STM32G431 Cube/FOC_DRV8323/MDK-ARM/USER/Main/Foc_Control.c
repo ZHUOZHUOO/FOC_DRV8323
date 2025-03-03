@@ -73,7 +73,7 @@ void FOC_Main_Loop(void)
     #if FOC_CLOSE_LOOP_MODE == MODE_OFF
     static float t = 0.0;                         // 时间变量
     Motor_FOC.Theta = PI * t;                 // 生成 sin(πt) 信号             
-    t += 0.0001;                                    // 时间步进（假设循环周期为1ms）
+    t += 0.00002;                                    // 时间步进（假设循环周期为1ms）
     if (t >= 2.0f) t -= 2.0f;                       // 周期2秒
     // 闭环模式：读取实际编码器角度
     #elif FOC_CLOSE_LOOP_MODE == MODE_ON
@@ -83,9 +83,9 @@ void FOC_Main_Loop(void)
 
     FOC_Calc_Electrical_Angle(); 
 		
-    Motor_FOC.Ia = Max(Motor_ADC.Valtage_Current_A / CURRENT_DETECTION_RES, 0);
-    Motor_FOC.Ib = Max(Motor_ADC.Valtage_Current_B / CURRENT_DETECTION_RES, 0);
-    Motor_FOC.Ic = Max(Motor_ADC.Valtage_Current_C / CURRENT_DETECTION_RES, 0);
+    Motor_FOC.Ia = Max(Motor_ADC.Valtage_Current_A / ( DRV8323_GAIN * CURRENT_DETECTION_RES ), 0);
+    Motor_FOC.Ib = Max(Motor_ADC.Valtage_Current_B / ( DRV8323_GAIN * CURRENT_DETECTION_RES ), 0);
+    Motor_FOC.Ic = Max(Motor_ADC.Valtage_Current_C / ( DRV8323_GAIN * CURRENT_DETECTION_RES ), 0);
 
     // 克拉克变换
     Clarke_transform(Motor_FOC.Ia, Motor_FOC.Ib, Motor_FOC.Ic, &Motor_FOC.Ialpha, &Motor_FOC.Ibeta);
