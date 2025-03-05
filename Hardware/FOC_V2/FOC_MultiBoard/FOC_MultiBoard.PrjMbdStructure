@@ -1,0 +1,4 @@
+Record=DiagramHierarchy|SourceDocument=FOC_MultiBoardSchematic.MbsDoc|Kind=Multi-board Schematic Module|Designator=1|Source=..\FOC_DRV8323_PCB_V2\FOC_DRV8323.PrjPcb
+Record=SubProject|SourceDocument=FOC_MultiBoardSchematic.MbsDoc|ProjectPath=..\FOC_DRV8323_PCB_V2\FOC_DRV8323.PrjPcb
+Record=DiagramHierarchy|SourceDocument=FOC_MultiBoardSchematic.MbsDoc|Kind=Multi-board Schematic Module|Designator=2|Source=..\FOC_STM32G431\FOC_STM32G431.PrjPcb
+Record=SubProject|SourceDocument=FOC_MultiBoardSchematic.MbsDoc|ProjectPath=..\FOC_STM32G431\FOC_STM32G431.PrjPcb
