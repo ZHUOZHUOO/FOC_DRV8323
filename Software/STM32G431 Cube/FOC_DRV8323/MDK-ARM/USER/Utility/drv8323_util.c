@@ -7,19 +7,52 @@
  */
 #include "drv8323_util.h"
 
+
+void DRV8323_CAL_Init(void)
+{
+    HAL_GPIO_WritePin(DRV8323_CAL_PORT, DRV8323_CAL, 1);
+    HAL_Delay(1000);
+    HAL_GPIO_WritePin(DRV8323_CAL_PORT, DRV8323_CAL, 0);
+}
+
 void DRV8323_GPIO_Init(void)
 {
     GPIO_InitTypeDef GPIO_InitStruct = {0};
-    HAL_GPIO_DeInit(DRV8323_PORT, DRV8323_CAL|DRV8323_nFault|LED_Pin);
-    /*Configure GPIO pin Output Level */
-    HAL_GPIO_WritePin(DRV8323_PORT, DRV8323_CAL|DRV8323_nFault|LED_Pin, GPIO_PIN_RESET);
+    HAL_GPIO_DeInit(DRV8323_CAL_PORT, DRV8323_CAL);
+    HAL_GPIO_DeInit(DRV8323_nFault_PORT, DRV8323_nFault);
+    HAL_GPIO_DeInit(LED_PORT, LED_Pin);
 
-    /*Configure GPIO pins : DRV8323_CAL|LED_Pin*/
-    GPIO_InitStruct.Pin = DRV8323_CAL|LED_Pin;
+    HAL_GPIO_WritePin(DRV8323_CAL_PORT, DRV8323_CAL, GPIO_PIN_RESET);
+    HAL_GPIO_WritePin(DRV8323_nFault_PORT, DRV8323_nFault, GPIO_PIN_RESET);
+    HAL_GPIO_WritePin(LED_PORT, LED_Pin, GPIO_PIN_RESET);
+
+#ifdef DRV8323_ENABLE
+    HAL_GPIO_DeInit(DRV8323_ENABLE_PORT, DRV8323_ENABLE);
+    HAL_GPIO_WritePin(DRV8323_ENABLE_PORT, DRV8323_ENABLE, GPIO_PIN_SET);
+#endif
+
+    /*Configure GPIO pins : DRV8323_CAL*/
+    GPIO_InitStruct.Pin = DRV8323_CAL;
     GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-    HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+    HAL_GPIO_Init(DRV8323_CAL_PORT, &GPIO_InitStruct);
+
+    /*Configure GPIO pins : LED_Pin */
+    GPIO_InitStruct.Pin = LED_Pin;
+    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+    GPIO_InitStruct.Pull = GPIO_NOPULL;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+    HAL_GPIO_Init(LED_PORT, &GPIO_InitStruct);
+
+    /*Configure GPIO pins : DRV8323_ENABLE */
+#ifdef DRV8323_ENABLE
+    GPIO_InitStruct.Pin = DRV8323_ENABLE;
+    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+    GPIO_InitStruct.Pull = GPIO_NOPULL;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+    HAL_GPIO_Init(DRV8323_ENABLE_PORT, &GPIO_InitStruct);
+#endif
 
     /*Configure GPIO pins : DRV8323_nFault */     
 #if N_FAULT_MODE == MODE_ON                                                                                                                                                                                        
@@ -37,12 +70,3 @@ void DRV8323_GPIO_Init(void)
     HAL_Delay(1);
 #endif
 }
-
-void DRV8323_CAL_Init(void)
-{
-    HAL_GPIO_WritePin(DRV8323_PORT, DRV8323_CAL, 1);
-    HAL_Delay(1000);
-    HAL_GPIO_WritePin(DRV8323_PORT, DRV8323_CAL, 0);
-}
-
-

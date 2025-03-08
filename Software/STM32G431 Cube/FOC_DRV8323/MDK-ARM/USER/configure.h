@@ -2,10 +2,11 @@
 #define __CONFIGURE_H
 
 //硬件版本
-#define HARDWARE_VERSION VERSION_2
+#define HARDWARE_VERSION VERSION_3
 
 #define VERSION_1 1 //三相电路错误
 #define VERSION_2 2 //M2固定
+#define VERSION_3 3 //M3固定,双板设计,选取Qgd较小的MOS管
 
 //闭环模式
 #define FOC_CLOSE_LOOP_MODE MODE_OFF
