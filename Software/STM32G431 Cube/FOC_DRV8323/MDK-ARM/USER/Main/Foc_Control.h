@@ -16,7 +16,7 @@
 #include "Foc_Error.h"
 
 
-#define PI              (float)3.1415926535898
+#define MY_PI           (float)3.1415926535898
 #define TWO_PI          (float)6.2831853071796
 #define SQRT3           (float)1.7320508075689
 #define SQRT3_DIV2      (float)0.8660254037844
@@ -33,7 +33,7 @@
 #define SECTOR_4	(uint8_t)4
 #define SECTOR_5	(uint8_t)5
 #define SECTOR_6	(uint8_t)6
-#define zeta		(uint16_t)500 //SVPWM力矩线性灵敏度 540
+#define zeta		(uint16_t)400 //SVPWM力矩线性灵敏度 400
 
 
 typedef struct
@@ -50,9 +50,9 @@ typedef struct
     float Vq;//Q轴电压_期望
     float Valpha;
     float Vbeta;
-    float Va;//A相电压_期望
-    float Vb;//B相电压_期望
-    float Vc;//C相电压_期望
+    uint16_t hTimePhA;
+    uint16_t hTimePhB;
+    uint16_t hTimePhC;
     float Theta;//电角度_反馈
     float Speed;//速度
     float PWM_A_DutyCycle;//占空比A相
@@ -60,12 +60,22 @@ typedef struct
     float PWM_C_DutyCycle;//占空比C相
 } FOC_Struct;
 
+typedef struct 
+{
+    uint32_t run_flag;
+    uint32_t run_Hz;
+    uint16_t state_led_flag;
+    uint16_t Adc_flag;
+	uint16_t Adc_Hz;
+}FOC_Running_Struct;
+
+
 extern FOC_Struct Motor_FOC;
-extern uint32_t run_flag;
+extern FOC_Running_Struct Motor_Run;
 
 void FOC_Struct_Init(FOC_Struct *foc);
 void FOC_Main_Init(void);
-void FOC_Main_Loop(void);
+void FOC_Main_Loop_H_Freq(void);
 
 
 #endif

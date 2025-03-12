@@ -60,8 +60,7 @@ void SystemClock_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-  static uint32_t run_Hz = 0;
-	static uint16_t Adc_Hz = 0;
+
 /* USER CODE END 0 */
 
 /**
@@ -187,21 +186,24 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	{
       //ADC采样
       Get_ADC_Value();
-      FOC_Main_Loop();
+      FOC_Main_Loop_H_Freq();
 	}
   else if (htim->Instance == TIM3)
   {
+      //速度环控制
+
+      //错误处理
       Error_Main_Loop();
       static uint16_t cnt = 0;
-      if(cnt++ >= 1000)
+      if(cnt++ >= 100)
       {
           cnt = 0;
-          Adc_Hz = Adc_flag;
-          Adc_flag = 0;
-          run_Hz = run_flag;
-          run_flag = 0;
+          Motor_Run.Adc_Hz = Motor_Run.Adc_flag;
+          Motor_Run.Adc_flag = 0;
+          Motor_Run.run_Hz = Motor_Run.run_flag;
+          Motor_Run.run_flag = 0;
       }
-  }
+  }//100Hz
     
   /* USER CODE END Callback 0 */
   if (htim->Instance == TIM2) {

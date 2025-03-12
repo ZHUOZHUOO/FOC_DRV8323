@@ -15,37 +15,24 @@
 #define VERSION_2 2 //M2固定
 #define VERSION_3 3 //M3固定,双板设计,选取Qgd较小的MOS管
 
-#define TEST_MODE MODE_OFF
-#if TEST_MODE == MODE_OFF
-    //闭环模式
-    #define FOC_CLOSE_LOOP_MODE MODE_OFF
-		//PWM
-    //SVPWM模式，可变占空比模式
-    #define SVPWM_MODE MODE_ON
-    //ADC电压校准模式
-    #define ADC_VREF_MODE MODE_OFF
-    //滤波模式, Sliding Window Filter
-    #define ADC_FILTER_MODE MODE_ON
-    #define SLIDING_WINDOW_SIZE 8
-    //错误处理模式
-    #define ERROR_MODE MODE_ON
-    //nFAULT中断处理模式 MODE_ON:中断 MODE_OFF:轮询
-    #define N_FAULT_MODE MODE_OFF
-		
-#elif//测试模式,必须开启错误处理
-    #define FOC_CLOSE_LOOP_MODE MODE_OFF
-    #define SVPWM_MODE MODE_OFF
-    #define ADC_VREF_MODE MODE_ON
-    #define ADC_FILTER_MODE MODE_ON
-    #define SLIDING_WINDOW_SIZE 8
-    #define ERROR_MODE MODE_ON
-    #define N_FAULT_MODE MODE_OFF
-#endif
+//闭环模式
+#define FOC_CLOSE_LOOP_MODE MODE_OFF
+//PWM
+//SVPWM模式，可变占空比模式
+#define SVPWM_MODE MODE_ON
+//ADC电压校准模式
+#define ADC_VREF_MODE MODE_OFF
+//滤波模式, Sliding Window Filter
+#define ADC_FILTER_MODE MODE_ON
+#define SLIDING_WINDOW_SIZE 8
+//错误处理模式
+#define ERROR_MODE MODE_ON
+//nFAULT中断处理模式 MODE_ON:中断 MODE_OFF:轮询
+#define N_FAULT_MODE MODE_OFF
 
 #define MODE_ON 1
 #define MODE_OFF 0
 
-#define CURRENT_DETECTION_RES 0.002f//检流电阻
 #define MOTOR_POLE_PAIRS 14 //电机极对数
 #define MOTOR_RESISTANCE 16.5 //电机电阻
 #define MOTOR_VOLTAGE 24 //电机电压
@@ -62,6 +49,8 @@
 #define REP_RATE 1 //电流环刷新频率为(REP_RATE+1)/(2*PWM_FREQ)=40us, f=25kHz
 #define DEADTIME_NS 1000//死区时间ns
 #define DEADTIME CKTIM/1000000/2*DEADTIME_NS/1000  //死区时间计数值 85us
+
+#define SPEED_STEP (float)(MOTOR_POLE_PAIRS / (float)PWM_PERIOD) //速度步进
 
 #define ALIGNMENT_ANGLE 300
 #define COUNTER_RESET (ALIGNMENT_ANGLE*4*ENCODER_PPR/360-1)/POLE_PAIR_NUM

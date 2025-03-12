@@ -13,6 +13,7 @@
 #define Max_3(a, b, c) Max(Max(a, b), c)
 
 FOC_Struct Motor_FOC;
+FOC_Running_Struct Motor_Run = {0, 0, 0, 0, 0};
 PID_Struct Current_Id_PID;
 PID_Struct Current_Iq_PID;
 PID_Struct Speed_PID;
@@ -35,7 +36,7 @@ void FOC_Main_Init(void)
     Error_Struct_Init(&Motor_Error);
 
     DRV8323_GPIO_Init();
-		DRV8323_Init();
+	DRV8323_Init();
     Adc_Init();
     SPI_Init();
 
@@ -59,31 +60,32 @@ void FOC_Main_Init(void)
     HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_2);
     HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_3);
 		
-		HAL_TIM_Base_Start_IT(&htim3);
+	HAL_TIM_Base_Start_IT(&htim3);
 }
-uint32_t run_flag = 0;
-uint16_t state_led_flag = 0;
-float step = 0.004;
+uint16_t speed_rpm_expect = 1;
+uint16_t speed_rpm = 0;
+
 float x = 0, y = 1;
-void FOC_Main_Loop(void)
+void FOC_Main_Loop_H_Freq(void)
 {
     // 开环模式：生成模拟电角度信号
     #if FOC_CLOSE_LOOP_MODE == MODE_OFF
-    static float t = 0.0;                         // 时间变量
-    Motor_FOC.Theta = PI * t;                 // 生成 sin(πt) 信号             
-    t += step;                                    // 时间步进（假设循环周期为1ms）
-    if (t >= 2.0f) t -= 2.0f;                       // 周期2秒
+    static float t = 0.0;                           // 时间变量
+    Motor_FOC.Theta = TWO_PI * t;                   // 生成 sin(πt) 信号             
+    t += speed_rpm * SPEED_STEP;                    // 时间步进
+    if (t >= 1.0f) t -= 1.0f;                       // 周期1秒
     // 闭环模式：读取实际编码器角度
     #elif FOC_CLOSE_LOOP_MODE == MODE_ON
     MT6816_SPI_Get_AngleData();
     Motor_FOC.Theta = mt6816_spi.angle * ( TWO_PI / 16384.0f );
     #endif
 
+
     FOC_Calc_Electrical_Angle(); 
 		
-    Motor_FOC.Ia = DRV8323_VREF_DIV_TWO - Motor_ADC.Valtage_Current_A / ( DRV8323_GAIN * CURRENT_DETECTION_RES );
-    Motor_FOC.Ib = DRV8323_VREF_DIV_TWO - Motor_ADC.Valtage_Current_B / ( DRV8323_GAIN * CURRENT_DETECTION_RES );
-    Motor_FOC.Ic = DRV8323_VREF_DIV_TWO - Motor_ADC.Valtage_Current_C / ( DRV8323_GAIN * CURRENT_DETECTION_RES );
+    Motor_FOC.Ia = (Motor_ADC.Valtage_Current_A - DRV8323_VREF_DIV_TWO) / DRV8323_ADC_GAIN;
+    Motor_FOC.Ib = (Motor_ADC.Valtage_Current_B - DRV8323_VREF_DIV_TWO) / DRV8323_ADC_GAIN;
+    Motor_FOC.Ic = (Motor_ADC.Valtage_Current_C - DRV8323_VREF_DIV_TWO) / DRV8323_ADC_GAIN;
 
     // 克拉克变换
     Clarke_transform(Motor_FOC.Ia, Motor_FOC.Ib, Motor_FOC.Ic, &Motor_FOC.Ialpha, &Motor_FOC.Ibeta);
@@ -102,32 +104,33 @@ void FOC_Main_Loop(void)
     Motor_FOC.Vq = Current_Iq_PID.Output;
     #endif
 	
+
     // 逆帕克变换
     Inv_Park_transform(Motor_FOC.Vd, Motor_FOC.Vq, &Motor_FOC.Valpha, &Motor_FOC.Vbeta, Motor_FOC.Theta);
-    
     // SVPWM计算
     CALC_SVPWM(Motor_FOC.Valpha, Motor_FOC.Vbeta);
 
-    if (state_led_flag == 10000)
+    if (Motor_Run.state_led_flag == 10000)
     {
-        state_led_flag = 0;
+        Motor_Run.state_led_flag = 0;
         HAL_GPIO_TogglePin(LED_PORT, LED_Pin);
 	    //HAL_GPIO_TogglePin(LED_PORT, LED_Pin);
     }
-    state_led_flag++;
-    run_flag++;
+    Motor_Run.state_led_flag++;
+    Motor_Run.run_flag++;
 }
 
-uint8_t bSector;
-int32_t wX, wY, wZ, wUAlpha, wUBeta;
-uint16_t  hTimePhA=0, hTimePhB=0, hTimePhC=0;		
-
+void FOC_Main_Loop_L_Freq(void)
+{
+    // 速度环PID计算
+    PID_Calc(&Speed_PID, speed_rpm_expect, speed_rpm);
+}
 
 void CALC_SVPWM(float Valpha, float Vbeta)
 {
-//    uint8_t bSector;
-//    int32_t wX, wY, wZ, wUAlpha, wUBeta;
-//    uint16_t  hTimePhA=0, hTimePhB=0, hTimePhC=0;		
+    uint8_t bSector;
+    int32_t wX, wY, wZ, wUAlpha, wUBeta;
+    uint16_t hTimePhA,hTimePhB,hTimePhC = 0;
  
     wUAlpha = Valpha * T_SQRT3;
     wUBeta = -(Vbeta * T);
@@ -204,6 +207,10 @@ void CALC_SVPWM(float Valpha, float Vbeta)
     TIM1->CCR2 = PWM_PERIOD * 0.5;
     TIM1->CCR3 = PWM_PERIOD * 0.5;
 #endif
+
+    Motor_FOC.hTimePhA = hTimePhA;
+    Motor_FOC.hTimePhB = hTimePhB;
+    Motor_FOC.hTimePhC = hTimePhC;
 }
 
 
@@ -253,9 +260,10 @@ void FOC_Struct_Init(FOC_Struct *foc)
     foc->Vq = 0;
     foc->Valpha = 0;
     foc->Vbeta = 0;
-    foc->Va = 0;
-    foc->Vb = 0;
-    foc->Vc = 0;
+    foc->hTimePhA = 0;
+    foc->hTimePhB = 0;
+    foc->hTimePhC = 0;
+    foc->Speed = 0;
     foc->Theta = 0;
 }
 

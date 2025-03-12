@@ -34,10 +34,8 @@ typedef struct
 } ADC_Struct;
 
 extern ADC_Struct Motor_ADC;
-extern float Vref_Offset;
 
 extern uint16_t Adc_Val[ADC1_CHANNEL_NUM];                   //Adc data array    
-extern uint16_t Adc_flag;
 
 void Adc_Init(void);
 void ADC_Vrefint_Init(void);

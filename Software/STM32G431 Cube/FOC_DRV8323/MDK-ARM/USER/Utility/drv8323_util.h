@@ -37,9 +37,12 @@
 	#define LED_Pin GPIO_PIN_6
 #endif
 
-#define DRV8323_GAIN 40
-#define DRV8323_VREF 3.32
-#define DRV8323_VREF_DIV_TWO 1.66 
+#define DRV8323_GAIN 20 //放大器增益
+#define CURRENT_DETECTION_RES 0.004f//检流电阻
+#define DRV8323_ADC_GAIN DRV8323_GAIN * CURRENT_DETECTION_RES
+#define DRV8323_VREF 3.32f
+#define DRV8323_VREF_DIV_TWO 1.66f
+
 
 void DRV8323_GPIO_Init(void);						//初始化GPIO
 void DRV8323_Init(void);						//放大器初始化, 保持高电平
