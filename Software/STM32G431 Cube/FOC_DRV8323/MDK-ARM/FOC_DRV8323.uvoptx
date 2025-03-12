@@ -133,7 +133,7 @@
         <SetRegEntry>
           <Number>0</Number>
           <Key>DLGUARM</Key>
-          <Name>?d</Name>
+          <Name>p鞿</Name>
         </SetRegEntry>
         <SetRegEntry>
           <Number>0</Number>
@@ -156,62 +156,27 @@
         <Ww>
           <count>0</count>
           <WinNumber>1</WinNumber>
-          <ItemText>((TIM_TypeDef *) (((0x40000000UL) + 0x00010000UL) + 0x2C00UL))</ItemText>
+          <ItemText>((TIM_TypeDef *) ((0x40000000UL) + 0x0000UL))</ItemText>
         </Ww>
         <Ww>
           <count>1</count>
           <WinNumber>1</WinNumber>
-          <ItemText>((TIM_TypeDef *) ((0x40000000UL) + 0x0000UL))</ItemText>
+          <ItemText>Motor_ADC,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>2</count>
           <WinNumber>1</WinNumber>
-          <ItemText>state_led_flag,0x0A</ItemText>
+          <ItemText>Motor_FOC</ItemText>
         </Ww>
         <Ww>
           <count>3</count>
           <WinNumber>1</WinNumber>
-          <ItemText>run_Hz,0x0A</ItemText>
+          <ItemText>Motor_Error</ItemText>
         </Ww>
         <Ww>
           <count>4</count>
           <WinNumber>1</WinNumber>
-          <ItemText>Motor_ADC,0x0A</ItemText>
-        </Ww>
-        <Ww>
-          <count>5</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>Adc_Val,0x0A</ItemText>
-        </Ww>
-        <Ww>
-          <count>6</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>Adc_Hz,0x0A</ItemText>
-        </Ww>
-        <Ww>
-          <count>7</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>Motor_FOC</ItemText>
-        </Ww>
-        <Ww>
-          <count>8</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>Adc_Sum_Val</ItemText>
-        </Ww>
-        <Ww>
-          <count>9</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>Adc_Sum_Temp,0x0A</ItemText>
-        </Ww>
-        <Ww>
-          <count>10</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>Motor_Error</ItemText>
-        </Ww>
-        <Ww>
-          <count>11</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>step</ItemText>
+          <ItemText>Motor_Run,0x0A</ItemText>
         </Ww>
       </WatchWindow1>
       <Tracepoint>

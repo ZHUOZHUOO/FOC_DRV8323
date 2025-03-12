@@ -44,13 +44,13 @@
 
 #define CKTIM 170000000//定时器时钟频率
 #define PWM_PRSC 1-1//PWM预分频
-#define PWM_FREQ 25000//PWM频率, T=1000us
+#define PWM_FREQ 50000//PWM频率, T=1000us
 #define PWM_PERIOD CKTIM/(2*PWM_FREQ*(PWM_PRSC+1))  //计数器计数上限 ARR=3400
 #define REP_RATE 1 //电流环刷新频率为(REP_RATE+1)/(2*PWM_FREQ)=40us, f=25kHz
 #define DEADTIME_NS 1000//死区时间ns
 #define DEADTIME CKTIM/1000000/2*DEADTIME_NS/1000  //死区时间计数值 85us
 
-#define SPEED_STEP (float)(MOTOR_POLE_PAIRS / (float)PWM_PERIOD) //速度步进
+#define SPEED_STEP (float)(MOTOR_POLE_PAIRS / (float)PWM_FREQ) //速度步进
 
 #define ALIGNMENT_ANGLE 300
 #define COUNTER_RESET (ALIGNMENT_ANGLE*4*ENCODER_PPR/360-1)/POLE_PAIR_NUM

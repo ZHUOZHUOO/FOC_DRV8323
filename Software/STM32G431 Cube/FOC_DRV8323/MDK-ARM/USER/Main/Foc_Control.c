@@ -1,8 +1,8 @@
 /*
  * @Date: 2025-02-26 18:25:59
  * @LastEditors: ZHUOZHUOO
- * @LastEditTime: 2025-03-10 11:14:06
- * @FilePath: \MDK-ARM\USER\Main\Foc_Control.c
+ * @LastEditTime: 2025-03-12 19:15:23
+ * @FilePath: \undefinedf:\ZHUOZHUOO--Github\FOC_DRV8323\Software\STM32G431 Cube\FOC_DRV8323\MDK-ARM\USER\Main\Foc_Control.c
  * @Description: Do not edit
  */
 
@@ -36,14 +36,14 @@ void FOC_Main_Init(void)
     Error_Struct_Init(&Motor_Error);
 
     DRV8323_GPIO_Init();
-	DRV8323_Init();
+		DRV8323_Init();
     Adc_Init();
     SPI_Init();
 
     // PID初始化
     PID_Init(&Current_Id_PID, 0.001f, 0.001f, 0.0f, 1);
     PID_Init(&Current_Iq_PID, 0.001f, 0.001f, 0.0f, 1);
-    PID_Init(&Speed_PID, 0.001f, 0.001f, 0.0f, 1);
+    PID_Init(&Speed_PID, 0.01f, 0.0000f, 0.0f, 2.0f);
     PID_Init(&Position_PID, 0.001f, 0.001f, 0.0f, 1);
 
     // 设置PWM
@@ -62,17 +62,17 @@ void FOC_Main_Init(void)
 		
 	HAL_TIM_Base_Start_IT(&htim3);
 }
-uint16_t speed_rpm_expect = 1;
-uint16_t speed_rpm = 0;
 
 float x = 0, y = 1;
 void FOC_Main_Loop_H_Freq(void)
 {
+    //位置环PID计算
+
     // 开环模式：生成模拟电角度信号
     #if FOC_CLOSE_LOOP_MODE == MODE_OFF
     static float t = 0.0;                           // 时间变量
     Motor_FOC.Theta = TWO_PI * t;                   // 生成 sin(πt) 信号             
-    t += speed_rpm * SPEED_STEP;                    // 时间步进
+    t += Motor_FOC.Speed_Rpm * SPEED_STEP;          // 时间步进
     if (t >= 1.0f) t -= 1.0f;                       // 周期1秒
     // 闭环模式：读取实际编码器角度
     #elif FOC_CLOSE_LOOP_MODE == MODE_ON
@@ -95,7 +95,7 @@ void FOC_Main_Loop_H_Freq(void)
     // 开环模式：设置固定 Vd/Vq 或禁用 PID
     #if FOC_CLOSE_LOOP_MODE == MODE_OFF
     Motor_FOC.Vd = 0.01;  // 示例：设置固定 Vd
-    Motor_FOC.Vq = 100.0;  // 示例：设置固定 Vq
+    Motor_FOC.Vq = Motor_FOC.Speed_Rpm * 5.9f + 50;  // 示例：设置固定 Vq
     #elif FOC_CLOSE_LOOP_MODE == MODE_ON
     // 闭环模式：执行 PID 计算
     PID_Calc(&Current_Id_PID, 0, Motor_FOC.Id);
@@ -123,7 +123,8 @@ void FOC_Main_Loop_H_Freq(void)
 void FOC_Main_Loop_L_Freq(void)
 {
     // 速度环PID计算
-    PID_Calc(&Speed_PID, speed_rpm_expect, speed_rpm);
+    PID_Calc(&Speed_PID, Motor_FOC.Speed_Rpm_Expect, Motor_FOC.Speed_Rpm);
+		Motor_FOC.Speed_Rpm += Speed_PID.Output;
 }
 
 void CALC_SVPWM(float Valpha, float Vbeta)
@@ -263,7 +264,8 @@ void FOC_Struct_Init(FOC_Struct *foc)
     foc->hTimePhA = 0;
     foc->hTimePhB = 0;
     foc->hTimePhC = 0;
-    foc->Speed = 0;
+    foc->Speed_Rpm_Expect = 8.4;
+    foc->Speed_Rpm = 0;
     foc->Theta = 0;
 }
 

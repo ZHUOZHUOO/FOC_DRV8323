@@ -33,7 +33,7 @@
 #define SECTOR_4	(uint8_t)4
 #define SECTOR_5	(uint8_t)5
 #define SECTOR_6	(uint8_t)6
-#define zeta		(uint16_t)400 //SVPWM力矩线性灵敏度 400
+#define zeta		(uint16_t)405 //SVPWM力矩线性灵敏度 400
 
 
 typedef struct
@@ -54,7 +54,8 @@ typedef struct
     uint16_t hTimePhB;
     uint16_t hTimePhC;
     float Theta;//电角度_反馈
-    float Speed;//速度
+    float Speed_Rpm_Expect;//期望速度
+    float Speed_Rpm;//速度
     float PWM_A_DutyCycle;//占空比A相
     float PWM_B_DutyCycle;//占空比B相
     float PWM_C_DutyCycle;//占空比C相
@@ -76,6 +77,7 @@ extern FOC_Running_Struct Motor_Run;
 void FOC_Struct_Init(FOC_Struct *foc);
 void FOC_Main_Init(void);
 void FOC_Main_Loop_H_Freq(void);
+void FOC_Main_Loop_L_Freq(void);
 
 
 #endif
