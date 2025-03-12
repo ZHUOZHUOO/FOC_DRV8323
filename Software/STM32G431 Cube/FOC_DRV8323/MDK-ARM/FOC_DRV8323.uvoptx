@@ -133,7 +133,7 @@
         <SetRegEntry>
           <Number>0</Number>
           <Key>DLGUARM</Key>
-          <Name>d</Name>
+          <Name>?d</Name>
         </SetRegEntry>
         <SetRegEntry>
           <Number>0</Number>
@@ -207,6 +207,11 @@
           <count>10</count>
           <WinNumber>1</WinNumber>
           <ItemText>Motor_Error</ItemText>
+        </Ww>
+        <Ww>
+          <count>11</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>step</ItemText>
         </Ww>
       </WatchWindow1>
       <Tracepoint>

@@ -14,7 +14,7 @@
 #define VOLTAGE_MAX 26 //V
 #define VOLTAGE_MIN 9 //V
 #define CURRENT_MAX 30 //A
-#define TEMPERATURE_MAX 60 //°C
+#define TEMPERATURE_MAX 300 //°C
 #define OVER_SPEED 1000 //rpm
 #define OVER_LOAD 100 
 
@@ -47,6 +47,6 @@ typedef struct
 extern ERROR_Struct Motor_Error;
 
 void Error_Struct_Init(ERROR_Struct *error);
-void FOC_Error_Handler(void);
+void Error_Main_Loop(void);
 
 #endif

@@ -36,7 +36,7 @@ void FOC_Error_Handler(void)
 
     while (1)
     {
-        HAL_GPIO_TogglePin(DRV8323_PORT, LED_Pin);
+        HAL_GPIO_TogglePin(LED_PORT, LED_Pin);
         HAL_Delay(50);
     }
 #endif
@@ -92,7 +92,7 @@ void Error_Main_Loop(void)
     }
 #if N_FAULT_MODE == MODE_OFF
     //Check DRV8323 nFault Pin
-    else if (HAL_GPIO_ReadPin(DRV8323_PORT, DRV8323_nFault) == GPIO_PIN_RESET)
+    else if (HAL_GPIO_ReadPin(DRV8323_nFault_PORT, DRV8323_nFault) == GPIO_PIN_RESET)
     {
         // Motor_Error.STATE_WINDOW.DRV8323_Error_State_Window |= 1;
         // if(Motor_Error.STATE_WINDOW.DRV8323_Error_State_Window == 0xFF)

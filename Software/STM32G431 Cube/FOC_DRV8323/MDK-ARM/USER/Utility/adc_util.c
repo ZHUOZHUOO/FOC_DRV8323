@@ -55,19 +55,18 @@ void Adc_Val_Decode(void)
     Adc_Sum_Val[CURRENT_C_ADC_CHANNEL] -= Motor_ADC.C_Offset;
 
 #if ADC_VREF_MODE == MODE_ON
-#define CURRENT_A_ADC_CHANNEL  0
 	Motor_ADC.Valtage_Current_A = Adc_Sum_Val[CURRENT_A_ADC_CHANNEL] * Motor_ADC.Vref_Offset;
 	Motor_ADC.Valtage_Current_B = Adc_Sum_Val[CURRENT_B_ADC_CHANNEL] * Motor_ADC.Vref_Offset;
 	Motor_ADC.Valtage_Current_C = Adc_Sum_Val[CURRENT_C_ADC_CHANNEL] * Motor_ADC.Vref_Offset;
 	Motor_ADC.Valtage_VCC = Adc_Sum_Val[VCC_ADC_CHANNEL] * 11.0f * Motor_ADC.Vref_Offset;
-	Motor_ADC.Temperature = (Adc_Sum_Val[TEMP_ADC_CHANNEL] * Motor_ADC.Vref_Offset - 0.76f) / 0.0025f + 25.0f;
+	Motor_ADC.Temperature = (Adc_Sum_Val[TEMP_ADC_CHANNEL] * Motor_ADC.Vref_Offset - 0.76f) / 0.0025f + 2;
 	Motor_ADC.Internal_Vref = Adc_Sum_Val[VREF_ADC_CHANNEL];
 #elif ADC_VREF_MODE == MODE_OFF
 	Motor_ADC.Valtage_Current_A = Adc_Sum_Val[CURRENT_A_ADC_CHANNEL];
 	Motor_ADC.Valtage_Current_B = Adc_Sum_Val[CURRENT_B_ADC_CHANNEL];
 	Motor_ADC.Valtage_Current_C = Adc_Sum_Val[CURRENT_C_ADC_CHANNEL];
 	Motor_ADC.Valtage_VCC = Adc_Sum_Val[VCC_ADC_CHANNEL] * 11.0f;
-	Motor_ADC.Temperature = (Adc_Sum_Val[TEMP_ADC_CHANNEL] - 0.76f) / 0.0025f + 25.0f;
+	Motor_ADC.Temperature = (Adc_Sum_Val[TEMP_ADC_CHANNEL] - 0.76f) / 0.0025f + 2;
 	Motor_ADC.Internal_Vref = Adc_Sum_Val[VREF_ADC_CHANNEL];
 #endif
 }
@@ -118,9 +117,9 @@ void ADC_Struct_Init(ADC_Struct *adc)
     adc->Valtage_VCC = 0;
     adc->Temperature = 0;
     adc->Internal_Vref = 0;
-    adc->A_Offset = (0.005149f+0.1659f);
-    adc->B_Offset = (0.000277f+0.0379f);
-    adc->C_Offset = (0.000584f+0.00418f);
+    adc->A_Offset = 0;
+    adc->B_Offset = 0;
+    adc->C_Offset = 0;
 		adc->Vref_Offset = 1.0f;
 }
 

@@ -1,8 +1,8 @@
 /*
  * @Date: 2025-02-26 18:25:59
  * @LastEditors: ZHUOZHUOO
- * @LastEditTime: 2025-03-01 16:57:17
- * @FilePath: \undefinedf:\ZHUOZHUOO--Github\FOC_DRV8323\Software\STM32G431 Cube\FOC_DRV8323\MDK-ARM\USER\Main\Foc_Control.c
+ * @LastEditTime: 2025-03-10 11:14:06
+ * @FilePath: \MDK-ARM\USER\Main\Foc_Control.c
  * @Description: Do not edit
  */
 
@@ -24,21 +24,18 @@ void FOC_Calc_Electrical_Angle(void);
 void Park_transform(float Ialpha, float Ibeta, float *Id, float *Iq, float Theta);
 void Clarke_transform(float Ia, float Ib, float Ic, float *Ialpha, float *Ibeta);
 void Inv_Park_transform(float Id, float Iq, float *Ialpha, float *Ibeta, float Theta);
-void Inv_Clarke_transform(float Ialpha, float Ibeta, float *Ia, float *Ib, float *Ic);
 void CALC_SVPWM(float Valpha, float Vbeta);
 void FOC_Struct_Init(FOC_Struct *foc);
-void DRV8323_CAL_Init(void);
 
 //------------------------------------------------
 
 void FOC_Main_Init(void)
 {
     FOC_Struct_Init(&Motor_FOC);
-    ADC_Struct_Init(&Motor_ADC);
     Error_Struct_Init(&Motor_Error);
 
     DRV8323_GPIO_Init();
-	DRV8323_CAL_Init();
+		DRV8323_Init();
     Adc_Init();
     SPI_Init();
 
@@ -66,6 +63,7 @@ void FOC_Main_Init(void)
 }
 uint32_t run_flag = 0;
 uint16_t state_led_flag = 0;
+float step = 0.004;
 float x = 0, y = 1;
 void FOC_Main_Loop(void)
 {
@@ -73,7 +71,7 @@ void FOC_Main_Loop(void)
     #if FOC_CLOSE_LOOP_MODE == MODE_OFF
     static float t = 0.0;                         // 时间变量
     Motor_FOC.Theta = PI * t;                 // 生成 sin(πt) 信号             
-    t += 0.00002;                                    // 时间步进（假设循环周期为1ms）
+    t += step;                                    // 时间步进（假设循环周期为1ms）
     if (t >= 2.0f) t -= 2.0f;                       // 周期2秒
     // 闭环模式：读取实际编码器角度
     #elif FOC_CLOSE_LOOP_MODE == MODE_ON
@@ -83,9 +81,9 @@ void FOC_Main_Loop(void)
 
     FOC_Calc_Electrical_Angle(); 
 		
-    Motor_FOC.Ia = Max(Motor_ADC.Valtage_Current_A / ( DRV8323_GAIN * CURRENT_DETECTION_RES ), 0);
-    Motor_FOC.Ib = Max(Motor_ADC.Valtage_Current_B / ( DRV8323_GAIN * CURRENT_DETECTION_RES ), 0);
-    Motor_FOC.Ic = Max(Motor_ADC.Valtage_Current_C / ( DRV8323_GAIN * CURRENT_DETECTION_RES ), 0);
+    Motor_FOC.Ia = DRV8323_VREF_DIV_TWO - Motor_ADC.Valtage_Current_A / ( DRV8323_GAIN * CURRENT_DETECTION_RES );
+    Motor_FOC.Ib = DRV8323_VREF_DIV_TWO - Motor_ADC.Valtage_Current_B / ( DRV8323_GAIN * CURRENT_DETECTION_RES );
+    Motor_FOC.Ic = DRV8323_VREF_DIV_TWO - Motor_ADC.Valtage_Current_C / ( DRV8323_GAIN * CURRENT_DETECTION_RES );
 
     // 克拉克变换
     Clarke_transform(Motor_FOC.Ia, Motor_FOC.Ib, Motor_FOC.Ic, &Motor_FOC.Ialpha, &Motor_FOC.Ibeta);
@@ -95,7 +93,7 @@ void FOC_Main_Loop(void)
     // 开环模式：设置固定 Vd/Vq 或禁用 PID
     #if FOC_CLOSE_LOOP_MODE == MODE_OFF
     Motor_FOC.Vd = 0.01;  // 示例：设置固定 Vd
-    Motor_FOC.Vq = 70.9;  // 示例：设置固定 Vq
+    Motor_FOC.Vq = 100.0;  // 示例：设置固定 Vq
     #elif FOC_CLOSE_LOOP_MODE == MODE_ON
     // 闭环模式：执行 PID 计算
     PID_Calc(&Current_Id_PID, 0, Motor_FOC.Id);
@@ -113,8 +111,8 @@ void FOC_Main_Loop(void)
     if (state_led_flag == 10000)
     {
         state_led_flag = 0;
-        HAL_GPIO_TogglePin(DRV8323_PORT, LED_Pin);
-	    //HAL_GPIO_TogglePin(DRV8323_PORT, LED_Pin);
+        HAL_GPIO_TogglePin(LED_PORT, LED_Pin);
+	    //HAL_GPIO_TogglePin(LED_PORT, LED_Pin);
     }
     state_led_flag++;
     run_flag++;
@@ -196,10 +194,16 @@ void CALC_SVPWM(float Valpha, float Vbeta)
     default:
         break;
     }
-    // 计数上限: 680
+
+#if SVPWM_MODE == MODE_ON
     TIM1->CCR1 = hTimePhA;
     TIM1->CCR2 = hTimePhB;
     TIM1->CCR3 = hTimePhC;
+#elif SVPWM_MODE == MODE_OFF
+    TIM1->CCR1 = PWM_PERIOD * 0.5;
+    TIM1->CCR2 = PWM_PERIOD * 0.5;
+    TIM1->CCR3 = PWM_PERIOD * 0.5;
+#endif
 }
 
 
@@ -234,13 +238,7 @@ void Inv_Park_transform(float Id, float Iq, float *Ialpha, float *Ibeta, float T
     *Ialpha = Id * arm_cos_f32(Theta) - Iq * arm_sin_f32(Theta);
     *Ibeta = Id * arm_sin_f32(Theta) + Iq * arm_cos_f32(Theta);
 }
-// 逆克拉克变换，将Ialpha和Ibeta转换为Ia,Ib,Ic
-void Inv_Clarke_transform(float Ialpha, float Ibeta, float *Ia, float *Ib, float *Ic)
-{
-    *Ia = Ialpha;
-    *Ib = -0.5 * Ialpha + SQRT3_DIV2 * Ibeta;
-    *Ic = -0.5 * Ialpha - SQRT3_DIV2 * Ibeta;
-}
+
 
 void FOC_Struct_Init(FOC_Struct *foc)
 {

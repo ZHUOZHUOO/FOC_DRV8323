@@ -8,10 +8,14 @@
 #include "drv8323_util.h"
 
 
-void DRV8323_CAL_Init(void)
+void DRV8323_Init(void)
 {
+		HAL_GPIO_WritePin(DRV8323_ENABLE_PORT, DRV8323_ENABLE, 1);
+    HAL_Delay(100);
+    HAL_GPIO_WritePin(DRV8323_ENABLE_PORT, DRV8323_ENABLE, 0);
+		HAL_Delay(100);
     HAL_GPIO_WritePin(DRV8323_CAL_PORT, DRV8323_CAL, 1);
-    HAL_Delay(1000);
+    HAL_Delay(100);
     HAL_GPIO_WritePin(DRV8323_CAL_PORT, DRV8323_CAL, 0);
 }
 

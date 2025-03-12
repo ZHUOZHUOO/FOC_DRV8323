@@ -1,3 +1,10 @@
+/*
+ * @Date: 2025-03-09 20:13:14
+ * @LastEditors: ZHUOZHUOO
+ * @LastEditTime: 2025-03-10 11:26:13
+ * @FilePath: \MDK-ARM\USER\configure.h
+ * @Description: Do not edit
+ */
 #ifndef __CONFIGURE_H
 #define __CONFIGURE_H
 
@@ -8,17 +15,32 @@
 #define VERSION_2 2 //M2固定
 #define VERSION_3 3 //M3固定,双板设计,选取Qgd较小的MOS管
 
-//闭环模式
-#define FOC_CLOSE_LOOP_MODE MODE_OFF
-//ADC电压校准模式
-#define ADC_VREF_MODE MODE_ON
-//滤波模式, Sliding Window Filter
-#define ADC_FILTER_MODE MODE_ON
-#define SLIDING_WINDOW_SIZE 32
-//错误处理模式
-#define ERROR_MODE MODE_OFF
-//nFAULT中断处理模式 MODE_ON:中断 MODE_OFF:轮询
-#define N_FAULT_MODE MODE_OFF
+#define TEST_MODE MODE_OFF
+#if TEST_MODE == MODE_OFF
+    //闭环模式
+    #define FOC_CLOSE_LOOP_MODE MODE_OFF
+		//PWM
+    //SVPWM模式，可变占空比模式
+    #define SVPWM_MODE MODE_ON
+    //ADC电压校准模式
+    #define ADC_VREF_MODE MODE_OFF
+    //滤波模式, Sliding Window Filter
+    #define ADC_FILTER_MODE MODE_ON
+    #define SLIDING_WINDOW_SIZE 8
+    //错误处理模式
+    #define ERROR_MODE MODE_ON
+    //nFAULT中断处理模式 MODE_ON:中断 MODE_OFF:轮询
+    #define N_FAULT_MODE MODE_OFF
+		
+#elif//测试模式,必须开启错误处理
+    #define FOC_CLOSE_LOOP_MODE MODE_OFF
+    #define SVPWM_MODE MODE_OFF
+    #define ADC_VREF_MODE MODE_ON
+    #define ADC_FILTER_MODE MODE_ON
+    #define SLIDING_WINDOW_SIZE 8
+    #define ERROR_MODE MODE_ON
+    #define N_FAULT_MODE MODE_OFF
+#endif
 
 #define MODE_ON 1
 #define MODE_OFF 0
@@ -35,7 +57,7 @@
 
 #define CKTIM 170000000//定时器时钟频率
 #define PWM_PRSC 1-1//PWM预分频
-#define PWM_FREQ 12500//PWM频率, T=1000us
+#define PWM_FREQ 25000//PWM频率, T=1000us
 #define PWM_PERIOD CKTIM/(2*PWM_FREQ*(PWM_PRSC+1))  //计数器计数上限 ARR=3400
 #define REP_RATE 1 //电流环刷新频率为(REP_RATE+1)/(2*PWM_FREQ)=40us, f=25kHz
 #define DEADTIME_NS 1000//死区时间ns

@@ -38,8 +38,10 @@
 #endif
 
 #define DRV8323_GAIN 40
+#define DRV8323_VREF 3.32
+#define DRV8323_VREF_DIV_TWO 1.66 
 
 void DRV8323_GPIO_Init(void);						//初始化GPIO
-void DRV8323_CAL_Init(void);						//放大器初始化, 保持高电平
+void DRV8323_Init(void);						//放大器初始化, 保持高电平
 
 #endif
