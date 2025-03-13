@@ -43,7 +43,7 @@ void FOC_Main_Init(void)
     // PID初始化
     PID_Init(&Current_Id_PID, 0.001f, 0.001f, 0.0f, 1);
     PID_Init(&Current_Iq_PID, 0.001f, 0.001f, 0.0f, 1);
-    PID_Init(&Speed_PID, 0.01f, 0.0000f, 0.0f, 2.0f);
+    PID_Init(&Speed_PID, 0.01f, 0.0000f, 0.0f, 0.1f);
     PID_Init(&Position_PID, 0.001f, 0.001f, 0.0f, 1);
 
     // 设置PWM
@@ -95,7 +95,10 @@ void FOC_Main_Loop_H_Freq(void)
     // 开环模式：设置固定 Vd/Vq 或禁用 PID
     #if FOC_CLOSE_LOOP_MODE == MODE_OFF
     Motor_FOC.Vd = 0.01;  // 示例：设置固定 Vd
-    Motor_FOC.Vq = Motor_FOC.Speed_Rpm * 5.9f + 50;  // 示例：设置固定 Vq
+//    Motor_FOC.Vq = Motor_FOC.Speed_Rpm * 5.9f + 50;  // 示例：设置固定 Vq
+		Motor_FOC.Vq = Motor_FOC.Speed_Rpm * 0.4f + 20;  // 示例：设置固定 Vq
+//    Motor_FOC.Vq = 100;
+
     #elif FOC_CLOSE_LOOP_MODE == MODE_ON
     // 闭环模式：执行 PID 计算
     PID_Calc(&Current_Id_PID, 0, Motor_FOC.Id);
@@ -264,7 +267,7 @@ void FOC_Struct_Init(FOC_Struct *foc)
     foc->hTimePhA = 0;
     foc->hTimePhB = 0;
     foc->hTimePhC = 0;
-    foc->Speed_Rpm_Expect = 8.4;
+    foc->Speed_Rpm_Expect = 200;
     foc->Speed_Rpm = 0;
     foc->Theta = 0;
 }

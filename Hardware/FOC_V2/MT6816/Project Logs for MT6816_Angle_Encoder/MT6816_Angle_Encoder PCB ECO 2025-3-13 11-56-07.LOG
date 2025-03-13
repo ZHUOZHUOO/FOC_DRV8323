@@ -1,0 +1,22 @@
+Removed Pin From Net: NetName=VDD Pin=R?-2
+Change Component Designator: OldDesignator=C1 NewDesignator=C3
+Change Component Designator: OldDesignator=C2 NewDesignator=C4
+Change Component Designator: OldDesignator=R? NewDesignator=R1
+Change Component Designator: OldDesignator=U1 NewDesignator=U2
+Change Component Designator: OldDesignator=U2 NewDesignator=U1
+Added Component: Designator=C1(C0402)
+Added Component: Designator=C2(C0402)
+Added Component: Designator=Q1(SOT-89-3_L4.5-W2.5-P1.50-LS4.2-BR)
+Added Pin To Net: NetName=VDD Pin=C1-1
+Added Pin To Net: NetName=GND Pin=C1-2
+Added Pin To Net: NetName=GND Pin=C2-1
+Added Pin To Net: NetName=GND Pin=Q1-1
+Added Pin To Net: NetName=VDD Pin=Q1-3
+Change Net Name : Old Net Name=NetC1_2 New Net Name=NetC3_2
+Added Pin To Net: NetName=3.3V Pin=C2-2
+Added Pin To Net: NetName=3.3V Pin=Q1-2
+Added Pin To Net: NetName=3.3V Pin=R1-2
+Added Net: Name=3.3V
+Added Member To Class: ClassName=MT6816_Angle_Encoder Member=Component C3 0.1uf
+Added Member To Class: ClassName=MT6816_Angle_Encoder Member=Component C4 0.1uf
+Added Member To Class: ClassName=MT6816_Angle_Encoder Member=Component Q1 AMS1117-3.3V_C5120796

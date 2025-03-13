@@ -184,12 +184,12 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
   /* USER CODE BEGIN Callback 0 */
 	if (htim->Instance == TIM1)
 	{
-			if(adc_prec == 4)
-			{
+//			if(adc_prec == 4)
+//			{
 				Get_ADC_Value();
-				adc_prec = 0;
-			}//ADC采样,10分频
-			adc_prec++;
+//				adc_prec = 0;
+//			}//ADC采样,4分频
+//			adc_prec++;
 			FOC_Main_Loop_H_Freq();
 	}
   else if (htim->Instance == TIM3)

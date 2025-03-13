@@ -33,7 +33,8 @@
 #define SECTOR_4	(uint8_t)4
 #define SECTOR_5	(uint8_t)5
 #define SECTOR_6	(uint8_t)6
-#define zeta		(uint16_t)405 //SVPWM力矩线性灵敏度 400
+//#define zeta		(uint16_t)405 //SVPWM力矩线性灵敏度 400
+#define zeta		(uint16_t)500 //SVPWM力矩线性灵敏度 400
 
 
 typedef struct

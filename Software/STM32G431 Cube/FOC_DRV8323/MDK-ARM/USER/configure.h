@@ -33,7 +33,9 @@
 #define MODE_ON 1
 #define MODE_OFF 0
 
-#define MOTOR_POLE_PAIRS 14 //电机极对数
+//#define MOTOR_POLE_PAIRS 14 //电机极对数 haitai
+#define MOTOR_POLE_PAIRS 7 //电机极对数 ,hangmo
+
 #define MOTOR_RESISTANCE 16.5 //电机电阻
 #define MOTOR_VOLTAGE 24 //电机电压
 #define MOTOR_INDUCTANCE 0.0042 //电机电感
@@ -44,7 +46,7 @@
 
 #define CKTIM 170000000//定时器时钟频率
 #define PWM_PRSC 1-1//PWM预分频
-#define PWM_FREQ 50000//PWM频率, T=1000us
+#define PWM_FREQ 25000//PWM频率, T=1000us
 #define PWM_PERIOD CKTIM/(2*PWM_FREQ*(PWM_PRSC+1))  //计数器计数上限 ARR=3400
 #define REP_RATE 1 //电流环刷新频率为(REP_RATE+1)/(2*PWM_FREQ)=40us, f=25kHz
 #define DEADTIME_NS 1000//死区时间ns

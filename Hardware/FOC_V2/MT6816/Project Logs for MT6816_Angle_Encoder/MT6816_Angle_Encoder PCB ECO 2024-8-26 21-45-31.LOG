@@ -1,0 +1,37 @@
+Removed Pin From Net: NetName=Z/SPI_SCLK Pin=R1-2
+Removed Pin From Net: NetName=B/SPI_MISO Pin=R2-2
+Removed Pin From Net: NetName=A/SPI_MOSI Pin=R3-2
+Removed Pin From Net: NetName=Z/SPI_SCLK Pin=U1-2
+Removed Pin From Net: NetName=B/SPI_MISO Pin=U1-3
+Removed Pin From Net: NetName=A/SPI_MOSI Pin=U1-4
+Change Component Designator: OldDesignator=R1 NewDesignator=R4
+Change Component Designator: OldDesignator=R2 NewDesignator=R5
+Change Component Designator: OldDesignator=R3 NewDesignator=R6
+Change Component Designator: OldDesignator=R4 NewDesignator=R7
+Change Component Designator: OldDesignator=R5 NewDesignator=R8
+Change Component Designator: OldDesignator=R6 NewDesignator=R9
+Change Component Designator: OldDesignator=R7 NewDesignator=R10
+Change Component Designator: OldDesignator=R8 NewDesignator=R11
+Change Component Designator: OldDesignator=R9 NewDesignator=R12
+Added Component: Designator=R1(R0402)
+Added Component: Designator=R2(R0402)
+Added Component: Designator=R3(R0402)
+Added Pin To Net: NetName=Z/SPI_SCLK Pin=R1-2
+Added Pin To Net: NetName=A/SPI_MOSI Pin=R2-2
+Added Pin To Net: NetName=B/SPI_MISO Pin=R3-2
+Added Pin To Net: NetName=NetR1_1 Pin=R1-1
+Added Pin To Net: NetName=NetR1_1 Pin=R4-2
+Added Pin To Net: NetName=NetR1_1 Pin=U1-2
+Added Net: Name=NetR1_1
+Added Pin To Net: NetName=NetR2_1 Pin=R2-1
+Added Pin To Net: NetName=NetR2_1 Pin=R5-2
+Added Pin To Net: NetName=NetR2_1 Pin=U1-3
+Added Net: Name=NetR2_1
+Added Pin To Net: NetName=NetR3_1 Pin=R3-1
+Added Pin To Net: NetName=NetR3_1 Pin=R6-2
+Added Pin To Net: NetName=NetR3_1 Pin=U1-4
+Added Net: Name=NetR3_1
+Added Member To Class: ClassName=MT6816_Angle_Encoder Member=Component R10 10¦¸
+Added Member To Class: ClassName=MT6816_Angle_Encoder Member=Component R11 10¦¸
+Added Member To Class: ClassName=MT6816_Angle_Encoder Member=Component R12 10¦¸
+Added Member To Class: ClassName=MT6816_Angle_Encoder Member=Component U4 BX-GH1.25-8PWT
