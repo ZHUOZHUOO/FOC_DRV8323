@@ -43,7 +43,11 @@ void FOC_Main_Init(void)
     // PID初始化
     PID_Init(&Current_Id_PID, 0.001f, 0.001f, 0.0f, 1);
     PID_Init(&Current_Iq_PID, 0.001f, 0.001f, 0.0f, 1);
-    PID_Init(&Speed_PID, 0.01f, 0.0000f, 0.0f, 0.1f);
+#if MOTOR_TYPE == HAITAI
+    PID_Init(&Speed_PID, 0.1f, 0.0000f, 0.0f, 2.0f);//haitai
+#elif MOTOR_TYPE == DJI_SNAIL_2305
+		PID_Init(&Speed_PID, 0.012f, 0.0000f, 0.0f, 2.0f);//snail
+#endif
     PID_Init(&Position_PID, 0.001f, 0.001f, 0.0f, 1);
 
     // 设置PWM
@@ -60,7 +64,7 @@ void FOC_Main_Init(void)
     HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_2);
     HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_3);
 		
-	HAL_TIM_Base_Start_IT(&htim3);
+		HAL_TIM_Base_Start_IT(&htim3);
 }
 
 float x = 0, y = 1;
@@ -95,9 +99,11 @@ void FOC_Main_Loop_H_Freq(void)
     // 开环模式：设置固定 Vd/Vq 或禁用 PID
     #if FOC_CLOSE_LOOP_MODE == MODE_OFF
     Motor_FOC.Vd = 0.01;  // 示例：设置固定 Vd
-//    Motor_FOC.Vq = Motor_FOC.Speed_Rpm * 5.9f + 50;  // 示例：设置固定 Vq
-		Motor_FOC.Vq = Motor_FOC.Speed_Rpm * 0.4f + 20;  // 示例：设置固定 Vq
-//    Motor_FOC.Vq = 100;
+		#if MOTOR_TYPE == HAITAI
+    Motor_FOC.Vq = 50 * Motor_FOC.Speed_Rpm / Motor_FOC.Speed_Rpm_Expect + 50;  // 示例：设置固定 Vq
+		#elif MOTOR_TYPE == DJI_SNAIL_2305
+		Motor_FOC.Vq = 80 * Motor_FOC.Speed_Rpm / Motor_FOC.Speed_Rpm_Expect + 20;  // 示例：设置固定 Vq
+		#endif
 
     #elif FOC_CLOSE_LOOP_MODE == MODE_ON
     // 闭环模式：执行 PID 计算
@@ -267,7 +273,7 @@ void FOC_Struct_Init(FOC_Struct *foc)
     foc->hTimePhA = 0;
     foc->hTimePhB = 0;
     foc->hTimePhC = 0;
-    foc->Speed_Rpm_Expect = 200;
+    foc->Speed_Rpm_Expect = MOTOR_SPEED_MAX;
     foc->Speed_Rpm = 0;
     foc->Theta = 0;
 }
