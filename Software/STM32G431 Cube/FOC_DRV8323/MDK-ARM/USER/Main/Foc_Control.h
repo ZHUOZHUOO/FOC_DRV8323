@@ -4,6 +4,8 @@
 #include "stm32g4xx_hal.h"
 #include "stdint.h"
 #include "tim.h"
+#include "gpio.h"
+#include "spi.h"
 #include "util_adc.h"
 #include "alg_pid.h"
 #include "drv8323_util.h"
@@ -68,7 +70,6 @@ typedef struct
     uint16_t Adc_flag;
 	uint16_t Adc_Hz;
 }FOC_Running_Struct;
-
 
 extern FOC_Struct Motor_FOC;
 extern FOC_Running_Struct Motor_Run;

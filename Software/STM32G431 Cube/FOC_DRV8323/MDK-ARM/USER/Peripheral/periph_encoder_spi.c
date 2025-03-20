@@ -217,7 +217,8 @@ void Encoder_Read_Reg(Encoder_SPI_HandleTypeDef *encoder) {
   txbuffer[2] = 0x00;
   txbuffer[3] = 0x00;
   HAL_GPIO_WritePin(encoder->cs_port, encoder->cs_pin, GPIO_PIN_RESET);
-  HAL_SPI_TransmitReceive(encoder->hspi, txbuffer, encoder->rx_buffer, 4, 100);
+  // HAL_SPI_TransmitReceive(encoder->hspi, txbuffer, encoder->rx_buffer, 4, 100);
+  HAL_SPI_TransmitReceive_DMA(encoder->hspi, txbuffer, encoder->rx_buffer, 4);
   HAL_GPIO_WritePin(encoder->cs_port, encoder->cs_pin, GPIO_PIN_SET);
 
   Encoder_SPI_Data_Process(encoder, encoder->rx_buffer);

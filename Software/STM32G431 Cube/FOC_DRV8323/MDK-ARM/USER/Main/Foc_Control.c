@@ -14,11 +14,16 @@
 
 FOC_Struct Motor_FOC;
 FOC_Running_Struct Motor_Run = {0, 0, 0, 0, 0};
-//PID_Struct Current_Id_PID;
-//PID_Struct Current_Iq_PID;
-//PID_Struct Speed_PID;
-//PID_Struct Position_PID;
 
+PID_TypeDef Current_Id_PID;
+PID_TypeDef Current_Iq_PID;
+PID_TypeDef Speed_PID;
+PID_TypeDef Position_PID;
+
+Encoder_SPI_HandleTypeDef MA600_spi;
+
+#define MA600_CS_GPIO_Port GPIOA
+#define MA600_CS_Pin GPIO_PIN_15
 
 //--------------------函数声明--------------------
 void FOC_Calc_Electrical_Angle(void);
@@ -36,21 +41,20 @@ void FOC_Main_Init(void)
     Error_Struct_Init(&Motor_Error);
 
     DRV8323_GPIO_Init();
-		DRV8323_Init();
+	DRV8323_Init();
     Adc_Init();
+    Encoder_SPI_Init(&MA600_spi, &hspi1, MA600_CS_GPIO_Port, MA600_CS_Pin, 0.01f);
 
+    // PID初始化
+    PID_Init(&Current_Id_PID, PID_DELTA, 0.001f, 0.001f, 0.0f, 0.0f, 0.0f, 50, 50, 0.1, 0.1, 0.1);
+    PID_Init(&Current_Iq_PID, PID_DELTA, 0.001f, 0.001f, 0.0f, 0.0f, 0.0f, 100, 100, 0.1, 0.1, 0.1);
+    #if MOTOR_TYPE == HAITAI
+    PID_Init(&Speed_PID, PID_DELTA, 0.1f, 0.0001f, 0.0f, 0.0f, 0.0f, 10, 10, 0.1, 0.1, 0.1);//haitai
+    #elif MOTOR_TYPE == DJI_SNAIL_2305
+    PID_Init(&Speed_PID, PID_DELTA, 0.012f, 0.0000f, 0.0f, 0.0f, 0.0f, 300, 300, 0.1, 0.1, 0.1);//snail
+    #endif
+    PID_Init(&Position_PID, PID_POSITION, 0.001f, 0.001f, 0.0f, 0.0f, 0.0f, 200, 200, 0.1, 0.1, 0.1);
 
-//    // PID初始化
-//    PID_Init(&Current_Id_PID, 0.001f, 0.001f, 0.0f, 1);
-//    PID_Init(&Current_Iq_PID, 0.001f, 0.001f, 0.0f, 1);
-//#if MOTOR_TYPE == HAITAI
-//    PID_Init(&Speed_PID, 0.1f, 0.0000f, 0.0f, 2.0f);//haitai
-//#elif MOTOR_TYPE == DJI_SNAIL_2305
-//		PID_Init(&Speed_PID, 0.012f, 0.0000f, 0.0f, 2.0f);//snail
-//#endif
-//    PID_Init(&Position_PID, 0.001f, 0.001f, 0.0f, 1);
-
-    // 设置PWM
     HAL_TIM_Base_Start_IT(&htim1);
     HAL_TIM_PWM_Start_IT(&htim1, TIM_CHANNEL_1);
     HAL_TIM_PWM_Start_IT(&htim1, TIM_CHANNEL_2);
@@ -64,13 +68,13 @@ void FOC_Main_Init(void)
     HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_2);
     HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_3);
 		
-		HAL_TIM_Base_Start_IT(&htim3);
+	HAL_TIM_Base_Start_IT(&htim3);
 }
 
 float x = 0, y = 1;
 void FOC_Main_Loop_H_Freq(void)
 {
-    //位置环PID计算
+    Encoder_Read_Reg(&MA600_spi);
 
     // 开环模式：生成模拟电角度信号
     #if FOC_CLOSE_LOOP_MODE == MODE_OFF
@@ -80,8 +84,8 @@ void FOC_Main_Loop_H_Freq(void)
     if (t >= 1.0f) t -= 1.0f;                       // 周期1秒
     // 闭环模式：读取实际编码器角度
     #elif FOC_CLOSE_LOOP_MODE == MODE_ON
-    MT6816_SPI_Get_AngleData();
-    Motor_FOC.Theta = mt6816_spi.angle * ( TWO_PI / 16384.0f );
+    Motor_FOC.Theta = Encoder_SPI_Get_Angle(&MA600_spi);
+    
     #endif
 
 
@@ -107,10 +111,13 @@ void FOC_Main_Loop_H_Freq(void)
 
     #elif FOC_CLOSE_LOOP_MODE == MODE_ON
     // 闭环模式：执行 PID 计算
-    PID_Calc(&Current_Id_PID, 0, Motor_FOC.Id);
-    PID_Calc(&Current_Iq_PID, 1, Motor_FOC.Iq);
-    Motor_FOC.Vd = Current_Id_PID.Output;
-    Motor_FOC.Vq = Current_Iq_PID.Output;
+    PID_SetFdb(&Current_Id_PID, Motor_FOC.Id);
+    PID_SetRef(&Current_Id_PID, 0);
+    Motor_FOC.Vd = PID_Calc(&Current_Id_PID);
+
+    PID_SetFdb(&Current_Iq_PID, Motor_FOC.Iq);
+    PID_SetRef(&Current_Iq_PID, 40);
+    Motor_FOC.Vq = PID_Calc(&Current_Iq_PID);
     #endif
 	
 
@@ -132,8 +139,9 @@ void FOC_Main_Loop_H_Freq(void)
 void FOC_Main_Loop_L_Freq(void)
 {
     // 速度环PID计算
-//    PID_Calc(&Speed_PID, Motor_FOC.Speed_Rpm_Expect, Motor_FOC.Speed_Rpm);
-//		Motor_FOC.Speed_Rpm += Speed_PID.Output;
+    PID_SetRef(&Speed_PID, Motor_FOC.Speed_Rpm_Expect);//单位：rad/s
+    PID_Calc(&Speed_PID);
+	Motor_FOC.Speed_Rpm += PID_GetOutput(&Speed_PID);
 }
 
 void CALC_SVPWM(float Valpha, float Vbeta)

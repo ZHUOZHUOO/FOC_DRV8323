@@ -60,7 +60,7 @@ void SystemClock_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-uint8_t adc_prec = 0;
+
 /* USER CODE END 0 */
 
 /**
@@ -184,19 +184,13 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
   /* USER CODE BEGIN Callback 0 */
 	if (htim->Instance == TIM1)
 	{
-//			if(adc_prec == 4)
-//			{
-				Get_ADC_Value();
-//				adc_prec = 0;
-//			}//ADC采样,4分频
-//			adc_prec++;
+			Get_ADC_Value();
 			FOC_Main_Loop_H_Freq();
 	}
   else if (htim->Instance == TIM3)
   {
 			FOC_Main_Loop_L_Freq();
-      //错误处理
-      Error_Main_Loop();
+      Error_Main_Loop();      //Error Handler
       static uint16_t cnt = 0;
       if(cnt++ >= 100)
       {
