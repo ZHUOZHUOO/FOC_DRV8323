@@ -335,7 +335,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32G431xx,ARM_MATH_CM4,__CC_ARM,ARM_MATH_MATRIX_CHECK,ARM_MATH_ROUNDING</Define>
               <Undefine></Undefine>
-              <IncludePath>../Core/Inc;                                         ../Drivers/STM32G4xx_HAL_Driver/Inc;                                         ../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy;                                         ../Drivers/CMSIS/Device/ST/STM32G4xx/Include;                                         ../Drivers/CMSIS/Include;                                         ../MDK-ARM/USER;                                         ../MDK-ARM/USER/Utility;                                         ../MDK-ARM/USER/Main;                                         .\DSP_Lib;                                         .\DSP_Lib\Include</IncludePath>
+              <IncludePath>../Core/Inc;../Drivers/STM32G4xx_HAL_Driver/Inc;../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32G4xx/Include;../Drivers/CMSIS/Include;../MDK-ARM/USER;../MDK-ARM/USER/Utility;../MDK-ARM/USER/Main;.\DSP_Lib;.\DSP_Lib\Include;../MDK-ARM/USER/System;../MDK-ARM/USER/Peripheral;../MDK-ARM/USER/Algorithm;../MDK-ARM/USER/Library</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -580,24 +580,29 @@
           <GroupName>Utility</GroupName>
           <Files>
             <File>
-              <FileName>adc_util.c</FileName>
+              <FileName>util_adc.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\USER\Utility\adc_util.c</FilePath>
+              <FilePath>.\USER\Utility\util_adc.c</FilePath>
             </File>
             <File>
-              <FileName>pid_util.c</FileName>
+              <FileName>util_fdcan.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\USER\Utility\pid_util.c</FilePath>
+              <FilePath>.\USER\Utility\util_fdcan.c</FilePath>
             </File>
             <File>
-              <FileName>spi_util.c</FileName>
+              <FileName>util_gpio.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\USER\Utility\spi_util.c</FilePath>
+              <FilePath>.\USER\Utility\util_gpio.c</FilePath>
             </File>
             <File>
-              <FileName>drv8323_util.c</FileName>
+              <FileName>util_pwm.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\USER\Utility\drv8323_util.c</FilePath>
+              <FilePath>.\USER\Utility\util_pwm.c</FilePath>
+            </File>
+            <File>
+              <FileName>util_spi.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\USER\Utility\util_spi.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -618,6 +623,76 @@
               <FileName>arm_cortexM4lf_math.lib</FileName>
               <FileType>4</FileType>
               <FilePath>.\DSP_Lib\arm_cortexM4lf_math.lib</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>System</GroupName>
+          <Files>
+            <File>
+              <FileName>sys_dwt.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\USER\System\sys_dwt.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Peripheral</GroupName>
+          <Files>
+            <File>
+              <FileName>drv8323_util.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\USER\Peripheral\drv8323_util.c</FilePath>
+            </File>
+            <File>
+              <FileName>periph_encoder_spi.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\USER\Peripheral\periph_encoder_spi.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Algorithm</GroupName>
+          <Files>
+            <File>
+              <FileName>alg_kf.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\USER\Algorithm\alg_kf.c</FilePath>
+            </File>
+            <File>
+              <FileName>alg_pid.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\USER\Algorithm\alg_pid.c</FilePath>
+            </File>
+            <File>
+              <FileName>alg_qekf.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\USER\Algorithm\alg_qekf.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Library</GroupName>
+          <Files>
+            <File>
+              <FileName>lib_buff.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\USER\Library\lib_buff.c</FilePath>
+            </File>
+            <File>
+              <FileName>lib_crc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\USER\Library\lib_crc.c</FilePath>
+            </File>
+            <File>
+              <FileName>lib_filter.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\USER\Library\lib_filter.c</FilePath>
+            </File>
+            <File>
+              <FileName>lib_math.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\USER\Library\lib_math.c</FilePath>
             </File>
           </Files>
         </Group>

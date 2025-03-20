@@ -14,10 +14,10 @@
 
 FOC_Struct Motor_FOC;
 FOC_Running_Struct Motor_Run = {0, 0, 0, 0, 0};
-PID_Struct Current_Id_PID;
-PID_Struct Current_Iq_PID;
-PID_Struct Speed_PID;
-PID_Struct Position_PID;
+//PID_Struct Current_Id_PID;
+//PID_Struct Current_Iq_PID;
+//PID_Struct Speed_PID;
+//PID_Struct Position_PID;
 
 
 //--------------------函数声明--------------------
@@ -38,17 +38,17 @@ void FOC_Main_Init(void)
     DRV8323_GPIO_Init();
 		DRV8323_Init();
     Adc_Init();
-    SPI_Init();
 
-    // PID初始化
-    PID_Init(&Current_Id_PID, 0.001f, 0.001f, 0.0f, 1);
-    PID_Init(&Current_Iq_PID, 0.001f, 0.001f, 0.0f, 1);
-#if MOTOR_TYPE == HAITAI
-    PID_Init(&Speed_PID, 0.1f, 0.0000f, 0.0f, 2.0f);//haitai
-#elif MOTOR_TYPE == DJI_SNAIL_2305
-		PID_Init(&Speed_PID, 0.012f, 0.0000f, 0.0f, 2.0f);//snail
-#endif
-    PID_Init(&Position_PID, 0.001f, 0.001f, 0.0f, 1);
+
+//    // PID初始化
+//    PID_Init(&Current_Id_PID, 0.001f, 0.001f, 0.0f, 1);
+//    PID_Init(&Current_Iq_PID, 0.001f, 0.001f, 0.0f, 1);
+//#if MOTOR_TYPE == HAITAI
+//    PID_Init(&Speed_PID, 0.1f, 0.0000f, 0.0f, 2.0f);//haitai
+//#elif MOTOR_TYPE == DJI_SNAIL_2305
+//		PID_Init(&Speed_PID, 0.012f, 0.0000f, 0.0f, 2.0f);//snail
+//#endif
+//    PID_Init(&Position_PID, 0.001f, 0.001f, 0.0f, 1);
 
     // 设置PWM
     HAL_TIM_Base_Start_IT(&htim1);
@@ -132,8 +132,8 @@ void FOC_Main_Loop_H_Freq(void)
 void FOC_Main_Loop_L_Freq(void)
 {
     // 速度环PID计算
-    PID_Calc(&Speed_PID, Motor_FOC.Speed_Rpm_Expect, Motor_FOC.Speed_Rpm);
-		Motor_FOC.Speed_Rpm += Speed_PID.Output;
+//    PID_Calc(&Speed_PID, Motor_FOC.Speed_Rpm_Expect, Motor_FOC.Speed_Rpm);
+//		Motor_FOC.Speed_Rpm += Speed_PID.Output;
 }
 
 void CALC_SVPWM(float Valpha, float Vbeta)

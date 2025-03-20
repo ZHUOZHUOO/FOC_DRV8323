@@ -2,17 +2,15 @@
 #define __FOC_CONTROL_H
 
 #include "stm32g4xx_hal.h"
-#include "stdbool.h"
 #include "stdint.h"
 #include "tim.h"
-#include "adc.h"
-#include "adc_util.h"
-#include "spi_util.h"
-#include "pid_util.h"
+#include "util_adc.h"
+#include "alg_pid.h"
 #include "drv8323_util.h"
 #include "configure.h"
 #include "arm_math.h"
 #include "arm_const_structs.h"
+#include "periph_encoder_spi.h"
 #include "Foc_Error.h"
 
 

@@ -1,0 +1,6 @@
+﻿-IF:\ZHUOZHUOO--Github\FOC_DRV8323\Software\Simulink\SVPWM
+-IF:\ZHUOZHUOO--Github\FOC_DRV8323\Software\Simulink\SVPWM\Subsystem8_grt_rtw
+-ID:\Soft\MATLAB2023\extern\include
+-ID:\Soft\MATLAB2023\simulink\include
+-ID:\Soft\MATLAB2023\rtw\c\src
+-ID:\Soft\MATLAB2023\rtw\c\src\ext_mode\common
