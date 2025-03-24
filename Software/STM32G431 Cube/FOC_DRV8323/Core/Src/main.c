@@ -192,7 +192,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 			FOC_Main_Loop_L_Freq();
       Error_Main_Loop();      //Error Handler
       static uint16_t cnt = 0;
-      if(cnt++ >= 100)
+      if(cnt++ >= 2000)
       {
           cnt = 0;
           Motor_Run.Adc_Hz = Motor_Run.Adc_flag;
@@ -200,7 +200,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
           Motor_Run.run_Hz = Motor_Run.run_flag;
           Motor_Run.run_flag = 0;
       }
-  }//100Hz
+  }//2000Hz
     
   /* USER CODE END Callback 0 */
   if (htim->Instance == TIM2) {

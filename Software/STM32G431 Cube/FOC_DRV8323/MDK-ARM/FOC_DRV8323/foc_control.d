@@ -38,6 +38,8 @@ foc_drv8323\foc_control.o: ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_tim
 foc_drv8323\foc_control.o: ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_tim_ex.h
 foc_drv8323\foc_control.o: ../Core/Inc/tim.h
 foc_drv8323\foc_control.o: ../Core/Inc/main.h
+foc_drv8323\foc_control.o: ../Core/Inc/gpio.h
+foc_drv8323\foc_control.o: ../Core/Inc/spi.h
 foc_drv8323\foc_control.o: ../MDK-ARM/USER/Utility/util_adc.h
 foc_drv8323\foc_control.o: ../Core/Inc/adc.h
 foc_drv8323\foc_control.o: ../MDK-ARM/USER/Main/Foc_Control.h
@@ -56,8 +58,6 @@ foc_drv8323\foc_control.o: .\DSP_Lib\Include\arm_common_tables.h
 foc_drv8323\foc_control.o: ../MDK-ARM/USER/Peripheral/periph_encoder_spi.h
 foc_drv8323\foc_control.o: ../MDK-ARM/USER/System/sys_dwt.h
 foc_drv8323\foc_control.o: ../MDK-ARM/USER/Utility/util_gpio.h
-foc_drv8323\foc_control.o: ../Core/Inc/gpio.h
 foc_drv8323\foc_control.o: ../MDK-ARM/USER/Utility/util_spi.h
-foc_drv8323\foc_control.o: ../Core/Inc/spi.h
 foc_drv8323\foc_control.o: ../Core/Inc/dma.h
 foc_drv8323\foc_control.o: USER\Main\Foc_Error.h

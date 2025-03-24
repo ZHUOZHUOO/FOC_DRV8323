@@ -22,16 +22,13 @@
 
 //闭环模式
 #define FOC_CLOSE_LOOP_MODE MODE_OFF
-//PWM
-//SVPWM模式，可变占空比模式
-#define SVPWM_MODE MODE_ON
 //ADC电压校准模式
 #define ADC_VREF_MODE MODE_OFF
 //滤波模式, Sliding Window Filter
 #define ADC_FILTER_MODE MODE_ON
 #define SLIDING_WINDOW_SIZE 8
 //错误处理模式
-#define ERROR_MODE MODE_ON
+#define ERROR_MODE MODE_OFF
 //nFAULT中断处理模式 MODE_ON:中断 MODE_OFF:轮询
 #define N_FAULT_MODE MODE_OFF
 

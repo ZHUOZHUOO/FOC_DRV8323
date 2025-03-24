@@ -9,6 +9,10 @@
 #include "periph_encoder_spi.h"
 #include "string.h"
 
+#define Min(a, b) ((a) < (b) ? (a) : (b))
+#define Max(a, b) ((a) > (b) ? (a) : (b))
+#define Max_3(a, b, c) Max(Max(a, b), c)
+
 void Encoder_SPI_Init(Encoder_SPI_HandleTypeDef *encoder,
                       SPI_HandleTypeDef *hspi, GPIO_TypeDef *cs_port,
                       uint16_t cs_pin, float radius) {
@@ -134,7 +138,6 @@ void Encoder_SPI_Init(Encoder_SPI_HandleTypeDef *encoder,
   // 100); HAL_GPIO_WritePin(encoder->cs_port, encoder->cs_pin, GPIO_PIN_SET);
   // HAL_Delay(1);
 }
-
 void Encoder_SPI_Data_Process(Encoder_SPI_HandleTypeDef *encoder,
                               uint8_t *buffer) {
   uint64_t now_time = DWT_GetTimeline_us();
@@ -142,6 +145,7 @@ void Encoder_SPI_Data_Process(Encoder_SPI_HandleTypeDef *encoder,
   int16_t encoderRawData = (int16_t)(buffer[0] << 8 | buffer[1]);
   // 将编码器值转换为-180°~180°的角度
   float rawAngle = (float)(encoderRawData) * 360.0f / 65536.0f - 180.0f;
+	
   // 读取多圈信息
   int16_t turns = (int16_t)((buffer[2] << 8) | buffer[3]);
   // 计算角度的差值，考虑过零点情况
@@ -216,10 +220,13 @@ void Encoder_Read_Reg(Encoder_SPI_HandleTypeDef *encoder) {
   txbuffer[1] = 0x00;
   txbuffer[2] = 0x00;
   txbuffer[3] = 0x00;
+	
   HAL_GPIO_WritePin(encoder->cs_port, encoder->cs_pin, GPIO_PIN_RESET);
-  // HAL_SPI_TransmitReceive(encoder->hspi, txbuffer, encoder->rx_buffer, 4, 100);
-  HAL_SPI_TransmitReceive_DMA(encoder->hspi, txbuffer, encoder->rx_buffer, 4);
+//  HAL_SPI_TransmitReceive(encoder->hspi, txbuffer, encoder->rx_buffer, 4, 10);
+//  HAL_SPI_TransmitReceive_DMA(encoder->hspi, txbuffer, encoder->rx_buffer, 4);
+	HAL_SPI_Receive_DMA(encoder->hspi, encoder->rx_buffer, 4);
+	HAL_SPI_Transmit_DMA(encoder->hspi, txbuffer, 4);
   HAL_GPIO_WritePin(encoder->cs_port, encoder->cs_pin, GPIO_PIN_SET);
-
+	
   Encoder_SPI_Data_Process(encoder, encoder->rx_buffer);
 }

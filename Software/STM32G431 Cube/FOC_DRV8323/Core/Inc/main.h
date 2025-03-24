@@ -69,12 +69,14 @@ void Error_Handler(void);
 #define VCC_ADC_GPIO_Port GPIOA
 #define CAL_Pin GPIO_PIN_4
 #define CAL_GPIO_Port GPIOA
-#define nFault_Pin GPIO_PIN_5
-#define nFault_GPIO_Port GPIOA
-#define LED_CTRL_Pin GPIO_PIN_6
-#define LED_CTRL_GPIO_Port GPIOA
+#define ENABLE_Pin GPIO_PIN_5
+#define ENABLE_GPIO_Port GPIOA
+#define nFAULT_Pin GPIO_PIN_7
+#define nFAULT_GPIO_Port GPIOA
 #define SPI1_CS_Pin GPIO_PIN_15
 #define SPI1_CS_GPIO_Port GPIOA
+#define LED_Pin GPIO_PIN_6
+#define LED_GPIO_Port GPIOB
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */

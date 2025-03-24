@@ -15,7 +15,6 @@
 #include "periph_encoder_spi.h"
 #include "Foc_Error.h"
 
-
 #define MY_PI           (float)3.1415926535898
 #define TWO_PI          (float)6.2831853071796
 #define SQRT3           (float)1.7320508075689
@@ -25,17 +24,15 @@
 #define TWO_DIV_SQRT3   (float)1.1547005383793
 
 //SVPWM_SETTING
-#define T		    (PWM_PERIOD * 4)   //TIM1 ARR值的4倍
-#define T_SQRT3     (uint16_t)(T * SQRT3)
-#define SECTOR_1	(uint8_t)1
-#define SECTOR_2	(uint8_t)2
-#define SECTOR_3	(uint8_t)3
-#define SECTOR_4	(uint8_t)4
-#define SECTOR_5	(uint8_t)5
-#define SECTOR_6	(uint8_t)6
-//#define zeta		(uint16_t)405 //SVPWM力矩线性灵敏度 400
-#define zeta		(uint16_t)405 //SVPWM力矩线性灵敏度 400
-
+#define T		    	(PWM_PERIOD * 2)   //TIM1 ARR值的4倍
+//#define T_SQRT3   (uint16_t)(T * SQRT3)
+//#define SECTOR_1	(uint8_t)1
+//#define SECTOR_2	(uint8_t)2
+//#define SECTOR_3	(uint8_t)3
+//#define SECTOR_4	(uint8_t)4
+//#define SECTOR_5	(uint8_t)5
+//#define SECTOR_6	(uint8_t)6
+//#define zeta			(uint16_t)4 	  //SVPWM力矩线性灵敏度 400
 
 typedef struct
 {
