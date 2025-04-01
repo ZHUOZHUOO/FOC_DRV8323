@@ -63,7 +63,7 @@ def main():
     # 初始值
     Valpha_init = 0.5
     Vbeta_init = 0.5
-    zeta_init = 1000
+    zeta_init = 100
 
     # 创建图形和滑动条
     fig = plt.figure(figsize=(10, 6))
@@ -79,7 +79,7 @@ def main():
 
     slider_Valpha = Slider(ax_Valpha, 'Valpha', -100.0, 100.0, valinit=Valpha_init)
     slider_Vbeta = Slider(ax_Vbeta, 'Vbeta', -100.0, 100.0, valinit=Vbeta_init)
-    slider_zeta = Slider(ax_zeta, 'Zeta', 1, 10000, valinit=zeta_init, valstep=1)
+    slider_zeta = Slider(ax_zeta, 'Zeta', 1, 200, valinit=zeta_init, valstep=1)
 
     # 初始化绘图
     time = np.arange(0, 100, 1)
@@ -162,8 +162,8 @@ def main():
     def animate(i):
         nonlocal t, auto_mode
         if auto_mode:
-            Valpha = 100 * np.cos(t)
-            Vbeta = 100 * np.sin(t)
+            Valpha = 13 * np.cos(t)
+            Vbeta = 13 * np.sin(t)
             zeta = slider_zeta.val
 
             # 计算SVPWM
