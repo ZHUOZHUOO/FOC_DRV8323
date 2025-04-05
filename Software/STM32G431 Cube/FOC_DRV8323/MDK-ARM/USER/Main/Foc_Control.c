@@ -29,163 +29,85 @@ Encoder_SPI_HandleTypeDef MA600_spi;
 
 void CALC_SVPWM(float Valpha, float Vbeta)
 {
-    uint8_t bSector;
-    int32_t wX, wY, wZ, wUAlpha, wUBeta;
-    uint16_t hTimePhA,hTimePhB,hTimePhC = 0;
- 
-    wUAlpha = Valpha * T_SQRT3;
-    wUBeta = -(Vbeta * T_2);
- 
-    wX = wUBeta;
-    wY = (wUBeta + wUAlpha)/2;
-    wZ = (wUBeta - wUAlpha)/2;
-    
-    //下面是查找定子电流的扇区号
-    if (wY<0)
-    {
-        if (wZ<0)
-        {
-            bSector = SECTOR_5;
-        }
-        else // wZ >= 0
-            if (wX<=0)
-            {
-                bSector = SECTOR_4;
-            }
-            else // wX > 0
-            {
-                bSector = SECTOR_3;
-            }
-    }
-    else // wY > 0
-    {
-        if (wZ>=0)
-        {
-            bSector = SECTOR_2;
-        }
-        else // wZ < 0
-            if (wX<=0)
-            {
-                bSector = SECTOR_6;
-            }
-            else // wX > 0
-            {
-                bSector = SECTOR_1;
-            }
-    }							   
- 
-    switch(bSector)		  //根据所在扇区号，计算三相占空比
-    {
-    case SECTOR_1:
-    case SECTOR_4:
-        hTimePhA = (T_2/8) + ((((T_2 + wX) - wZ)/2)/zeta);
-        hTimePhB = hTimePhA + wZ/zeta;
-        hTimePhC = hTimePhB - wX/zeta;
-        break;
-    case SECTOR_2:
-    case SECTOR_5:
-        hTimePhA = (T_2/8) + ((((T_2 + wY) - wZ)/2)/zeta);
-        hTimePhB = hTimePhA + wZ/zeta;
-        hTimePhC = hTimePhA - wY/zeta;
-        break;
- 
-    case SECTOR_3:
-    case SECTOR_6:
-        hTimePhA = (T_2/8) + ((((T_2 - wX) + wY)/2)/zeta);
-        hTimePhC = hTimePhA - wY/zeta;
-        hTimePhB = hTimePhC + wX/zeta;
-        break;
-    default:
-        break;
-    }
+ 	 float temp;
+ 	 float X,Y,Z, t1,t2;
+ 	 uint16_t A,B,C,N,Sector;
+   uint16_t hTimePhA,hTimePhB,hTimePhC = 0;
+ 	 float Ta, Tb, Tc;
+ 	 //p->T=1.0;//Normalize the whole modulation period
+ 	 X= SQRT3*Vbeta/MOTOR_VOLTAGE*T;
+ 	 Y=(SQRT3*Vbeta+3*Valpha)/(2*MOTOR_VOLTAGE)*T;
+ 	 Z=(SQRT3*Vbeta-3*Valpha)/(2*MOTOR_VOLTAGE)*T;
+ 	//
+ 	 if(Vbeta>0)
+ 	   {A=1;}
+ 	 else
+ 	   {A=0;}
 
-    TIM1->CCR1 = hTimePhA;
-    TIM1->CCR2 = hTimePhB;
-    TIM1->CCR3 = hTimePhC;
+ 	 if( (SQRT3*Valpha - Vbeta)>0 )
+ 	   {B=1;}
+ 	 else
+ 	   {B=0;}
 
-    Motor_FOC.hTimePhA = hTimePhA;
-    Motor_FOC.hTimePhB = hTimePhB;
-    Motor_FOC.hTimePhC = hTimePhC;
+ 	 if((-SQRT3*Valpha - Vbeta)>0)
+ 	   {C=1;}
+ 	 else
+ 	   {C=0;}
 
-// 	 float temp;
-// 	 float X,Y,Z, t1,t2;
-// 	 uint16_t A,B,C,N,Sector;
-//   uint16_t hTimePhA,hTimePhB,hTimePhC = 0;
-// 	 float Ta, Tb, Tc;
-// 	 //p->T=1.0;//Normalize the whole modulation period
-// 	 X= SQRT3*Vbeta/MOTOR_VOLTAGE*T;
-// 	 Y=(SQRT3*Vbeta+3*Valpha)/(2*MOTOR_VOLTAGE)*T;
-// 	 Z=(SQRT3*Vbeta-3*Valpha)/(2*MOTOR_VOLTAGE)*T;
-// 	//
-// 	 if(Vbeta>0)
-// 	   {A=1;}
-// 	 else
-// 	   {A=0;}
+ 	 N=A+2*B+4*C;
+ //
+ 	 switch(N)
+ 	 {
+ 		case 1:{Sector=2;break;}
+ 		case 2:{Sector=6;break;}
+ 		case 3:{Sector=1;break;}
+ 		case 4:{Sector=4;break;}
+ 		case 5:{Sector=3;break;}
+ 		case 6:{Sector=5;break;}
+ 		 default:{;}
+ 	 }
+  //
+ 	switch(Sector)
+ 	{
+ 		case 1: {t1=-Z; t2= X;break;}
+ 		case 2: {t1= Z; t2= Y;break;}
+ 		case 3: {t1= X; t2=-Y;break;}
+ 		case 4: {t1=-X; t2= Z;break;}
+ 		case 5: {t1=-Y; t2=-Z;break;}
+ 		case 6: {t1= Y; t2=-X;break;}
+ 		  default:{;}
+ 	}
 
-// 	 if( (SQRT3*Valpha - Vbeta)>0 )
-// 	   {B=1;}
-// 	 else
-// 	   {B=0;}
+ 	if((t1+t2)>T)//对过调制情况进行调整
+ 	 {
+ 		  temp=t1+t2;
+ 		  t1=t1*T/temp;
+ 		  t2=t2*T/temp;
+ 	 }
 
-// 	 if((-SQRT3*Valpha - Vbeta)>0)
-// 	   {C=1;}
-// 	 else
-// 	   {C=0;}
+ 	//
+ 	 Ta=(T-t1-t2)/4;//作用时间分配
+ 	 Tb=Ta+t1/2;
+ 	 Tc=Tb+t2/2;
 
-// 	 N=A+2*B+4*C;
-// //
-// 	 switch(N)
-// 	 {
-// 		case 1:{Sector=2;break;}
-// 		case 2:{Sector=6;break;}
-// 		case 3:{Sector=1;break;}
-// 		case 4:{Sector=4;break;}
-// 		case 5:{Sector=3;break;}
-// 		case 6:{Sector=5;break;}
-// 		 default:{;}
-// 	 }
-//  //
-// 	switch(Sector)
-// 	{
-// 		case 1: {t1=-Z; t2= X;break;}
-// 		case 2: {t1= Z; t2= Y;break;}
-// 		case 3: {t1= X; t2=-Y;break;}
-// 		case 4: {t1=-X; t2= Z;break;}
-// 		case 5: {t1=-Y; t2=-Z;break;}
-// 		case 6: {t1= Y; t2=-X;break;}
-// 		  default:{;}
-// 	}
-
-// 	if((t1+t2)>T)//对过调制情况进行调整
-// 	 {
-// 		  temp=t1+t2;
-// 		  t1=t1*T/temp;
-// 		  t2=t2*T/temp;
-// 	 }
-
-// 	//
-// 	 Ta=(T-t1-t2)/4;//作用时间分配
-// 	 Tb=Ta+t1/2;
-// 	 Tc=Tb+t2/2;
-
-// 	 switch(Sector)
-// 	  {
-// 		case 1: {hTimePhA=Ta; hTimePhB=Tb; hTimePhC=Tc; break;}
-// 		case 2: {hTimePhA=Tb; hTimePhB=Ta; hTimePhC=Tc; break;}
-// 		case 3: {hTimePhA=Tc; hTimePhB=Ta; hTimePhC=Tb; break;}
-// 		case 4: {hTimePhA=Tc; hTimePhB=Tb; hTimePhC=Ta; break;}
-// 		case 5: {hTimePhA=Tb; hTimePhB=Tc; hTimePhC=Ta; break;}
-// 		case 6: {hTimePhA=Ta; hTimePhB=Tc; hTimePhC=Tb; break;}
-// 		  default:{;}
-// 	  }
+ 	 switch(Sector)
+ 	  {
+ 		case 1: {hTimePhA=Ta; hTimePhB=Tb; hTimePhC=Tc; break;}
+ 		case 2: {hTimePhA=Tb; hTimePhB=Ta; hTimePhC=Tc; break;}
+ 		case 3: {hTimePhA=Tc; hTimePhB=Ta; hTimePhC=Tb; break;}
+ 		case 4: {hTimePhA=Tc; hTimePhB=Tb; hTimePhC=Ta; break;}
+ 		case 5: {hTimePhA=Tb; hTimePhB=Tc; hTimePhC=Ta; break;}
+ 		case 6: {hTimePhA=Ta; hTimePhB=Tc; hTimePhC=Tb; break;}
+ 		  default:{;}
+ 	  }
 	
-//     TIM1->CCR1 = hTimePhA;
-//     TIM1->CCR2 = hTimePhB;
-//     TIM1->CCR3 = hTimePhC;
+     TIM1->CCR1 = hTimePhA;
+     TIM1->CCR2 = hTimePhB;
+     TIM1->CCR3 = hTimePhC;
 
-//     Motor_FOC.hTimePhA = hTimePhA;
-//     Motor_FOC.hTimePhB = hTimePhB;
-//     Motor_FOC.hTimePhC = hTimePhC;
+     Motor_FOC.hTimePhA = hTimePhA;
+     Motor_FOC.hTimePhB = hTimePhB;
+     Motor_FOC.hTimePhC = hTimePhC;
 }
 
 void Park_transform(float Ialpha, float Ibeta, float *Id, float *Iq, float Theta)
@@ -198,7 +120,7 @@ void Park_transform(float Ialpha, float Ibeta, float *Id, float *Iq, float Theta
 void Clarke_transform(float Ia, float Ib, float Ic, float *Ialpha, float *Ibeta)
 {
   // 克拉克变换，将Ia,Ib,Ic转换为Ialpha和Ibeta
-    *Ialpha = TWO_THIRD * Ia;
+    *Ialpha = TWO_DIV_SQRT3 * Ia;
     *Ibeta = SQRT3_DIV3 * (Ib - Ic);
 }
 
@@ -212,7 +134,7 @@ void Inv_Park_transform(float Id, float Iq, float *Ialpha, float *Ibeta, float T
 float FOC_Theta_Calc(float Theta)
 {
   float electrode_angle;
-  electrode_angle = MOTOR_POLE_PAIRS * Theta;
+  electrode_angle = MOTOR_POLE_PAIRS * (Theta + 360);
   electrode_angle = (uint32_t)electrode_angle % 360;
   return electrode_angle;
 }
@@ -233,7 +155,7 @@ void FOC_Struct_Init(FOC_Struct *foc)
     foc->hTimePhA = 0;
     foc->hTimePhB = 0;
     foc->hTimePhC = 0;
-    foc->Speed_Rpm_Expect = MOTOR_SPEED_MAX - 2;
+    foc->Speed_Rpm_Expect = MOTOR_SPEED_MAX - 7.5f;
     foc->Speed_Rpm = 0;
     foc->Theta = 0;
 }
@@ -305,18 +227,18 @@ void FOC_Main_Loop_H_Freq(void)
 #if FOC_CLOSE_LOOP_MODE == MODE_OFF
     Motor_FOC.Vd = 0.00f;
 		#if MOTOR_TYPE == HT4315
-    Motor_FOC.Vq = (0.5 * Motor_FOC.Speed_Rpm / Motor_FOC.Speed_Rpm_Expect + 0.5)*13.5f; 
+    Motor_FOC.Vq = (0.5 * Motor_FOC.Speed_Rpm / Motor_FOC.Speed_Rpm_Expect + 0.5)*10.0f; 
 		#elif MOTOR_TYPE == DJI_SNAIL_2305
 		Motor_FOC.Vq = (0.8 * Motor_FOC.Speed_Rpm / Motor_FOC.Speed_Rpm_Expect + 0.2)*10.0f;
 		#endif
 
 #elif FOC_CLOSE_LOOP_MODE == MODE_ON
     PID_SetFdb(&Current_Id_PID, Motor_FOC.Id);
-    PID_SetRef(&Current_Id_PID, 0);
+    PID_SetRef(&Current_Id_PID, 0.0f);
     Motor_FOC.Vd += PID_Calc(&Current_Id_PID);
 
     PID_SetFdb(&Current_Iq_PID, Motor_FOC.Iq);
-    PID_SetRef(&Current_Iq_PID, 0.1f);
+    PID_SetRef(&Current_Iq_PID, 0.5f );
     Motor_FOC.Vq += PID_Calc(&Current_Iq_PID);
 #endif
 	

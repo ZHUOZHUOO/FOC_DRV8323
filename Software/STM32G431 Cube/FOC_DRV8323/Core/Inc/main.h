@@ -71,8 +71,8 @@ void Error_Handler(void);
 #define CAL_GPIO_Port GPIOA
 #define ENABLE_Pin GPIO_PIN_5
 #define ENABLE_GPIO_Port GPIOA
-#define nFAULT_Pin GPIO_PIN_7
-#define nFAULT_GPIO_Port GPIOA
+#define nFault_Pin GPIO_PIN_6
+#define nFault_GPIO_Port GPIOA
 #define SPI1_CS_Pin GPIO_PIN_15
 #define SPI1_CS_GPIO_Port GPIOA
 #define LED_Pin GPIO_PIN_6

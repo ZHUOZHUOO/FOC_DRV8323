@@ -22,20 +22,18 @@ Dialog DLL:      TCM.DLL V1.27.0.0
  
 <h2>Project:</h2>
 H:\ZHUOZHUOO--Github\FOC_DRV8323\Software\STM32G431 Cube\FOC_DRV8323\MDK-ARM\FOC_DRV8323.uvprojx
-Project File Date:  03/25/2025
+Project File Date:  04/06/2025
 
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 4 (build 422)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
 Build target 'FOC_DRV8323'
-compiling Foc_Error.c...
-compiling main.c...
-compiling util_adc.c...
 compiling Foc_Control.c...
-USER\Main\Foc_Control.c(308): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-      Motor_FOC.Vq = (0.5 * Motor_FOC.Speed_Rpm / Motor_FOC.Speed_Rpm_Expect + 0.5)*13.5f; 
+USER\Main\Foc_Control.c(158): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+      foc->Speed_Rpm_Expect = 
+OTOR_SPEED_MAX - 7.5f;
 USER\Main\Foc_Control.c: 1 warning, 0 errors
 linking...
-Program Size: Code=23280 RO-data=2580 RW-data=72 ZI-data=2936  
+Program Size: Code=22520 RO-data=2580 RW-data=64 ZI-data=2936  
 FromELF: creating hex file...
 "FOC_DRV8323\FOC_DRV8323.axf" - 0 Error(s), 1 Warning(s).
 
@@ -55,7 +53,7 @@ Package Vendor: ARM
 <h2>Collection of Component Files used:</h2>
 
    * Component: ARM::CMSIS:CORE:5.0.1
-Build Time Elapsed:  00:00:09
+Build Time Elapsed:  00:00:04
 </pre>
 </body>
 </html>

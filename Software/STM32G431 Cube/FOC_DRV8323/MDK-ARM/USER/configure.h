@@ -21,7 +21,7 @@
 #define DJI_SNAIL_2305 1
 
 //闭环模式
-#define FOC_CLOSE_LOOP_MODE MODE_OFF
+#define FOC_CLOSE_LOOP_MODE MODE_ON
 //ADC电压校准模式
 #define ADC_VREF_MODE MODE_OFF
 //滤波模式, Sliding Window Filter
