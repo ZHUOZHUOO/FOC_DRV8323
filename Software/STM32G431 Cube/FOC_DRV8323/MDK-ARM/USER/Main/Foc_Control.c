@@ -120,7 +120,7 @@ void Park_transform(float Ialpha, float Ibeta, float *Id, float *Iq, float Theta
 void Clarke_transform(float Ia, float Ib, float Ic, float *Ialpha, float *Ibeta)
 {
   // 克拉克变换，将Ia,Ib,Ic转换为Ialpha和Ibeta
-    *Ialpha = TWO_DIV_SQRT3 * Ia;
+    *Ialpha = Ia;
     *Ibeta = SQRT3_DIV3 * (Ib - Ic);
 }
 
@@ -134,9 +134,8 @@ void Inv_Park_transform(float Id, float Iq, float *Ialpha, float *Ibeta, float T
 float FOC_Theta_Calc(float Theta)
 {
   float electrode_angle;
-  electrode_angle = MOTOR_POLE_PAIRS * (Theta + 360);
-  electrode_angle = (uint32_t)electrode_angle % 360;
-  return electrode_angle;
+  electrode_angle = ((uint32_t)(MOTOR_POLE_PAIRS * (Theta + 360))% 360) / 360.0f * TWO_PI;
+  return electrode_angle;//rad
 }
 
 void FOC_Struct_Init(FOC_Struct *foc)
@@ -155,7 +154,7 @@ void FOC_Struct_Init(FOC_Struct *foc)
     foc->hTimePhA = 0;
     foc->hTimePhB = 0;
     foc->hTimePhC = 0;
-    foc->Speed_Rpm_Expect = MOTOR_SPEED_MAX - 7.5f;
+    foc->Speed_Rpm_Expect = MOTOR_SPEED_MAX - 5.5f;
     foc->Speed_Rpm = 0;
     foc->Theta = 0;
 }
@@ -227,7 +226,7 @@ void FOC_Main_Loop_H_Freq(void)
 #if FOC_CLOSE_LOOP_MODE == MODE_OFF
     Motor_FOC.Vd = 0.00f;
 		#if MOTOR_TYPE == HT4315
-    Motor_FOC.Vq = (0.5 * Motor_FOC.Speed_Rpm / Motor_FOC.Speed_Rpm_Expect + 0.5)*10.0f; 
+    Motor_FOC.Vq = (0.5 * Motor_FOC.Speed_Rpm / Motor_FOC.Speed_Rpm_Expect + 0.5)*8.0f; 
 		#elif MOTOR_TYPE == DJI_SNAIL_2305
 		Motor_FOC.Vq = (0.8 * Motor_FOC.Speed_Rpm / Motor_FOC.Speed_Rpm_Expect + 0.2)*10.0f;
 		#endif
@@ -238,10 +237,10 @@ void FOC_Main_Loop_H_Freq(void)
     Motor_FOC.Vd += PID_Calc(&Current_Id_PID);
 
     PID_SetFdb(&Current_Iq_PID, Motor_FOC.Iq);
-    PID_SetRef(&Current_Iq_PID, 0.5f );
+    PID_SetRef(&Current_Iq_PID, 0.3f );
     Motor_FOC.Vq += PID_Calc(&Current_Iq_PID);
 #endif
-	
+		
     Inv_Park_transform(Motor_FOC.Vd, Motor_FOC.Vq, &Motor_FOC.Valpha, &Motor_FOC.Vbeta, Motor_FOC.Theta);
     CALC_SVPWM(Motor_FOC.Valpha, Motor_FOC.Vbeta);
 

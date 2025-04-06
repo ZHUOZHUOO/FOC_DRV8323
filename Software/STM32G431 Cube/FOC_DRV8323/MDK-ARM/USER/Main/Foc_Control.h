@@ -53,6 +53,7 @@ typedef struct
     uint16_t hTimePhB;
     uint16_t hTimePhC;
     float Theta;//电角度_反馈
+		float Theta_ref;
     float Speed_Rpm_Expect;//期望速度
     float Speed_Rpm;//速度
     float PWM_A_DutyCycle;//占空比A相
