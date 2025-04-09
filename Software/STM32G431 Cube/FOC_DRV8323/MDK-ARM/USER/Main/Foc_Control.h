@@ -14,6 +14,7 @@
 #include "arm_const_structs.h"
 #include "periph_encoder_spi.h"
 #include "Foc_Error.h"
+#include "Init_music.h"
 
 #define MY_PI           (float)3.1415926535898
 #define TWO_PI          (float)6.2831853071796
@@ -67,7 +68,7 @@ typedef struct
     uint32_t run_Hz;
     uint16_t state_led_flag;
     uint16_t Adc_flag;
-	uint16_t Adc_Hz;
+		uint16_t Adc_Hz;
 }FOC_Running_Struct;
 
 extern FOC_Struct Motor_FOC;

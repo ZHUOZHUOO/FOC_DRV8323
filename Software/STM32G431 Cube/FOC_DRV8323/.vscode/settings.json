@@ -1,6 +1,9 @@
 {
     "files.associations": {
         "main.h": "c",
-        "adc_util.h": "c"
+        "adc_util.h": "c",
+        "init_music.h": "c",
+        "stm32g4xx.h": "c",
+        "configure.h": "c"
     }
 }

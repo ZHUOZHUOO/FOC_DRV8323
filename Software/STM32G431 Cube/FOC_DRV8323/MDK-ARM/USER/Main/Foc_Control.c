@@ -1,8 +1,8 @@
 /*
  * @Date: 2025-02-26 18:25:59
  * @LastEditors: ZHUOZHUOO
- * @LastEditTime: 2025-03-12 19:15:23
- * @FilePath: \undefinedf:\ZHUOZHUOO--Github\FOC_DRV8323\Software\STM32G431 Cube\FOC_DRV8323\MDK-ARM\USER\Main\Foc_Control.c
+ * @LastEditTime: 2025-04-08 17:44:50
+ * @FilePath: \FOC_DRV8323\MDK-ARM\USER\Main\Foc_Control.c
  * @Description: Do not edit
  */
 
@@ -186,7 +186,6 @@ void FOC_Main_Init(void)
 
     FOC_PID_Init();
 
-    HAL_TIM_Base_Start_IT(&htim1);
     HAL_TIM_PWM_Start_IT(&htim1, TIM_CHANNEL_1);
     HAL_TIM_PWM_Start_IT(&htim1, TIM_CHANNEL_2);
     HAL_TIM_PWM_Start_IT(&htim1, TIM_CHANNEL_3);
@@ -199,7 +198,15 @@ void FOC_Main_Init(void)
     HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_2);
     HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_3);
 		
+		
 		HAL_TIM_Base_Start_IT(&htim3);
+    HAL_TIM_Base_Start(&htim1);
+    setVolume(10); //音量设置
+		playStartupTune();    //start music
+		HAL_TIM_Base_Stop(&htim1);
+		
+		HAL_Delay(500);
+		HAL_TIM_Base_Start_IT(&htim1);
 }
 
 void FOC_Main_Loop_H_Freq(void)
