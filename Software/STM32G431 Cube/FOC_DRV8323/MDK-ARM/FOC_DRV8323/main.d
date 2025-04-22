@@ -36,20 +36,6 @@ foc_drv8323\main.o: ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_spi.h
 foc_drv8323\main.o: ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_spi_ex.h
 foc_drv8323\main.o: ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_tim.h
 foc_drv8323\main.o: ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_tim_ex.h
-foc_drv8323\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h
-foc_drv8323\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h
-foc_drv8323\main.o: ../Core/Inc/FreeRTOSConfig.h
-foc_drv8323\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h
-foc_drv8323\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/portable.h
-foc_drv8323\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/deprecated_definitions.h
-foc_drv8323\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F/portmacro.h
-foc_drv8323\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/mpu_wrappers.h
-foc_drv8323\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/task.h
-foc_drv8323\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h
-foc_drv8323\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/timers.h
-foc_drv8323\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h
-foc_drv8323\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/semphr.h
-foc_drv8323\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h
 foc_drv8323\main.o: ../Core/Inc/adc.h
 foc_drv8323\main.o: ../Core/Inc/dma.h
 foc_drv8323\main.o: ../Core/Inc/fdcan.h
@@ -77,4 +63,4 @@ foc_drv8323\main.o: ../MDK-ARM/USER/Utility/util_gpio.h
 foc_drv8323\main.o: ../MDK-ARM/USER/Utility/util_spi.h
 foc_drv8323\main.o: ../MDK-ARM/USER/Main/Foc_Error.h
 foc_drv8323\main.o: ../MDK-ARM/USER/Main/Init_music.h
-foc_drv8323\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h
+foc_drv8323\main.o: ../MDK-ARM/USER/System/sys_dwt.h

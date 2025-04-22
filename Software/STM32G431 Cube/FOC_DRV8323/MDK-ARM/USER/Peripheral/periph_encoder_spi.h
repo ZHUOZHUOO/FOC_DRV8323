@@ -29,7 +29,7 @@ typedef struct {
   uint32_t last_update_time; // 上次更新时间
   int16_t multi_turn;        // 当前多圈数
   int16_t last_multi_turn;   // 上一次的多圈数
-  int16_t last_angle;        // 上一次的角度
+  float last_angle;        	 // 上一次的角度
   float angle_diff;          // 角度差值
   int32_t turns;             // 累计圈数
   float angular_speed;       // 角速度 (rad/s)

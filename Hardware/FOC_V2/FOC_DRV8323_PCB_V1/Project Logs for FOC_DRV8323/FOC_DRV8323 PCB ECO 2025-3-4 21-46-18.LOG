@@ -1,0 +1,17 @@
+Removed Pin From Net: NetName=VCC Pin=C13-2
+Removed Pin From Net: NetName=VCC Pin=R28-2
+Removed Pin From Net: NetName=VCC Pin=U8-3
+Removed Member From Class: ClassName=FOC_DRV8323 Member=R23
+Added Pin To Net: NetName=VCC__ Pin=C13-2
+Added Pin To Net: NetName=VCC__ Pin=R28-2
+Added Pin To Net: NetName=VCC__ Pin=U8-3
+Added Net: Name=VCC__
+Added Member To Class: ClassName=FOC_DRV8323 Member=Component R19 0
+Added Member To Class: ClassName=FOC_DRV8323 Member=Component R20 0.004
+Added Member To Class: ClassName=FOC_DRV8323 Member=Component R22 0.004
+Added Member To Class: ClassName=FOC_STM32G431 Member=Component R24 10K
+Added Member To Class: ClassName=FOC_STM32G431 Member=Component R26 2K¦¸
+Added Member To Class: ClassName=FOC_STM32G431 Member=Component R28 10K
+Added Member To Class: ClassName=FOC_STM32G431 Member=Component R30 10K¦¸
+Added Member To Class: ClassName=FOC_STM32G431 Member=Component R31 10K¦¸
+Added Member To Class: ClassName=FOC_STM32G431 Member=Component U6 STM32G431KBU3

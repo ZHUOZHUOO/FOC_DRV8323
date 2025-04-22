@@ -1,0 +1,26 @@
+Added Component: Designator=R3(R0402)
+Add component (AddParameter): Name = "BOM_Manufacturer"; Value = "UniOhm"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "BOM_Manufacturer Part"; Value = "0603WAJ022JT5E"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "BOM_Supplier"; Value = "LCSC"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "BOM_Supplier Part"; Value = "C25226"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "nameAlias"; Value = "Value(¦¸)"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "spicePre"; Value = "R"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "spiceSymbolName"; Value = "Res_0603(1/10W)_EU"; VariantName = "[No Variations]"
+Added Component: Designator=R4(R0402)
+Add component (AddParameter): Name = "BOM_Manufacturer"; Value = "UniOhm"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "BOM_Manufacturer Part"; Value = "0603WAJ022JT5E"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "BOM_Supplier"; Value = "LCSC"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "BOM_Supplier Part"; Value = "C25226"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "nameAlias"; Value = "Value(¦¸)"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "spicePre"; Value = "R"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "spiceSymbolName"; Value = "Res_0603(1/10W)_EU"; VariantName = "[No Variations]"
+Added Pin To Net: NetName=VCC Pin=R3-2
+Added Pin To Net: NetName=DGND Pin=R4-1
+Added Pin To Net: NetName=VCC_ADC Pin=R3-1
+Added Pin To Net: NetName=VCC_ADC Pin=R4-2
+Added Pin To Net: NetName=VCC_ADC Pin=U3-8
+Added Net: Name=VCC_ADC
+Added Member To Class: ClassName=FOC_DRV8323 Member=Component R3 10K
+Added Member To Class: ClassName=FOC_DRV8323 Member=Component R4 1K
+Added Member To Class: ClassName=FOC_DRV8323 Member=Component U2 DRV8323HRTAR
+Added Room: Name=FOC_DRV8323

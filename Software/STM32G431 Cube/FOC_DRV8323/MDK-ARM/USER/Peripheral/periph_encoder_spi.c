@@ -144,7 +144,7 @@ void Encoder_SPI_Data_Process(Encoder_SPI_HandleTypeDef *encoder,
   // 读取编码器角度值（0-65535范围）
   int16_t encoderRawData = (int16_t)(buffer[0] << 8 | buffer[1]);
   // 将编码器值转换为-180°~180°的角度
-  float rawAngle = (float)(encoderRawData) * 360.0f / 65536.0f - 180.0f;
+  float rawAngle = (float)(encoderRawData) * 360.0f / 65536.0f;
 	
   // 读取多圈信息
   int16_t turns = (int16_t)((buffer[2] << 8) | buffer[3]);

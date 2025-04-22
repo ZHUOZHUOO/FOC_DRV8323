@@ -1,5 +1,0 @@
-Added Pin To Net: NetName=VCC Pin=Q4-7
-Added Pin To Net: NetName=VCC Pin=Q4-8
-Added Pin To Net: NetName=VCC Pin=Q4-9
-Added Pin To Net: NetName=VCC Pin=Q4-10
-Added Member To Class: ClassName=FOC_DRV8323 Member=Component Q3 IRF7480MTRPBF
