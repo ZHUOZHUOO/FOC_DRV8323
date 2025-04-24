@@ -158,7 +158,7 @@ void FOC_Struct_Init(FOC_Struct *foc)
     foc->hTimePhA = 0;
     foc->hTimePhB = 0;
     foc->hTimePhC = 0;
-    foc->Speed_Rpm_Expect = (MOTOR_SPEED_MAX - 3.5f);
+    foc->Speed_Rpm_Expect = (MOTOR_SPEED_MAX - 150.5f);
     foc->Speed_Rpm = 0;
     foc->Theta = 0;
 		foc->Open_Loop_Theta = 0;
@@ -175,10 +175,9 @@ void FOC_PID_Init(void)
 		#elif MOTOR_TYPE == DJI_SNAIL_2305
 	  PID_Init(&Current_Id_PID, PID_DELTA, 15.5f, 1.64f, 0.00f, 0.0f, 0.0f, 5.8f, 0.5f, 0.1f, 0.1f, 0.1f);
     PID_Init(&Current_Iq_PID, PID_DELTA, 15.5f, 1.64f, 0.00f, 0.0f, 0.0f, 5.8f, 0.5f, 0.1f, 0.1f, 0.1f);
-    PID_Init(&Speed_PID, PID_DELTA, 0.0052f, 0.0005f, 0.0f, 0.0f, 0.0f, 300, 300, 0.1f, 0.1f, 0.1f);//snail
+    PID_Init(&Speed_PID, PID_DELTA, 0.003f, 0.0003f, 0.0f, 0.0f, 0.0f, 300, 300, 0.1f, 0.1f, 0.1f);//snail
 		PID_Init(&Position_PID, PID_POSITION, 0.001f, 0.001f, 0.0f, 0.0f, 0.0f, 200, 200, 0.1f, 0.1f, 0.1f);
     #endif
-
 }
 
 //======================FOC main=======================//
@@ -187,13 +186,17 @@ void FOC_Main_Init(void)
 {
     FOC_Struct_Init(&Motor_FOC);
     Error_Struct_Init(&Motor_Error);
-    Adc_Init();
+	
+
 		DWT_Init(170);
     Encoder_SPI_Init(&MA600_spi, &hspi1, MA600_CS_GPIO_Port, MA600_CS_Pin, 0.01f);
 		
 		DRV8323_Init();
 
     FOC_PID_Init();
+	
+		HAL_TIM_Base_Start (&htim1);
+		HAL_TIM_Base_Start_IT(&htim1);
 
     HAL_TIM_PWM_Start_IT(&htim1, TIM_CHANNEL_1);
     HAL_TIM_PWM_Start_IT(&htim1, TIM_CHANNEL_2);
@@ -207,15 +210,13 @@ void FOC_Main_Init(void)
     HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_2);
     HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_3);
 		
-		
-		HAL_TIM_Base_Start_IT(&htim3);
-    HAL_TIM_Base_Start(&htim1);
     setVolume(10); //音量设置
 		playStartupTune();    //start music
-		HAL_TIM_Base_Stop(&htim1);
+		
+		Adc_Init();
 		
 		HAL_Delay(500);
-		HAL_TIM_Base_Start_IT(&htim1);
+		HAL_TIM_Base_Start_IT(&htim3);
 }
 
 void FOC_Main_Loop_H_Freq(void)
@@ -233,33 +234,33 @@ void FOC_Main_Loop_H_Freq(void)
 		
 	
 //----------Ia Ib Ic Calc----------//	
-    // Motor_FOC.Ia = (DRV8323_VREF_DIV_TWO - Motor_ADC.Valtage_Current_A) / DRV8323_ADC_GAIN;
-    // Motor_FOC.Ib = (DRV8323_VREF_DIV_TWO - Motor_ADC.Valtage_Current_B) / DRV8323_ADC_GAIN;
-    // Motor_FOC.Ic = (DRV8323_VREF_DIV_TWO - Motor_ADC.Valtage_Current_C) / DRV8323_ADC_GAIN;
-		if(Motor_FOC.hTimePhA > (Motor_FOC.hTimePhB + k) & Motor_FOC.hTimePhA > (Motor_FOC.hTimePhC + k))
-		{
+//			Motor_FOC.Ia = (DRV8323_VREF_DIV_TWO - Motor_ADC.Valtage_Current_A) / DRV8323_ADC_GAIN;
+//			Motor_FOC.Ib = (DRV8323_VREF_DIV_TWO - Motor_ADC.Valtage_Current_B) / DRV8323_ADC_GAIN;
+//			Motor_FOC.Ic = (DRV8323_VREF_DIV_TWO - Motor_ADC.Valtage_Current_C) / DRV8323_ADC_GAIN;
+//		if(Motor_FOC.hTimePhA > (Motor_FOC.hTimePhB + k) & Motor_FOC.hTimePhA > (Motor_FOC.hTimePhC + k))
+//		{
+//			Motor_FOC.Ib = (DRV8323_VREF_DIV_TWO - Motor_ADC.Valtage_Current_B);
+//			Motor_FOC.Ic = (DRV8323_VREF_DIV_TWO - Motor_ADC.Valtage_Current_C);
+//			Motor_FOC.Ia = - Motor_FOC.Ib - Motor_FOC.Ic;
+//		}
+//		else if(Motor_FOC.hTimePhB > (Motor_FOC.hTimePhA + k) & Motor_FOC.hTimePhB > (Motor_FOC.hTimePhC + k))
+//		{
+//			Motor_FOC.Ia = (DRV8323_VREF_DIV_TWO - Motor_ADC.Valtage_Current_A);
+//			Motor_FOC.Ic = (DRV8323_VREF_DIV_TWO - Motor_ADC.Valtage_Current_C);
+//			Motor_FOC.Ib = - Motor_FOC.Ia - Motor_FOC.Ic;
+//		}
+//		else if(Motor_FOC.hTimePhC > (Motor_FOC.hTimePhA + k) & Motor_FOC.hTimePhC > (Motor_FOC.hTimePhB + k))
+//		{
+//			Motor_FOC.Ia = (DRV8323_VREF_DIV_TWO - Motor_ADC.Valtage_Current_A);
+//			Motor_FOC.Ib = (DRV8323_VREF_DIV_TWO - Motor_ADC.Valtage_Current_B);
+//			Motor_FOC.Ic = - Motor_FOC.Ia - Motor_FOC.Ib;
+//		}
+//		else 
+//		{
+			Motor_FOC.Ia = (DRV8323_VREF_DIV_TWO - Motor_ADC.Valtage_Current_A);
 			Motor_FOC.Ib = (DRV8323_VREF_DIV_TWO - Motor_ADC.Valtage_Current_B);
 			Motor_FOC.Ic = (DRV8323_VREF_DIV_TWO - Motor_ADC.Valtage_Current_C);
-			Motor_FOC.Ia = - Motor_FOC.Ib - Motor_FOC.Ic;
-		}
-		else if(Motor_FOC.hTimePhB > (Motor_FOC.hTimePhA + k) & Motor_FOC.hTimePhB > (Motor_FOC.hTimePhC + k))
-		{
-			Motor_FOC.Ia = (DRV8323_VREF_DIV_TWO - Motor_ADC.Valtage_Current_A);
-			Motor_FOC.Ic = (DRV8323_VREF_DIV_TWO - Motor_ADC.Valtage_Current_C);
-			Motor_FOC.Ib = - Motor_FOC.Ia - Motor_FOC.Ic;
-		}
-		else if(Motor_FOC.hTimePhC > (Motor_FOC.hTimePhA + k) & Motor_FOC.hTimePhC > (Motor_FOC.hTimePhB + k))
-		{
-			Motor_FOC.Ia = (DRV8323_VREF_DIV_TWO - Motor_ADC.Valtage_Current_A);
-			Motor_FOC.Ib = (DRV8323_VREF_DIV_TWO - Motor_ADC.Valtage_Current_B);
-			Motor_FOC.Ic = - Motor_FOC.Ia - Motor_FOC.Ib;
-		}
-		else 
-		{
-			Motor_FOC.Ia = (DRV8323_VREF_DIV_TWO - Motor_ADC.Valtage_Current_A);
-			Motor_FOC.Ib = (DRV8323_VREF_DIV_TWO - Motor_ADC.Valtage_Current_B);
-			Motor_FOC.Ic = (DRV8323_VREF_DIV_TWO - Motor_ADC.Valtage_Current_C);
-		}
+//		}
 		
 //----------Clarke_Park_transform----------//
     Clarke_transform(Motor_FOC.Ia, Motor_FOC.Ib, Motor_FOC.Ic, &Motor_FOC.Ialpha, &Motor_FOC.Ibeta);
@@ -272,7 +273,7 @@ void FOC_Main_Loop_H_Freq(void)
 		#if MOTOR_TYPE == HT4315
     Motor_FOC.Vq = (0.5 * Motor_FOC.Speed_Rpm / Motor_FOC.Speed_Rpm_Expect + 0.5)*10.0f; 
 		#elif MOTOR_TYPE == DJI_SNAIL_2305
-		Motor_FOC.Vq = (0.2 * Motor_FOC.Speed_Rpm / Motor_FOC.Speed_Rpm_Expect + 0.8)*6.0f;
+		Motor_FOC.Vq = (0.8 * Motor_FOC.Speed_Rpm / Motor_FOC.Speed_Rpm_Expect + 0.2)*12.0f;
 		#endif
 
 #elif FOC_CLOSE_LOOP_MODE == MODE_ON
@@ -281,12 +282,15 @@ void FOC_Main_Loop_H_Freq(void)
     Motor_FOC.Vd += PID_Calc(&Current_Id_PID);
 
     PID_SetFdb(&Current_Iq_PID, Motor_FOC.Iq);
-    PID_SetRef(&Current_Iq_PID, Motor_FOC.Iq_ref);
-//    PID_SetRef(&Current_Iq_PID, 0.15f);
+//    PID_SetRef(&Current_Iq_PID, Motor_FOC.Iq_ref);
+    PID_SetRef(&Current_Iq_PID, 0.11f);
     Motor_FOC.Vq += PID_Calc(&Current_Iq_PID);
 #endif
 
-		if(Motor_FOC.Vq > 12.0f)Motor_FOC.Vq = 13.0f;
+		Max(Motor_FOC.Vq,12.0f);
+		Min(Motor_FOC.Vq,12.0f);
+		Max(Motor_FOC.Vd,12.0f);
+		Min(Motor_FOC.Vd,12.0f);
 		
 //---------Inv_Park_transform----------//
 #if FOC_CLOSE_LOOP_MODE == MODE_OFF
@@ -298,12 +302,11 @@ void FOC_Main_Loop_H_Freq(void)
 //---------SVPWM_transform----------//
     CALC_SVPWM(Motor_FOC.Valpha, Motor_FOC.Vbeta);
 		
-		
 //---------Running_Frec_Calc----------//
     if (Motor_Run.state_led_flag == 10000)
     {
         Motor_Run.state_led_flag = 0;
-        HAL_GPIO_TogglePin(LED_PORT, LED_Pin);
+//        HAL_GPIO_TogglePin(LED_PORT, LED_Pin);
     }
     Motor_Run.state_led_flag++;
     Motor_Run.run_flag++;

@@ -98,7 +98,7 @@ int main(void)
   MX_SPI1_Init();
   MX_TIM3_Init();
   /* USER CODE BEGIN 2 */
-    FOC_Main_Init();
+  FOC_Main_Init();
 
   /* USER CODE END 2 */
 
@@ -185,12 +185,13 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	if (htim->Instance == TIM1) {
     uint32_t dir = (htim1.Instance->CR1 & TIM_CR1_DIR);
     if (dir != 0) {
-      Get_ADC_Value();
+//      Get_ADC_Value();
       FOC_Main_Loop_H_Freq();
 		}
 	}
   else if (htim->Instance == TIM3)
   {
+			Get_ADC_Value();
 			FOC_Main_Loop_L_Freq();
       Error_Main_Loop();      //Error Handler
       static uint16_t cnt = 0;

@@ -12,8 +12,8 @@
 #include "Foc_Control.h"
 
 #define VOLTAGE_MAX 26 //V
-#define VOLTAGE_MIN 9 //V
-#define CURRENT_MAX 30 //A
+#define VOLTAGE_MIN 5 //V
+#define CURRENT_MAX 15 //A
 #define TEMPERATURE_MAX 300 //°C
 #define OVER_SPEED 1000 //rpm
 #define OVER_LOAD 100 

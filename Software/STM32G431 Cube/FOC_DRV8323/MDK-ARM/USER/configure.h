@@ -10,7 +10,7 @@
 
 //-----------Version Setting------------//
 //Hardware Version
-#define HARDWARE_VERSION VERSION_2
+#define HARDWARE_VERSION VERSION_1
 //Motor Type
 #define MOTOR_TYPE DJI_SNAIL_2305
 //Encoder Type
@@ -26,7 +26,7 @@
 //ADC电压校准模式
 #define ADC_VREF_MODE MODE_OFF
 //滤波模式, Sliding Window Filter
-#define ADC_FILTER_MODE MODE_ON
+#define ADC_FILTER_MODE MODE_OFF
 #define SLIDING_WINDOW_SIZE 8
 //错误处理模式
 #define ERROR_MODE MODE_OFF

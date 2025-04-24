@@ -10,11 +10,16 @@ extern "C"
 #include "Foc_Control.h"
 #define ADC1_CHANNEL_NUM  6
 
-//ADC Rank define
-#define CURRENT_A_ADC_CHANNEL  1
-#define CURRENT_B_ADC_CHANNEL  2
-#define CURRENT_C_ADC_CHANNEL  3
-#define VCC_ADC_CHANNEL  0
+#define ADC1_REGULAR_MODE_CH 3
+#define ADC1_INJECTED_MODE_CH 3
+
+//ADC REGULAR_MODE_CH
+#define CURRENT_A_ADC_CHANNEL  0
+#define CURRENT_B_ADC_CHANNEL  1
+#define CURRENT_C_ADC_CHANNEL  2
+
+//ADC INJECTED_MODE_CH
+#define VCC_ADC_CHANNEL  3
 #define TEMP_ADC_CHANNEL  4
 #define VREF_ADC_CHANNEL  5
 
@@ -27,9 +32,6 @@ typedef struct
     float Valtage_VCC;
     float Temperature;
     float Internal_Vref;
-    float A_Offset;
-    float B_Offset;
-    float C_Offset;
     float Vref_Offset;
 } ADC_Struct;
 
