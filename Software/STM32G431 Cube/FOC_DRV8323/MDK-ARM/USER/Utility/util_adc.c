@@ -1,9 +1,11 @@
 #include "util_adc.h"
 
+
 uint16_t Adc_Val[ADC1_CHANNEL_NUM];                   //Adc data array    
 float   Adc_Sum_Val[ADC1_CHANNEL_NUM];		            //Adc decode data
 uint32_t ADC_INJECTED_RANK[4] = {ADC_INJECTED_RANK_1, ADC_INJECTED_RANK_2, ADC_INJECTED_RANK_3, ADC_INJECTED_RANK_4};
 
+static float inv_adc_val = 3.3f / 4095.0f;
 
 #if ADC_FILTER_MODE == MODE_ON
 float Adc_Sum_Temp[ADC1_CHANNEL_NUM][SLIDING_WINDOW_SIZE];
@@ -36,12 +38,12 @@ void Adc_Val_Decode()
 #if ADC_FILTER_MODE == MODE_OFF
 	for(int i = ADC1_INJECTED_MODE_CH; i < ADC1_CHANNEL_NUM; i++)
 	{
-		Adc_Sum_Val[i] = Adc_Val[i] * (3.3f / 4095.0f);
+		Adc_Sum_Val[i] = Adc_Val[i] * (inv_adc_val);
 	}
 #elif ADC_FILTER_MODE == MODE_ON
 	for(int i = ADC1_INJECTED_MODE_CH; i < ADC1_CHANNEL_NUM; i++)
 	{
-		Adc_Sum_Temp[i][filter_flag] = Adc_Val[i] * (3.3f / 4095.0f / (float)SLIDING_WINDOW_SIZE);
+		Adc_Sum_Temp[i][filter_flag] = Adc_Val[i] * (inv_adc_val / (float)SLIDING_WINDOW_SIZE);
 		float sum_temp = 0.0f;
 		for(int j = 0; j < SLIDING_WINDOW_SIZE; j++)
 		{
@@ -70,14 +72,14 @@ void Adc_Injected_Val_Decode(ADC_HandleTypeDef *hadc)
 	for(int i = 0; i < ADC1_INJECTED_MODE_CH; i++)
 	{
 		uint32_t jdr_value = HAL_ADCEx_InjectedGetValue(hadc, ADC_INJECTED_RANK[i]);
-    Adc_Sum_Val[i] = (float)jdr_value * (3.3f / 4095.0f);
+    Adc_Sum_Val[i] = (float)jdr_value * (inv_adc_val);
 	}
 
 #elif ADC_FILTER_MODE == MODE_ON
 	for(int i = 0; i < ADC1_INJECTED_MODE_CH; i++)
 	{
 		uint32_t jdr_value = HAL_ADCEx_InjectedGetValue(hadc, ADC_INJECTED_RANK[i]);
-    Adc_Sum_Temp[i][inj_filter_flag] = (float)jdr_value * (3.3f / 4095.0f / (float)SLIDING_WINDOW_SIZE);
+    Adc_Sum_Temp[i][inj_filter_flag] = (float)jdr_value * (inv_adc_val / (float)SLIDING_WINDOW_SIZE);
 		float sum_temp = 0.0f;
 		for(int j = 0; j < SLIDING_WINDOW_SIZE; j++)
 		{
@@ -98,7 +100,6 @@ void Adc_Injected_Val_Decode(ADC_HandleTypeDef *hadc)
 	Motor_ADC.Valtage_Current_B = Adc_Sum_Val[CURRENT_B_ADC_CHANNEL];
 	Motor_ADC.Valtage_Current_C = Adc_Sum_Val[CURRENT_C_ADC_CHANNEL];
 #endif
-	
 	
 }
 
@@ -139,9 +140,10 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc)
 {
     if (hadc == &hadc1)
     {
-				Adc_Val_Decode();
+
     }
 }
+
 
 void HAL_ADCEx_InjectedConvCpltCallback(ADC_HandleTypeDef *hadc)
 {
@@ -158,7 +160,7 @@ void HAL_ADCEx_InjectedConvCpltCallback(ADC_HandleTypeDef *hadc)
 				HAL_GPIO_TogglePin(LED_PORT, LED_Pin);
 				Adc_Injected_Val_Decode(&hadc1);
 				Motor_Run.Adc_flag++;
-//				FOC_Main_Loop_H_Freq();
+				FOC_Main_Loop_H_Freq();
 				HAL_GPIO_TogglePin(LED_PORT, LED_Pin);
 			}
 		}
@@ -180,11 +182,13 @@ void ADC_Vrefint_Init(void)
 	VREFINT_CAL_VAL = (VREFINT_CAL_DATA / 4095.0f * 3.0f);
 	for(int flag = 0; flag < 300; flag++)
 	{
+		Adc_Val_Decode();
 		Get_ADC_Value();
 		HAL_Delay(1);
 	}
 	for(int flag = 0; flag < 1200; flag++)
 	{
+		Adc_Val_Decode();
 		Get_ADC_Value();
 		Vref_Offset_Sum += VREFINT_CAL_VAL / Motor_ADC.Internal_Vref;
 		HAL_Delay(1);

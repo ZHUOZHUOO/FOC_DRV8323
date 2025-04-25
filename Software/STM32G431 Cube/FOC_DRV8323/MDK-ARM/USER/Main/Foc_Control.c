@@ -28,86 +28,76 @@ Encoder_SPI_HandleTypeDef MA600_spi;
 #define k 10
 
 
-float X,Y,Z, t1,t2;
-void CALC_SVPWM(float Valpha, float Vbeta)
-{
-  float temp;
-  uint16_t A,B,C,N,Sector;
-  uint16_t hTimePhA,hTimePhB,hTimePhC = 0;
-  float Ta, Tb, Tc;
-  float T1,T2,T3;
-  //p->T=1.0;//Normalize the whole modulation period
-  X= SQRT3*Vbeta/MOTOR_VOLTAGE*T;
-  Y=(SQRT3*Vbeta+3*Valpha)/(2*MOTOR_VOLTAGE)*T;
-  Z=(SQRT3*Vbeta-3*Valpha)/(2*MOTOR_VOLTAGE)*T;
-  //
-  if(Vbeta>0)
-    {A=1;}
-  else
-    {A=0;}
+static float inv_motor_voltage;
+static float sqrt3_inv_mv;
+static float half_inv_mv;
+static const uint8_t sector_map[] = {0, 2, 6, 1, 4, 3, 5};
+static const uint8_t time_order[7][3] = {
+    {0}, {0,1,2}, {1,0,2}, {2,0,1}, {2,1,0}, {1,2,0}, {0,2,1}
+};
 
-  if( (SQRT3*Valpha - Vbeta)>0 )
-    {B=1;}
-  else
-    {B=0;}
+void CALC_SVPWM_Init() {
+    // 初始化时计算一次，假设MOTOR_VOLTAGE和T在运行时不变
+    inv_motor_voltage = 1.0f / MOTOR_VOLTAGE;
+    sqrt3_inv_mv = sqrtf(3.0f) * inv_motor_voltage;
+    half_inv_mv = 1.5f * inv_motor_voltage; // 调整原计算式中的系数
+}
 
-  if((-SQRT3*Valpha - Vbeta)>0)
-    {C=1;}
-  else
-    {C=0;}
+void CALC_SVPWM(float Valpha, float Vbeta) {
+    float X, Y, Z, t1, t2;
+    uint16_t Sector;
+    // 预计算公共项
+    float sqrt3_Vbeta = sqrtf(3.0f) * Vbeta;
+    float term3Valpha = 3.0f * Valpha;
 
-  N=A+2*B+4*C;
-  //
-  switch(N)
-  {
-    case 1:{Sector=2;break;}
-    case 2:{Sector=6;break;}
-    case 3:{Sector=1;break;}
-    case 4:{Sector=4;break;}
-    case 5:{Sector=3;break;}
-    case 6:{Sector=5;break;}
-    default:{;}
-  }
-  //
-  switch(Sector)
-  {
-    case 1: {t1=-Z; t2= X;break;}
-    case 2: {t1= Z; t2= Y;break;}
-    case 3: {t1= X; t2=-Y;break;}
-    case 4: {t1=-X; t2= Z;break;}
-    case 5: {t1=-Y; t2=-Z;break;}
-    case 6: {t1= Y; t2=-X;break;}
-      default:{;}
-  }
+    // 计算X, Y, Z（合并常量）
+    X = sqrt3_Vbeta * inv_motor_voltage * T;
+    Y = (sqrt3_Vbeta + term3Valpha) * (0.5f * inv_motor_voltage) * T;
+    Z = (sqrt3_Vbeta - term3Valpha) * (0.5f * inv_motor_voltage) * T;
 
-  if((t1+t2)>T)//对过调制情况进行调整
-  {
-      temp=t1+t2;
-      t1=t1*T/temp;
-      t2=t2*T/temp;
-  }
+    // 计算扇区
+    uint16_t N = (Vbeta > 0) + 2 * (sqrt3_Vbeta > 3*Valpha) + 4 * (sqrt3_Vbeta < -3*Valpha);
+    Sector = sector_map[N];
 
-  //
-  Ta=(T-t1-t2)/4;//作用时间分配
-  Tb=Ta+t1/2;
-  Tc=Tb+t2/2;
-
-  switch(Sector)
-    {
-    case 1: {hTimePhA=Ta; hTimePhB=Tb; hTimePhC=Tc; break;}
-    case 2: {hTimePhA=Tb; hTimePhB=Ta; hTimePhC=Tc; break;}
-    case 3: {hTimePhA=Tc; hTimePhB=Ta; hTimePhC=Tb; break;}
-    case 4: {hTimePhA=Tc; hTimePhB=Tb; hTimePhC=Ta; break;}
-    case 5: {hTimePhA=Tb; hTimePhB=Tc; hTimePhC=Ta; break;}
-    case 6: {hTimePhA=Ta; hTimePhB=Tc; hTimePhC=Tb; break;}
-      default:{;}
+    // 计算t1和t2
+    switch (Sector) {
+        case 1: t1 = -Z; t2 = X; break;
+        case 2: t1 = Z; t2 = Y; break;
+        case 3: t1 = X; t2 = -Y; break;
+        case 4: t1 = -X; t2 = Z; break;
+        case 5: t1 = -Y; t2 = -Z; break;
+        case 6: t1 = Y; t2 = -X; break;
+        default: t1 = t2 = 0; break;
     }
 
+    // 过调制调整
+    float sum = t1 + t2;
+    if (sum > T) {
+        float scale = T / sum;
+        t1 *= scale;
+        t2 *= scale;
+    }
+
+    // 计算作用时间
+    float total = t1 + t2;
+    float Ta = (T - total) * 0.25f;
+    float Tb = Ta + t1 * 0.5f;
+    float Tc = Tb + t2 * 0.5f;
+    float times[] = {Ta, Tb, Tc};
+
+    // 查表获取时间分配顺序
+    const uint8_t *order = time_order[Sector];
+    uint16_t hTimePhA = (uint16_t)times[order[0]];
+    uint16_t hTimePhB = (uint16_t)times[order[1]];
+    uint16_t hTimePhC = (uint16_t)times[order[2]];
+
+    // 更新寄存器
     TIM1->CCR1 = hTimePhA;
     TIM1->CCR2 = hTimePhB;
     TIM1->CCR3 = hTimePhC;
-		TIM1->CCR4 = 1000;
+    TIM1->CCR4 = 1000;
 
+    // 保存到结构体
     Motor_FOC.hTimePhA = hTimePhA;
     Motor_FOC.hTimePhB = hTimePhB;
     Motor_FOC.hTimePhC = hTimePhC;
@@ -194,6 +184,7 @@ void FOC_Main_Init(void)
 		DRV8323_Init();
 
     FOC_PID_Init();
+		CALC_SVPWM_Init();
 	
 		HAL_TIM_Base_Start (&htim1);
 		HAL_TIM_Base_Start_IT(&htim1);
@@ -308,6 +299,13 @@ void FOC_Main_Loop_H_Freq(void)
         Motor_Run.state_led_flag = 0;
 //        HAL_GPIO_TogglePin(LED_PORT, LED_Pin);
     }
+		if (Motor_Run.state_led_flag % 20 == 0)
+    {
+				Adc_Val_Decode();
+			  Get_ADC_Value();
+				FOC_Main_Loop_L_Freq();
+				Error_Main_Loop();      //Error Handler
+		}
     Motor_Run.state_led_flag++;
     Motor_Run.run_flag++;
 }

@@ -7,6 +7,7 @@ extern "C"
 #endif
 
 #include "adc.h"
+#include "dma.h"
 #include "Foc_Control.h"
 #define ADC1_CHANNEL_NUM  6
 

@@ -43,6 +43,7 @@ foc_drv8323\stm32g4xx_it.o: ../Core/Inc/gpio.h
 foc_drv8323\stm32g4xx_it.o: ../Core/Inc/spi.h
 foc_drv8323\stm32g4xx_it.o: ../MDK-ARM/USER/Utility/util_adc.h
 foc_drv8323\stm32g4xx_it.o: ../Core/Inc/adc.h
+foc_drv8323\stm32g4xx_it.o: ../Core/Inc/dma.h
 foc_drv8323\stm32g4xx_it.o: ../MDK-ARM/USER/Main/Foc_Control.h
 foc_drv8323\stm32g4xx_it.o: ../MDK-ARM/USER/Algorithm/alg_pid.h
 foc_drv8323\stm32g4xx_it.o: ../MDK-ARM/USER/Library/lib_math.h
@@ -60,7 +61,6 @@ foc_drv8323\stm32g4xx_it.o: ../MDK-ARM/USER/Peripheral/periph_encoder_spi.h
 foc_drv8323\stm32g4xx_it.o: ../MDK-ARM/USER/System/sys_dwt.h
 foc_drv8323\stm32g4xx_it.o: ../MDK-ARM/USER/Utility/util_gpio.h
 foc_drv8323\stm32g4xx_it.o: ../MDK-ARM/USER/Utility/util_spi.h
-foc_drv8323\stm32g4xx_it.o: ../Core/Inc/dma.h
 foc_drv8323\stm32g4xx_it.o: ../MDK-ARM/USER/Main/Foc_Error.h
 foc_drv8323\stm32g4xx_it.o: ../MDK-ARM/USER/Main/Init_music.h
 foc_drv8323\stm32g4xx_it.o: ../MDK-ARM/USER/System/sys_dwt.h
