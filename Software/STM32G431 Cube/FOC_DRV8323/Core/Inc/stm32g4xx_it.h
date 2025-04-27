@@ -23,7 +23,7 @@
 #define __STM32G4xx_IT_H
 
 #ifdef __cplusplus
- extern "C" {
+extern "C" {
 #endif
 
 /* Private includes ----------------------------------------------------------*/
@@ -75,5 +75,3 @@ void DMA2_Channel2_IRQHandler(void);
 #endif
 
 #endif /* __STM32G4xx_IT_H */
-
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

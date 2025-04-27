@@ -159,7 +159,7 @@ void HAL_ADCEx_InjectedConvCpltCallback(ADC_HandleTypeDef *hadc)
 				TIM1->SR &= ~TIM_SR_UIF; // 清除标志
 				HAL_GPIO_TogglePin(LED_PORT, LED_Pin);
 				Adc_Injected_Val_Decode(&hadc1);
-				Motor_Run.Adc_flag++;
+
 				FOC_Main_Loop_H_Freq();
 				HAL_GPIO_TogglePin(LED_PORT, LED_Pin);
 			}

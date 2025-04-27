@@ -129,6 +129,8 @@ uint16_t getBlueJayNoteFrequency(uint8_t bjarrayfreq) {
 
 void playStartupTune() {
 	__disable_irq();
+		uint32_t SYS_ARR = TIM1->ARR;
+		uint32_t SYS_PSC = TIM1->PSC;
 		TIM1->ARR = TIM1_AUTORELOAD;
 		setCaptureCompare();
 
@@ -151,7 +153,7 @@ void playStartupTune() {
 		}
 
 		allOff();                // turn all channels low again
-		TIM1->PSC = 0;           // set prescaler back to 0.
-		TIM1->ARR = TIMER1_MAX_ARR;
+		TIM1->PSC = SYS_PSC;           // set prescaler back to 0.
+		TIM1->ARR = SYS_ARR;
 	__enable_irq();
 }

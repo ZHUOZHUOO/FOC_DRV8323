@@ -12,7 +12,7 @@
 //Hardware Version
 #define HARDWARE_VERSION VERSION_1
 //Motor Type
-#define MOTOR_TYPE DJI_SNAIL_2305
+#define MOTOR_TYPE HAITAI
 //Encoder Type
 #define ENCODER_TYPE MA600
 
@@ -22,7 +22,7 @@
 //-----------Mode Setting--------------//
 
 //闭环模式
-#define FOC_CLOSE_LOOP_MODE MODE_OFF
+#define FOC_CLOSE_LOOP_MODE MODE_ON
 //ADC电压校准模式
 #define ADC_VREF_MODE MODE_OFF
 //滤波模式, Sliding Window Filter
@@ -39,7 +39,7 @@
 //------------PWM Setting-------------//
 #define CKTIM 170000000//定时器时钟频率
 #define PWM_PRSC 1-1//PWM预分频
-#define PWM_FREQ 25000//PWM频率, T=1000us
+#define PWM_FREQ 20000//PWM频率, T=1000us
 #define PWM_PERIOD CKTIM/(2*PWM_FREQ*(PWM_PRSC+1))  //计数器计数上限 ARR=3400
 #define REP_RATE 1 //电流环刷新频率为(REP_RATE+1)/(2*PWM_FREQ)=40us, f=25kHz
 #define DEADTIME_NS 1000//死区时间ns
@@ -55,7 +55,7 @@
 #define VERSION_1 1 //M3固定,双板设计,选取Qgd较小的MOS管
 #define VERSION_2 2 //ZQ_FOC DREAM_CHASER
 
-#define HT4315 0
+#define HAITAI 0
 #define DJI_SNAIL_2305 1
 
 #define MA600 0

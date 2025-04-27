@@ -31,7 +31,7 @@ Encoder_SPI_HandleTypeDef MA600_spi;
 static float inv_motor_voltage;
 static float sqrt3_inv_mv;
 static float half_inv_mv;
-static const uint8_t sector_map[] = {0, 2, 6, 1, 4, 3, 5};
+static const uint8_t sector_map[] = {0, 2, 6, 1, 4, 3, 5, 0};
 static const uint8_t time_order[7][3] = {
     {0}, {0,1,2}, {1,0,2}, {2,0,1}, {2,1,0}, {1,2,0}, {0,2,1}
 };
@@ -47,7 +47,7 @@ void CALC_SVPWM(float Valpha, float Vbeta) {
     float X, Y, Z, t1, t2;
     uint16_t Sector;
     // 预计算公共项
-    float sqrt3_Vbeta = sqrtf(3.0f) * Vbeta;
+    float sqrt3_Vbeta = SQRT3 * Vbeta;
     float term3Valpha = 3.0f * Valpha;
 
     // 计算X, Y, Z（合并常量）
@@ -56,17 +56,17 @@ void CALC_SVPWM(float Valpha, float Vbeta) {
     Z = (sqrt3_Vbeta - term3Valpha) * (0.5f * inv_motor_voltage) * T;
 
     // 计算扇区
-    uint16_t N = (Vbeta > 0) + 2 * (sqrt3_Vbeta > 3*Valpha) + 4 * (sqrt3_Vbeta < -3*Valpha);
+		uint16_t N = (Vbeta > 0) + 2 * (3*Valpha > sqrt3_Vbeta) + 4 * (-3*Valpha > sqrt3_Vbeta);
     Sector = sector_map[N];
 
     // 计算t1和t2
     switch (Sector) {
-        case 1: t1 = -Z; t2 = X; break;
-        case 2: t1 = Z; t2 = Y; break;
-        case 3: t1 = X; t2 = -Y; break;
-        case 4: t1 = -X; t2 = Z; break;
+        case 1: t1 = -Z; t2 =  X; break;
+        case 2: t1 =  Z; t2 =  Y; break;
+        case 3: t1 =  X; t2 = -Y; break;
+        case 4: t1 = -X; t2 =  Z; break;
         case 5: t1 = -Y; t2 = -Z; break;
-        case 6: t1 = Y; t2 = -X; break;
+        case 6: t1 =  Y; t2 = -X; break;
         default: t1 = t2 = 0; break;
     }
 
@@ -79,8 +79,7 @@ void CALC_SVPWM(float Valpha, float Vbeta) {
     }
 
     // 计算作用时间
-    float total = t1 + t2;
-    float Ta = (T - total) * 0.25f;
+    float Ta = (T - t1 - t2) * 0.25f;
     float Tb = Ta + t1 * 0.5f;
     float Tc = Tb + t2 * 0.5f;
     float times[] = {Ta, Tb, Tc};
@@ -95,7 +94,6 @@ void CALC_SVPWM(float Valpha, float Vbeta) {
     TIM1->CCR1 = hTimePhA;
     TIM1->CCR2 = hTimePhB;
     TIM1->CCR3 = hTimePhC;
-    TIM1->CCR4 = 1000;
 
     // 保存到结构体
     Motor_FOC.hTimePhA = hTimePhA;
@@ -148,7 +146,7 @@ void FOC_Struct_Init(FOC_Struct *foc)
     foc->hTimePhA = 0;
     foc->hTimePhB = 0;
     foc->hTimePhC = 0;
-    foc->Speed_Rpm_Expect = (MOTOR_SPEED_MAX - 150.5f);
+    foc->Speed_Rpm_Expect = (MOTOR_SPEED_MAX - 2.5f);
     foc->Speed_Rpm = 0;
     foc->Theta = 0;
 		foc->Open_Loop_Theta = 0;
@@ -158,8 +156,8 @@ void FOC_PID_Init(void)
 {
     // PID初始化
 		#if MOTOR_TYPE == HAITAI
-    PID_Init(&Current_Id_PID, PID_DELTA, 15.5f, 1.64f, 0.00f, 0.0f, 0.0f, 5.8f, 0.5f, 0.1f, 0.1f, 0.1f);
-    PID_Init(&Current_Iq_PID, PID_DELTA, 15.5f, 1.64f, 0.00f, 0.0f, 0.0f, 5.8f, 0.5f, 0.1f, 0.1f, 0.1f);
+    PID_Init(&Current_Id_PID, PID_DELTA, 0.5f, 0.04f, 0.00f, 0.0f, 0.0f, 5.8f, 0.5f, 0.1f, 0.1f, 0.1f);
+    PID_Init(&Current_Iq_PID, PID_DELTA, 0.5f, 0.04f, 0.00f, 0.0f, 0.0f, 5.8f, 0.5f, 0.1f, 0.1f, 0.1f);
     PID_Init(&Speed_PID, PID_DELTA, 0.00121f, 0.000015f, 0.00f, 0.0f, 0.0f, 500.0f, 1.5f, 0.1f, 0.1f, 0.1f);//haitai
 	  PID_Init(&Position_PID, PID_POSITION, 0.001f, 0.001f, 0.0f, 0.0f, 0.0f, 200, 200, 0.1f, 0.1f, 0.1f);
 		#elif MOTOR_TYPE == DJI_SNAIL_2305
@@ -185,7 +183,7 @@ void FOC_Main_Init(void)
 
     FOC_PID_Init();
 		CALC_SVPWM_Init();
-	
+		
 		HAL_TIM_Base_Start (&htim1);
 		HAL_TIM_Base_Start_IT(&htim1);
 
@@ -261,8 +259,8 @@ void FOC_Main_Loop_H_Freq(void)
 //----------Vd_Vq_Calc----------//
 #if FOC_CLOSE_LOOP_MODE == MODE_OFF
     Motor_FOC.Vd = 0.00f;
-		#if MOTOR_TYPE == HT4315
-    Motor_FOC.Vq = (0.5 * Motor_FOC.Speed_Rpm / Motor_FOC.Speed_Rpm_Expect + 0.5)*10.0f; 
+		#if MOTOR_TYPE == HAITAI
+    Motor_FOC.Vq = (0.5 * Motor_FOC.Speed_Rpm / Motor_FOC.Speed_Rpm_Expect + 0.5)*8.8f; 
 		#elif MOTOR_TYPE == DJI_SNAIL_2305
 		Motor_FOC.Vq = (0.8 * Motor_FOC.Speed_Rpm / Motor_FOC.Speed_Rpm_Expect + 0.2)*12.0f;
 		#endif
@@ -274,7 +272,7 @@ void FOC_Main_Loop_H_Freq(void)
 
     PID_SetFdb(&Current_Iq_PID, Motor_FOC.Iq);
 //    PID_SetRef(&Current_Iq_PID, Motor_FOC.Iq_ref);
-    PID_SetRef(&Current_Iq_PID, 0.11f);
+    PID_SetRef(&Current_Iq_PID, 0.08f);
     Motor_FOC.Vq += PID_Calc(&Current_Iq_PID);
 #endif
 
@@ -299,12 +297,11 @@ void FOC_Main_Loop_H_Freq(void)
         Motor_Run.state_led_flag = 0;
 //        HAL_GPIO_TogglePin(LED_PORT, LED_Pin);
     }
-		if (Motor_Run.state_led_flag % 20 == 0)
+		if (Motor_Run.state_led_flag % 10 == 0)
     {
 				Adc_Val_Decode();
 			  Get_ADC_Value();
-				FOC_Main_Loop_L_Freq();
-				Error_Main_Loop();      //Error Handler
+				Motor_Run.Adc_flag++;
 		}
     Motor_Run.state_led_flag++;
     Motor_Run.run_flag++;
@@ -313,6 +310,7 @@ void FOC_Main_Loop_H_Freq(void)
 void FOC_Main_Loop_L_Freq(void)
 {
 		Encoder_Read_Reg(&MA600_spi);
+		Motor_Run.spi_flag++;
 #if FOC_CLOSE_LOOP_MODE == MODE_OFF
 		//速度环PID计算
 		PID_SetFdb(&Speed_PID, Motor_FOC.Speed_Rpm);

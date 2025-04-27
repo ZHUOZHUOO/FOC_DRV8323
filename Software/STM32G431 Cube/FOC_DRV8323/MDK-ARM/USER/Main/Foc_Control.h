@@ -70,10 +70,13 @@ typedef struct
     uint16_t state_led_flag;
     uint16_t Adc_flag;
 		uint16_t Adc_Hz;
+		uint16_t spi_flag;
+		uint16_t spi_Hz;
 }FOC_Running_Struct;
 
 extern FOC_Struct Motor_FOC;
 extern FOC_Running_Struct Motor_Run;
+extern Encoder_SPI_HandleTypeDef MA600_spi;
 
 void FOC_Struct_Init(FOC_Struct *foc);
 void FOC_Main_Init(void);
