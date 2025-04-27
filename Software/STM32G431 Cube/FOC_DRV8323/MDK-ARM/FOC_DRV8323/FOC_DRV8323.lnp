@@ -25,6 +25,7 @@
 "foc_drv8323\alg_kf.o"
 "foc_drv8323\alg_pid.o"
 "foc_drv8323\alg_qekf.o"
+"foc_drv8323\alg_swf.o"
 "foc_drv8323\lib_buff.o"
 "foc_drv8323\lib_crc.o"
 "foc_drv8323\lib_filter.o"

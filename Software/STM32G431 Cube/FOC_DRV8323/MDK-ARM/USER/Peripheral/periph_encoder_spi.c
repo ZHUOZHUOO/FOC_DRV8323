@@ -13,7 +13,13 @@
 #define Max(a, b) ((a) > (b) ? (a) : (b))
 #define Max_3(a, b, c) Max(Max(a, b), c)
 
+
+Encoder_SPI_HandleTypeDef MA600_spi;
+SlidingWindowFilter MA600_diff_Filter;
+float MA600_diff_buffer[DIFF_SLIDING_WINDOW_SIZE];
+
 void Encoder_SPI_Init(Encoder_SPI_HandleTypeDef *encoder,
+											SlidingWindowFilter *diff_filter,float *diff_buffer,
                       SPI_HandleTypeDef *hspi, GPIO_TypeDef *cs_port,
                       uint16_t cs_pin, float radius) {
   encoder->hspi = hspi;
@@ -27,14 +33,15 @@ void Encoder_SPI_Init(Encoder_SPI_HandleTypeDef *encoder,
   encoder->turns = 0;
   encoder->angular_speed = 0;
   encoder->linear_speed = 0;
+	encoder->rawAngle = 0;
   encoder->last_update_time = HAL_GetTick();
-
+	encoder->angle_diff_Filter = diff_filter;
+	encoder->angle_diff_buffer = diff_buffer;
+	SlidingWindowFilter_Init(encoder->angle_diff_Filter, encoder->angle_diff_buffer, DIFF_SLIDING_WINDOW_SIZE);
+	
   memset(encoder->rx_buffer, 0, 4);
 
   uint8_t tx_buffer[4] = {0,0,0,0};
-  //  HAL_GPIO_WritePin(encoder->cs_port, encoder->cs_pin, GPIO_PIN_SET);
-  //  HAL_Delay(1);
-  //  HAL_GPIO_WritePin(encoder->cs_port, encoder->cs_pin, GPIO_PIN_RESET);
 
   tx_buffer[0] = 0x00;
   tx_buffer[1] = 0x00;
@@ -116,27 +123,6 @@ void Encoder_SPI_Init(Encoder_SPI_HandleTypeDef *encoder,
   HAL_SPI_TransmitReceive(encoder->hspi, tx_buffer, encoder->rx_buffer, 4, 100);
   HAL_GPIO_WritePin(encoder->cs_port, encoder->cs_pin, GPIO_PIN_SET);
   HAL_Delay(1);
-
-  // tx_buffer[0] = 0b11010010;
-  // tx_buffer[1] = 0x1c;
-  // HAL_GPIO_WritePin(encoder->cs_port, encoder->cs_pin, GPIO_PIN_RESET);
-  // HAL_SPI_TransmitReceive(encoder->hspi, tx_buffer, encoder->rx_buffer, 2,
-  // 100); HAL_GPIO_WritePin(encoder->cs_port, encoder->cs_pin, GPIO_PIN_SET);
-  // HAL_Delay(1);
-
-  // tx_buffer[0] = 0b11010010;
-  // tx_buffer[1] = 0x1c;
-  // HAL_GPIO_WritePin(encoder->cs_port, encoder->cs_pin, GPIO_PIN_RESET);
-  // HAL_SPI_TransmitReceive(encoder->hspi, tx_buffer, encoder->rx_buffer, 2,
-  // 100); HAL_GPIO_WritePin(encoder->cs_port, encoder->cs_pin, GPIO_PIN_SET);
-  // HAL_Delay(1);
-
-  // tx_buffer[0] = 0x00;
-  // tx_buffer[1] = 0x00;
-  // HAL_GPIO_WritePin(encoder->cs_port, encoder->cs_pin, GPIO_PIN_RESET);
-  // HAL_SPI_TransmitReceive(encoder->hspi, tx_buffer, encoder->rx_buffer, 2,
-  // 100); HAL_GPIO_WritePin(encoder->cs_port, encoder->cs_pin, GPIO_PIN_SET);
-  // HAL_Delay(1);
 }
 void Encoder_SPI_Data_Process(Encoder_SPI_HandleTypeDef *encoder,
                               uint8_t *buffer) {
@@ -144,12 +130,12 @@ void Encoder_SPI_Data_Process(Encoder_SPI_HandleTypeDef *encoder,
   // 读取编码器角度值（0-65535范围）
   int16_t encoderRawData = (int16_t)(buffer[0] << 8 | buffer[1]);
   // 将编码器值转换为-180°~180°的角度
-  float rawAngle = (float)(encoderRawData) * 360.0f / 65536.0f;
+  encoder->rawAngle = (float)(encoderRawData) * 360.0f / 65536.0f;
 	
   // 读取多圈信息
   int16_t turns = (int16_t)((buffer[2] << 8) | buffer[3]);
   // 计算角度的差值，考虑过零点情况
-  float angle_diff = rawAngle - encoder->last_angle;
+  float angle_diff = encoder->rawAngle - encoder->last_angle;
   if (angle_diff > 180.0f) {
     // 说明角度从负值跳到正值（即过零点）
     angle_diff -= 360.0f;
@@ -157,14 +143,14 @@ void Encoder_SPI_Data_Process(Encoder_SPI_HandleTypeDef *encoder,
     // 说明角度从正值跳到负值（即过零点）
     angle_diff += 360.0f;
   }
-
-  encoder->angle_diff = angle_diff;
+	
+	encoder->angle_diff = SlidingWindowFilter_Update(encoder->angle_diff_Filter, angle_diff);
 
   // 根据角度差值判断圈数变化
-  if (angle_diff > 0 && encoder->last_angle < -90 && rawAngle > 90) {
+  if (angle_diff > 0 && encoder->last_angle < -90 && encoder->rawAngle > 90) {
     // 过零点（从负数跨到正数），圈数加一
     encoder->multi_turn++;
-  } else if (angle_diff < 0 && encoder->last_angle > 90 && rawAngle < -90) {
+  } else if (angle_diff < 0 && encoder->last_angle > 90 && encoder->rawAngle < -90) {
     // 过零点（从正数跨到负数），圈数减一
     encoder->multi_turn--;
   }
@@ -180,7 +166,7 @@ void Encoder_SPI_Data_Process(Encoder_SPI_HandleTypeDef *encoder,
   encoder->linear_speed = encoder->angular_speed * encoder->radius;
 
   // 保存上次的角度和多圈数
-  encoder->last_angle = rawAngle;
+  encoder->last_angle = encoder->rawAngle;
   encoder->last_multi_turn = encoder->multi_turn;
 }
 
@@ -211,6 +197,7 @@ float Encoder_SPI_Get_Angle(Encoder_SPI_HandleTypeDef *encoder) {
  * @return float
  */
 float Encoder_SPI_Get_Angular_Speed(Encoder_SPI_HandleTypeDef *encoder) {
+	
   return encoder->angular_speed;
 }
 
@@ -222,11 +209,10 @@ void Encoder_Read_Reg(Encoder_SPI_HandleTypeDef *encoder) {
   txbuffer[3] = 0x00;
 	
   HAL_GPIO_WritePin(encoder->cs_port, encoder->cs_pin, GPIO_PIN_RESET);
-//  HAL_SPI_TransmitReceive(encoder->hspi, txbuffer, encoder->rx_buffer, 4, 10);
-//  HAL_SPI_TransmitReceive_DMA(encoder->hspi, txbuffer, encoder->rx_buffer, 4);
 	HAL_SPI_Receive_DMA(encoder->hspi, encoder->rx_buffer, 4);
 	HAL_SPI_Transmit_DMA(encoder->hspi, txbuffer, 4);
   HAL_GPIO_WritePin(encoder->cs_port, encoder->cs_pin, GPIO_PIN_SET);
 	
-  Encoder_SPI_Data_Process(encoder, encoder->rx_buffer);
+	Encoder_SPI_Data_Process(&MA600_spi, MA600_spi.rx_buffer);
+	Motor_Run.spi_flag++;
 }

@@ -20,13 +20,8 @@ PID_TypeDef Current_Iq_PID;
 PID_TypeDef Speed_PID;
 PID_TypeDef Position_PID;
 
-Encoder_SPI_HandleTypeDef MA600_spi;
-
 #define MA600_CS_GPIO_Port GPIOA
 #define MA600_CS_Pin GPIO_PIN_15
-
-#define k 10
-
 
 static float inv_motor_voltage;
 static float sqrt3_inv_mv;
@@ -146,7 +141,7 @@ void FOC_Struct_Init(FOC_Struct *foc)
     foc->hTimePhA = 0;
     foc->hTimePhB = 0;
     foc->hTimePhC = 0;
-    foc->Speed_Rpm_Expect = (MOTOR_SPEED_MAX - 2.5f);
+    foc->Speed_Rpm_Expect = (MOTOR_SPEED_MAX - 4.5f);
     foc->Speed_Rpm = 0;
     foc->Theta = 0;
 		foc->Open_Loop_Theta = 0;
@@ -156,13 +151,17 @@ void FOC_PID_Init(void)
 {
     // PID初始化
 		#if MOTOR_TYPE == HAITAI
-    PID_Init(&Current_Id_PID, PID_DELTA, 0.5f, 0.04f, 0.00f, 0.0f, 0.0f, 5.8f, 0.5f, 0.1f, 0.1f, 0.1f);
-    PID_Init(&Current_Iq_PID, PID_DELTA, 0.5f, 0.04f, 0.00f, 0.0f, 0.0f, 5.8f, 0.5f, 0.1f, 0.1f, 0.1f);
-    PID_Init(&Speed_PID, PID_DELTA, 0.00121f, 0.000015f, 0.00f, 0.0f, 0.0f, 500.0f, 1.5f, 0.1f, 0.1f, 0.1f);//haitai
+    PID_Init(&Current_Id_PID, PID_DELTA, 40.8f, 5.24f, 0.00f, 0.0f, 0.0f, 5.8f, 0.5f, 0.1f, 0.1f, 0.1f);
+    PID_Init(&Current_Iq_PID, PID_DELTA, 40.8f, 5.24f, 0.00f, 0.0f, 0.0f, 5.8f, 0.5f, 0.1f, 0.1f, 0.1f);
+		#if FOC_CLOSE_LOOP_MODE == MODE_ON
+    PID_Init(&Speed_PID, PID_DELTA, 0.000021f, 0.00000015f, 0.00f, 0.0f, 0.0f, 500.0f, 1.5f, 0.1f, 0.1f, 0.1f);//haitai
+		#elif FOC_CLOSE_LOOP_MODE == MODE_OFF
+		PID_Init(&Speed_PID, PID_DELTA, 0.00021f, 0.000015f, 0.00f, 0.0f, 0.0f, 500.0f, 1.5f, 0.1f, 0.1f, 0.1f);//haitai
+		#endif
 	  PID_Init(&Position_PID, PID_POSITION, 0.001f, 0.001f, 0.0f, 0.0f, 0.0f, 200, 200, 0.1f, 0.1f, 0.1f);
 		#elif MOTOR_TYPE == DJI_SNAIL_2305
-	  PID_Init(&Current_Id_PID, PID_DELTA, 15.5f, 1.64f, 0.00f, 0.0f, 0.0f, 5.8f, 0.5f, 0.1f, 0.1f, 0.1f);
-    PID_Init(&Current_Iq_PID, PID_DELTA, 15.5f, 1.64f, 0.00f, 0.0f, 0.0f, 5.8f, 0.5f, 0.1f, 0.1f, 0.1f);
+	  PID_Init(&Current_Id_PID, PID_DELTA, 2.5f, 0.54f, 0.00f, 0.0f, 0.0f, 5.8f, 0.5f, 0.1f, 0.1f, 0.1f);
+    PID_Init(&Current_Iq_PID, PID_DELTA, 2.5f, 0.54f, 0.00f, 0.0f, 0.0f, 5.8f, 0.5f, 0.1f, 0.1f, 0.1f);
     PID_Init(&Speed_PID, PID_DELTA, 0.003f, 0.0003f, 0.0f, 0.0f, 0.0f, 300, 300, 0.1f, 0.1f, 0.1f);//snail
 		PID_Init(&Position_PID, PID_POSITION, 0.001f, 0.001f, 0.0f, 0.0f, 0.0f, 200, 200, 0.1f, 0.1f, 0.1f);
     #endif
@@ -174,10 +173,9 @@ void FOC_Main_Init(void)
 {
     FOC_Struct_Init(&Motor_FOC);
     Error_Struct_Init(&Motor_Error);
-	
 
 		DWT_Init(170);
-    Encoder_SPI_Init(&MA600_spi, &hspi1, MA600_CS_GPIO_Port, MA600_CS_Pin, 0.01f);
+    Encoder_SPI_Init(&MA600_spi, &MA600_diff_Filter , MA600_diff_buffer, &hspi1, MA600_CS_GPIO_Port, MA600_CS_Pin, 0.01f);
 		
 		DRV8323_Init();
 
@@ -222,7 +220,9 @@ void FOC_Main_Loop_H_Freq(void)
 #endif
 		
 	
-//----------Ia Ib Ic Calc----------//	
+//----------Ia Ib Ic Calc----------//
+//		static uint16_t k = 10;
+//	
 //			Motor_FOC.Ia = (DRV8323_VREF_DIV_TWO - Motor_ADC.Valtage_Current_A) / DRV8323_ADC_GAIN;
 //			Motor_FOC.Ib = (DRV8323_VREF_DIV_TWO - Motor_ADC.Valtage_Current_B) / DRV8323_ADC_GAIN;
 //			Motor_FOC.Ic = (DRV8323_VREF_DIV_TWO - Motor_ADC.Valtage_Current_C) / DRV8323_ADC_GAIN;
@@ -272,7 +272,7 @@ void FOC_Main_Loop_H_Freq(void)
 
     PID_SetFdb(&Current_Iq_PID, Motor_FOC.Iq);
 //    PID_SetRef(&Current_Iq_PID, Motor_FOC.Iq_ref);
-    PID_SetRef(&Current_Iq_PID, 0.08f);
+    PID_SetRef(&Current_Iq_PID, 0.32f);
     Motor_FOC.Vq += PID_Calc(&Current_Iq_PID);
 #endif
 
@@ -297,7 +297,7 @@ void FOC_Main_Loop_H_Freq(void)
         Motor_Run.state_led_flag = 0;
 //        HAL_GPIO_TogglePin(LED_PORT, LED_Pin);
     }
-		if (Motor_Run.state_led_flag % 10 == 0)
+		if ((Motor_Run.state_led_flag & 0x07) == 0)
     {
 				Adc_Val_Decode();
 			  Get_ADC_Value();
@@ -310,7 +310,6 @@ void FOC_Main_Loop_H_Freq(void)
 void FOC_Main_Loop_L_Freq(void)
 {
 		Encoder_Read_Reg(&MA600_spi);
-		Motor_Run.spi_flag++;
 #if FOC_CLOSE_LOOP_MODE == MODE_OFF
 		//速度环PID计算
 		PID_SetFdb(&Speed_PID, Motor_FOC.Speed_Rpm);

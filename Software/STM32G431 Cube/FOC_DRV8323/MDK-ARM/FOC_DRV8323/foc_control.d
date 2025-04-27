@@ -43,6 +43,8 @@ foc_drv8323\foc_control.o: ../Core/Inc/spi.h
 foc_drv8323\foc_control.o: ../MDK-ARM/USER/Utility/util_adc.h
 foc_drv8323\foc_control.o: ../Core/Inc/adc.h
 foc_drv8323\foc_control.o: ../Core/Inc/dma.h
+foc_drv8323\foc_control.o: ../MDK-ARM/USER/Algorithm/alg_swf.h
+foc_drv8323\foc_control.o: ../MDK-ARM/USER/configure.h
 foc_drv8323\foc_control.o: ../MDK-ARM/USER/Main/Foc_Control.h
 foc_drv8323\foc_control.o: ../MDK-ARM/USER/Algorithm/alg_pid.h
 foc_drv8323\foc_control.o: ../MDK-ARM/USER/Library/lib_math.h
@@ -53,7 +55,6 @@ foc_drv8323\foc_control.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
 foc_drv8323\foc_control.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
 foc_drv8323\foc_control.o: ../MDK-ARM/USER/Library/lib_filter.h
 foc_drv8323\foc_control.o: ../MDK-ARM/USER/Peripheral/drv8323_util.h
-foc_drv8323\foc_control.o: ../MDK-ARM/USER/configure.h
 foc_drv8323\foc_control.o: ./DSP_Lib/Include/arm_const_structs.h
 foc_drv8323\foc_control.o: ./DSP_Lib/Include/arm_common_tables.h
 foc_drv8323\foc_control.o: ../MDK-ARM/USER/Peripheral/periph_encoder_spi.h

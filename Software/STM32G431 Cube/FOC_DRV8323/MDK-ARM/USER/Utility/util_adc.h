@@ -8,7 +8,10 @@ extern "C"
 
 #include "adc.h"
 #include "dma.h"
+#include "alg_swf.h"
 #include "Foc_Control.h"
+
+	
 #define ADC1_CHANNEL_NUM  6
 
 #define ADC1_REGULAR_MODE_CH 3
@@ -37,8 +40,6 @@ typedef struct
 } ADC_Struct;
 
 extern ADC_Struct Motor_ADC;
-
-extern uint16_t Adc_Val[ADC1_CHANNEL_NUM];                   //Adc data array    
 
 void Adc_Init(void);
 void ADC_Vrefint_Init(void);
