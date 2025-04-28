@@ -3,7 +3,7 @@
 <title>Static Call Graph - [FOC_DRV8323\FOC_DRV8323.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image FOC_DRV8323\FOC_DRV8323.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060422: Last Updated: Mon Apr 28 12:32:58 2025
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060422: Last Updated: Mon Apr 28 21:08:34 2025
 <BR><P>
 <H3>Maximum Stack Usage =        320 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -703,7 +703,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[af]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_ADCEx_InjectedConvCpltCallback
 </UL>
 
-<P><STRONG><a name="[a3]"></a>FOC_Main_Loop_L_Freq</STRONG> (Thumb, 70 bytes, Stack size 8 bytes, foc_control.o(i.FOC_Main_Loop_L_Freq))
+<P><STRONG><a name="[a3]"></a>FOC_Main_Loop_L_Freq</STRONG> (Thumb, 66 bytes, Stack size 8 bytes, foc_control.o(i.FOC_Main_Loop_L_Freq))
 <BR><BR>[Stack]<UL><LI>Max Depth = 136<LI>Call Chain = FOC_Main_Loop_L_Freq &rArr; Encoder_Read_Reg &rArr; Encoder_SPI_Data_Process &rArr; DWT_GetTimeline_us &rArr; DWT_SysTimeUpdate &rArr; __aeabi_uldivmod
 </UL>
 <BR>[Calls]<UL><LI><a href="#[9e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PID_SetRef
@@ -716,8 +716,8 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[f6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_TIM_PeriodElapsedCallback
 </UL>
 
-<P><STRONG><a name="[90]"></a>FOC_PID_Init</STRONG> (Thumb, 230 bytes, Stack size 32 bytes, foc_control.o(i.FOC_PID_Init))
-<BR><BR>[Stack]<UL><LI>Max Depth = 48<LI>Call Chain = FOC_PID_Init &rArr; PID_Init
+<P><STRONG><a name="[90]"></a>FOC_PID_Init</STRONG> (Thumb, 226 bytes, Stack size 24 bytes, foc_control.o(i.FOC_PID_Init))
+<BR><BR>[Stack]<UL><LI>Max Depth = 40<LI>Call Chain = FOC_PID_Init &rArr; PID_Init
 </UL>
 <BR>[Calls]<UL><LI><a href="#[a6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PID_Init
 </UL>
@@ -1595,7 +1595,7 @@ Global Symbols
 <P><STRONG><a name="[1]"></a>NMI_Handler</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, stm32g4xx_it.o(i.NMI_Handler))
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32g431xx.o(RESET)
 </UL>
-<P><STRONG><a name="[9f]"></a>PID_Calc</STRONG> (Thumb, 640 bytes, Stack size 56 bytes, alg_pid.o(i.PID_Calc))
+<P><STRONG><a name="[9f]"></a>PID_Calc</STRONG> (Thumb, 644 bytes, Stack size 56 bytes, alg_pid.o(i.PID_Calc))
 <BR><BR>[Stack]<UL><LI>Max Depth = 80<LI>Call Chain = PID_Calc &rArr; Filter_Lowpass
 </UL>
 <BR>[Calls]<UL><LI><a href="#[119]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Math_Differential
@@ -1973,9 +1973,9 @@ Local Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 96<LI>Call Chain = SPI_DMAReceiveCplt &rArr; SPI_EndRxTransaction &rArr; SPI_WaitFifoStateUntilTimeout
 </UL>
 <BR>[Calls]<UL><LI><a href="#[6f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GetTick
-<LI><a href="#[11e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_EndRxTransaction
 <LI><a href="#[11f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_SPI_RxCpltCallback
 <LI><a href="#[e5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_SPI_ErrorCallback
+<LI><a href="#[11e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_EndRxTransaction
 </UL>
 <BR>[Address Reference Count : 2]<UL><LI> stm32g4xx_hal_spi.o(i.HAL_SPI_Receive_DMA)
 <LI> stm32g4xx_hal_spi.o(i.HAL_SPI_TransmitReceive_DMA)
@@ -1984,9 +1984,9 @@ Local Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 88<LI>Call Chain = SPI_DMATransmitCplt &rArr; SPI_EndRxTxTransaction &rArr; SPI_WaitFifoStateUntilTimeout
 </UL>
 <BR>[Calls]<UL><LI><a href="#[6f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GetTick
-<LI><a href="#[e9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_EndRxTxTransaction
 <LI><a href="#[120]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_SPI_TxCpltCallback
 <LI><a href="#[e5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_SPI_ErrorCallback
+<LI><a href="#[e9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_EndRxTxTransaction
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> stm32g4xx_hal_spi.o(i.HAL_SPI_Transmit_DMA)
 </UL>
@@ -1994,9 +1994,9 @@ Local Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 88<LI>Call Chain = SPI_DMATransmitReceiveCplt &rArr; SPI_EndRxTxTransaction &rArr; SPI_WaitFifoStateUntilTimeout
 </UL>
 <BR>[Calls]<UL><LI><a href="#[6f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GetTick
-<LI><a href="#[e9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_EndRxTxTransaction
 <LI><a href="#[121]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_SPI_TxRxCpltCallback
 <LI><a href="#[e5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_SPI_ErrorCallback
+<LI><a href="#[e9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_EndRxTxTransaction
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> stm32g4xx_hal_spi.o(i.HAL_SPI_TransmitReceive_DMA)
 </UL>

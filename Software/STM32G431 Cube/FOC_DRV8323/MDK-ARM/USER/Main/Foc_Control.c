@@ -141,7 +141,7 @@ void FOC_Struct_Init(FOC_Struct *foc)
     foc->hTimePhA = 0;
     foc->hTimePhB = 0;
     foc->hTimePhC = 0;
-    foc->Speed_Rpm_Expect = (MOTOR_SPEED_MAX - 4.5f);
+    foc->Speed_Rpm_Expect = (MOTOR_SPEED_MAX - 105.5f);
     foc->Speed_Rpm = 0;
     foc->Theta = 0;
 		foc->Open_Loop_Theta = 0;
@@ -149,20 +149,26 @@ void FOC_Struct_Init(FOC_Struct *foc)
 
 void FOC_PID_Init(void)
 {
-    // PID初始化
-		#if MOTOR_TYPE == HAITAI
+    //===========HT4315==========//
+		#if MOTOR_TYPE == HT4315
     PID_Init(&Current_Id_PID, PID_DELTA, 40.8f, 5.24f, 0.00f, 0.0f, 0.0f, 5.8f, 0.5f, 0.1f, 0.1f, 0.1f);
     PID_Init(&Current_Iq_PID, PID_DELTA, 40.8f, 5.24f, 0.00f, 0.0f, 0.0f, 5.8f, 0.5f, 0.1f, 0.1f, 0.1f);
 		#if FOC_CLOSE_LOOP_MODE == MODE_ON
-    PID_Init(&Speed_PID, PID_DELTA, 0.009f, 0.000011f, 0.0000003f, 0.0f, 0.0f, 500.0f, 1.5f, 0.1f, 0.1f, 0.1f);//haitai
+    PID_Init(&Speed_PID, PID_DELTA, 0.009f, 0.000011f, 0.0000003f, 0.0f, 0.0f, 500.0f, 1.5f, 0.1f, 0.1f, 0.1f);//HT4315
 		#elif FOC_CLOSE_LOOP_MODE == MODE_OFF
-		PID_Init(&Speed_PID, PID_DELTA, 0.00021f, 0.00000015f, 0.00f, 0.0f, 0.0f, 500.0f, 1.5f, 0.1f, 0.1f, 0.1f);//haitai
+		PID_Init(&Speed_PID, PID_DELTA, 0.00021f, 0.00000015f, 0.00f, 0.0f, 0.0f, 500.0f, 1.5f, 0.1f, 0.1f, 0.1f);//HT4315
 		#endif
 	  PID_Init(&Position_PID, PID_POSITION, 0.001f, 0.001f, 0.0f, 0.0f, 0.0f, 200, 200, 0.1f, 0.1f, 0.1f);
+	
+		//===========DJI_SNAIL_2305==========//
 		#elif MOTOR_TYPE == DJI_SNAIL_2305
 	  PID_Init(&Current_Id_PID, PID_DELTA, 2.5f, 0.54f, 0.00f, 0.0f, 0.0f, 5.8f, 0.5f, 0.1f, 0.1f, 0.1f);
     PID_Init(&Current_Iq_PID, PID_DELTA, 2.5f, 0.54f, 0.00f, 0.0f, 0.0f, 5.8f, 0.5f, 0.1f, 0.1f, 0.1f);
-    PID_Init(&Speed_PID, PID_DELTA, 0.003f, 0.0003f, 0.0f, 0.0f, 0.0f, 300, 300, 0.1f, 0.1f, 0.1f);//snail
+		#if FOC_CLOSE_LOOP_MODE == MODE_ON
+		PID_Init(&Speed_PID, PID_DELTA, 0.0003f, 0.00000001f, 0.0000000f, 0.0f, 0.0f, 3000, 300, 0.1f, 0.000004f, 0.1f);//snail
+		#elif FOC_CLOSE_LOOP_MODE == MODE_OFF
+    PID_Init(&Speed_PID, PID_DELTA, 0.00003f, 0.00000003f, 0.0000000f, 0.0f, 0.0f, 3000, 300, 0.1f, 0.000004f, 0.1f);//snail
+		#endif
 		PID_Init(&Position_PID, PID_POSITION, 0.001f, 0.001f, 0.0f, 0.0f, 0.0f, 200, 200, 0.1f, 0.1f, 0.1f);
     #endif
 }
@@ -255,7 +261,7 @@ void FOC_Main_Loop_H_Freq(void)
 //----------Vd_Vq_Calc----------//
 #if FOC_CLOSE_LOOP_MODE == MODE_OFF
     Motor_FOC.Vd = 0.00f;
-		#if MOTOR_TYPE == HAITAI
+		#if MOTOR_TYPE == HT4315
     Motor_FOC.Vq = (0.5 * Motor_FOC.Speed_Rpm / Motor_FOC.Speed_Rpm_Expect + 0.5)*8.8f; 
 		#elif MOTOR_TYPE == DJI_SNAIL_2305
 		Motor_FOC.Vq = (0.8 * Motor_FOC.Speed_Rpm / Motor_FOC.Speed_Rpm_Expect + 0.2)*12.0f;
@@ -268,7 +274,7 @@ void FOC_Main_Loop_H_Freq(void)
 
     PID_SetFdb(&Current_Iq_PID, Motor_FOC.Iq);
     PID_SetRef(&Current_Iq_PID, Motor_FOC.Iq_ref);
-//    PID_SetRef(&Current_Iq_PID, 0.32f);
+//    PID_SetRef(&Current_Iq_PID, 0.42f);
     Motor_FOC.Vq += PID_Calc(&Current_Iq_PID);
 #endif
 

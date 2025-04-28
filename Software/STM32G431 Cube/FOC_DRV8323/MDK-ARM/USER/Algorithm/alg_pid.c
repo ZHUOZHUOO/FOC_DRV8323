@@ -99,17 +99,17 @@ float PID_Calc(PID_TypeDef *pid)
         // Calculate the integral and integral anti-windup
         if (pid->kp == 0)
         {
-            pid->sum = Error;
+            pid->sum = pid->ki * Error;
         }
         else
         {
-            pid->sum = Error + pid->err_lim / pid->kp;
+            pid->sum = pid->ki * Error + pid->ki * pid->err_lim / pid->kp;
         }
         LimitMax(pid->sum, pid->sum_max);
 
         // Calculation results kf1_filter
         pid->output_fdf = Filter_Lowpass((pid->kf_1 * ref_dError), &pid->kf1_filter) + Filter_Lowpass((pid->kf_2 * ref_ddError), &pid->kf2_filter);
-        pid->output = pid->kp * dError + pid->ki * pid->sum + pid->kd * Filter_Lowpass(ddError, &pid->d_filter);
+        pid->output = pid->kp * dError + pid->sum + pid->kd * Filter_Lowpass(ddError, &pid->d_filter);
         pid->output += pid->output_fdf;
 
         // Output limiting

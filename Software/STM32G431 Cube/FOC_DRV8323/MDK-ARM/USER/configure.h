@@ -12,7 +12,7 @@
 //Hardware Version
 #define HARDWARE_VERSION VERSION_1
 //Motor Type
-#define MOTOR_TYPE HAITAI
+#define MOTOR_TYPE DJI_SNAIL_2305
 //Encoder Type
 #define ENCODER_TYPE MA600
 
@@ -57,7 +57,7 @@
 #define VERSION_1 1 //M3固定,双板设计,选取Qgd较小的MOS管
 #define VERSION_2 2 //ZQ_FOC DREAM_CHASER
 
-#define HAITAI 0
+#define HT4315 0
 #define DJI_SNAIL_2305 1
 
 #define MA600 0
@@ -85,8 +85,11 @@
 #endif
 
 //---------Encoder Parameter Define---------//
-#if ENCODER_TYPE == MA600
+#if ENCODER_TYPE == MA600 && MOTOR_TYPE == HT4315
 	#define MOTOR_ENCODER_DIR 	-1 //电机编码器方向
+	#define MOTOR_ENCODER_LINES 8192 //电机编码器线数_MA600
+#elif ENCODER_TYPE == MA600 && MOTOR_TYPE == DJI_SNAIL_2305
+	#define MOTOR_ENCODER_DIR 	1 //电机编码器方向
 	#define MOTOR_ENCODER_LINES 8192 //电机编码器线数_MA600
 #endif
 
