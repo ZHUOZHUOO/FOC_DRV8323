@@ -160,7 +160,7 @@ void Encoder_SPI_Data_Process(Encoder_SPI_HandleTypeDef *encoder,
       (float)(now_time - encoder->last_update_time) / 1000000.0f; // us->s
   encoder->last_update_time = now_time;
   encoder->angular_speed =
-      (angle_diff / 180.0f * 3.1415926f) / sampling_period; // rad/s
+      (encoder->angle_diff / 180.0f * 3.1415926f) / sampling_period; // rad/s
 
   // 根据角速度计算线速度 (m/s)
   encoder->linear_speed = encoder->angular_speed * encoder->radius;
@@ -202,6 +202,9 @@ float Encoder_SPI_Get_Angular_Speed(Encoder_SPI_HandleTypeDef *encoder) {
 }
 
 void Encoder_Read_Reg(Encoder_SPI_HandleTypeDef *encoder) {
+	
+	Encoder_SPI_Data_Process(&MA600_spi, MA600_spi.rx_buffer);
+	
   uint8_t txbuffer[4];
   txbuffer[0] = 0x00;
   txbuffer[1] = 0x00;
@@ -213,6 +216,5 @@ void Encoder_Read_Reg(Encoder_SPI_HandleTypeDef *encoder) {
 	HAL_SPI_Transmit_DMA(encoder->hspi, txbuffer, 4);
   HAL_GPIO_WritePin(encoder->cs_port, encoder->cs_pin, GPIO_PIN_SET);
 	
-	Encoder_SPI_Data_Process(&MA600_spi, MA600_spi.rx_buffer);
 	Motor_Run.spi_flag++;
 }

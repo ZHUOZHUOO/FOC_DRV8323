@@ -60,12 +60,19 @@ void Adc_Val_Decode()
 
 void Adc_Injected_Val_Decode(ADC_HandleTypeDef *hadc)
 {
-
+#if ADC_FILTER_MODE == MODE_OFF
+	for(int i = 0; i < ADC1_INJECTED_MODE_CH; i++)
+	{
+		uint32_t jdr_value = HAL_ADCEx_InjectedGetValue(hadc, ADC_INJECTED_RANK[i]);
+		Adc_Sum_Val[i] = (float)jdr_value * inv_adc_val;
+	}
+#elif ADC_FILTER_MODE == MODE_ON
 	for(int i = 0; i < ADC1_INJECTED_MODE_CH; i++)
 	{
 		uint32_t jdr_value = HAL_ADCEx_InjectedGetValue(hadc, ADC_INJECTED_RANK[i]);
 		Adc_Sum_Val[i] = SlidingWindowFilter_Update(&ADC_SWF[i], (float)jdr_value * inv_adc_val);
 	}
+#endif
 
 	Motor_ADC.Valtage_Current_A = Adc_Sum_Val[CURRENT_A_ADC_CHANNEL];
 	Motor_ADC.Valtage_Current_B = Adc_Sum_Val[CURRENT_B_ADC_CHANNEL];

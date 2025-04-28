@@ -14,7 +14,6 @@ void SlidingWindowFilter_Init(SlidingWindowFilter *filter, float *buffer, uint16
 }
 
 float SlidingWindowFilter_Update(SlidingWindowFilter *filter, float new_value) {
-#if ADC_FILTER_MODE == MODE_ON
     filter->sum -= filter->buffer[filter->index];
     
     filter->buffer[filter->index] = new_value;
@@ -23,7 +22,4 @@ float SlidingWindowFilter_Update(SlidingWindowFilter *filter, float new_value) {
     filter->index = (filter->index + 1) & (filter->window_size - 1);
     
     return filter->sum * filter->shift;
-#elif ADC_FILTER_MODE == MODE_ON
-		return new_value;
-#endif
 }

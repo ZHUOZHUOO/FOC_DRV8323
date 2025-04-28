@@ -33,7 +33,7 @@
 //nFAULT中断处理模式 MODE_ON:中断 MODE_OFF:轮询
 #define N_FAULT_MODE MODE_OFF
 //MA600差分滤波窗口宽度
-#define DIFF_SLIDING_WINDOW_SIZE 16
+#define DIFF_SLIDING_WINDOW_SIZE 64
 
 #define MODE_ON 1
 #define MODE_OFF 0

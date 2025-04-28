@@ -154,9 +154,9 @@ void FOC_PID_Init(void)
     PID_Init(&Current_Id_PID, PID_DELTA, 40.8f, 5.24f, 0.00f, 0.0f, 0.0f, 5.8f, 0.5f, 0.1f, 0.1f, 0.1f);
     PID_Init(&Current_Iq_PID, PID_DELTA, 40.8f, 5.24f, 0.00f, 0.0f, 0.0f, 5.8f, 0.5f, 0.1f, 0.1f, 0.1f);
 		#if FOC_CLOSE_LOOP_MODE == MODE_ON
-    PID_Init(&Speed_PID, PID_DELTA, 0.000021f, 0.00000015f, 0.00f, 0.0f, 0.0f, 500.0f, 1.5f, 0.1f, 0.1f, 0.1f);//haitai
+    PID_Init(&Speed_PID, PID_DELTA, 0.009f, 0.000011f, 0.0000003f, 0.0f, 0.0f, 500.0f, 1.5f, 0.1f, 0.1f, 0.1f);//haitai
 		#elif FOC_CLOSE_LOOP_MODE == MODE_OFF
-		PID_Init(&Speed_PID, PID_DELTA, 0.00021f, 0.000015f, 0.00f, 0.0f, 0.0f, 500.0f, 1.5f, 0.1f, 0.1f, 0.1f);//haitai
+		PID_Init(&Speed_PID, PID_DELTA, 0.00021f, 0.00000015f, 0.00f, 0.0f, 0.0f, 500.0f, 1.5f, 0.1f, 0.1f, 0.1f);//haitai
 		#endif
 	  PID_Init(&Position_PID, PID_POSITION, 0.001f, 0.001f, 0.0f, 0.0f, 0.0f, 200, 200, 0.1f, 0.1f, 0.1f);
 		#elif MOTOR_TYPE == DJI_SNAIL_2305
@@ -176,9 +176,8 @@ void FOC_Main_Init(void)
 
 		DWT_Init(170);
     Encoder_SPI_Init(&MA600_spi, &MA600_diff_Filter , MA600_diff_buffer, &hspi1, MA600_CS_GPIO_Port, MA600_CS_Pin, 0.01f);
-		
+		Adc_Init();
 		DRV8323_Init();
-
     FOC_PID_Init();
 		CALC_SVPWM_Init();
 		
@@ -200,9 +199,6 @@ void FOC_Main_Init(void)
     setVolume(10); //音量设置
 		playStartupTune();    //start music
 		
-		Adc_Init();
-		
-		HAL_Delay(500);
 		HAL_TIM_Base_Start_IT(&htim3);
 }
 
@@ -271,8 +267,8 @@ void FOC_Main_Loop_H_Freq(void)
     Motor_FOC.Vd += PID_Calc(&Current_Id_PID);
 
     PID_SetFdb(&Current_Iq_PID, Motor_FOC.Iq);
-//    PID_SetRef(&Current_Iq_PID, Motor_FOC.Iq_ref);
-    PID_SetRef(&Current_Iq_PID, 0.32f);
+    PID_SetRef(&Current_Iq_PID, Motor_FOC.Iq_ref);
+//    PID_SetRef(&Current_Iq_PID, 0.32f);
     Motor_FOC.Vq += PID_Calc(&Current_Iq_PID);
 #endif
 
