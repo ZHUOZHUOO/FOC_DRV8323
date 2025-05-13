@@ -55,6 +55,7 @@ void Error_Main_Loop(void)
 	// Check over current
     float32_t temp = Motor_FOC.Ialpha * Motor_FOC.Ialpha + Motor_FOC.Ibeta * Motor_FOC.Ibeta;
     arm_sqrt_f32(temp, &Motor_FOC.Iamp);
+    
     if(Motor_FOC.Iamp > CURRENT_MAX)
     {
         Motor_Error.STATE_WINDOW.OVER_CURRENT_STATE_WINDOW |= 1;

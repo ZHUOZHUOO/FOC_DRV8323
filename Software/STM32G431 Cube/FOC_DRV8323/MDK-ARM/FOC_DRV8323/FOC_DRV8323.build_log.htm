@@ -28,14 +28,14 @@ Project File Date:  04/28/2025
 *** Using Compiler 'V5.06 update 4 (build 422)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
 Build target 'FOC_DRV8323'
 compiling Foc_Control.c...
-../MDK-ARM/USER/configure.h(44): warning:  #47-D: incompatible redefinition of macro "PWM_FREQ"  (declared at line 63 of "../Core/Inc/main.h")
+../MDK-ARM/USER/configure.h(46): warning:  #47-D: incompatible redefinition of macro "PWM_FREQ"  (declared at line 63 of "../Core/Inc/main.h")
   #define PWM_FREQ 20000//PWM频率, T=1000us
 ../MDK-ARM/USER/Algorithm/alg_swf.h(19): warning:  #1-D: last line of file ends without a newline
   #endif // __ALG_SWF_H
-USER\Main\Foc_Control.c(36): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-      inv_motor_voltage = 1.0f / 
-OTOR_VOLTAGE;
-USER\Main\Foc_Control.c(304): warning:  #223-D: function "Adc_Val_Decode" declared implicitly
+USER\Main\Foc_Control.c(153): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+      foc->Speed_Rpm_Ref = (
+OTOR_SPEED_MAX - 4.5f);
+USER\Main\Foc_Control.c(322): warning:  #223-D: function "Adc_Val_Decode" declared implicitly
   				Adc_Val_Decode();
 USER\Main\Foc_Control.c(27): warning:  #550-D: variable "sqrt3_inv_mv"  was set but never used
   static float sqrt3_inv_mv;
@@ -43,7 +43,7 @@ USER\Main\Foc_Control.c(28): warning:  #550-D: variable "half_inv_mv"  was set b
   static float half_inv_mv;
 USER\Main\Foc_Control.c: 6 warnings, 0 errors
 linking...
-Program Size: Code=25880 RO-data=2612 RW-data=244 ZI-data=3316  
+Program Size: Code=26032 RO-data=2612 RW-data=248 ZI-data=3232  
 FromELF: creating hex file...
 "FOC_DRV8323\FOC_DRV8323.axf" - 0 Error(s), 6 Warning(s).
 
@@ -63,7 +63,7 @@ Package Vendor: ARM
 <h2>Collection of Component Files used:</h2>
 
    * Component: ARM::CMSIS:CORE:5.0.1
-Build Time Elapsed:  00:00:02
+Build Time Elapsed:  00:00:05
 </pre>
 </body>
 </html>

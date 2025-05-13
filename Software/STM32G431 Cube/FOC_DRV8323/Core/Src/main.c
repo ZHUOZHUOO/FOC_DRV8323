@@ -198,7 +198,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 					Motor_Run.spi_Hz = Motor_Run.spi_flag;
 					Motor_Run.spi_flag = 0;
       }
-  }//2000Hz
+  }//4000Hz
     
   /* USER CODE END Callback 0 */
   if (htim->Instance == TIM2)

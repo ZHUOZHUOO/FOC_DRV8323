@@ -3,7 +3,7 @@
 <title>Static Call Graph - [FOC_DRV8323\FOC_DRV8323.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image FOC_DRV8323\FOC_DRV8323.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060422: Last Updated: Mon Apr 28 21:08:34 2025
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060422: Last Updated: Tue May 13 19:00:22 2025
 <BR><P>
 <H3>Maximum Stack Usage =        320 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -335,13 +335,13 @@ Global Symbols
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32g431xx.o(RESET)
 </UL>
 <P><STRONG><a name="[10b]"></a>arm_cos_f32</STRONG> (Thumb, 108 bytes, Stack size 0 bytes, arm_cos_f32.o(.text))
-<BR><BR>[Called By]<UL><LI><a href="#[9c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Park_transform
-<LI><a href="#[a0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Inv_Park_transform
+<BR><BR>[Called By]<UL><LI><a href="#[9b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Park_transform
+<LI><a href="#[9f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Inv_Park_transform
 </UL>
 
 <P><STRONG><a name="[10c]"></a>arm_sin_f32</STRONG> (Thumb, 130 bytes, Stack size 0 bytes, arm_sin_f32.o(.text))
-<BR><BR>[Called By]<UL><LI><a href="#[9c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Park_transform
-<LI><a href="#[a0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Inv_Park_transform
+<BR><BR>[Called By]<UL><LI><a href="#[9b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Park_transform
+<LI><a href="#[9f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Inv_Park_transform
 </UL>
 
 <P><STRONG><a name="[60]"></a>__aeabi_uldivmod</STRONG> (Thumb, 98 bytes, Stack size 40 bytes, uldiv.o(.text))
@@ -508,8 +508,8 @@ Global Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32g431xx.o(RESET)
 </UL>
-<P><STRONG><a name="[a1]"></a>CALC_SVPWM</STRONG> (Thumb, 446 bytes, Stack size 16 bytes, foc_control.o(i.CALC_SVPWM))
-<BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = CALC_SVPWM
+<P><STRONG><a name="[a0]"></a>CALC_SVPWM</STRONG> (Thumb, 456 bytes, Stack size 28 bytes, foc_control.o(i.CALC_SVPWM))
+<BR><BR>[Stack]<UL><LI>Max Depth = 28<LI>Call Chain = CALC_SVPWM
 </UL>
 <BR>[Called By]<UL><LI><a href="#[98]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FOC_Main_Loop_H_Freq
 </UL>
@@ -522,7 +522,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[8c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FOC_Main_Init
 </UL>
 
-<P><STRONG><a name="[9b]"></a>Clarke_transform</STRONG> (Thumb, 22 bytes, Stack size 0 bytes, foc_control.o(i.Clarke_transform))
+<P><STRONG><a name="[9a]"></a>Clarke_transform</STRONG> (Thumb, 22 bytes, Stack size 0 bytes, foc_control.o(i.Clarke_transform))
 <BR><BR>[Called By]<UL><LI><a href="#[98]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FOC_Main_Loop_H_Freq
 </UL>
 
@@ -600,10 +600,10 @@ Global Symbols
 <LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_SPI_Receive_DMA
 <LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Encoder_SPI_Data_Process
 </UL>
-<BR>[Called By]<UL><LI><a href="#[a3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FOC_Main_Loop_L_Freq
+<BR>[Called By]<UL><LI><a href="#[a2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FOC_Main_Loop_L_Freq
 </UL>
 
-<P><STRONG><a name="[84]"></a>Encoder_SPI_Data_Process</STRONG> (Thumb, 252 bytes, Stack size 32 bytes, periph_encoder_spi.o(i.Encoder_SPI_Data_Process))
+<P><STRONG><a name="[84]"></a>Encoder_SPI_Data_Process</STRONG> (Thumb, 274 bytes, Stack size 32 bytes, periph_encoder_spi.o(i.Encoder_SPI_Data_Process))
 <BR><BR>[Stack]<UL><LI>Max Depth = 112<LI>Call Chain = Encoder_SPI_Data_Process &rArr; DWT_GetTimeline_us &rArr; DWT_SysTimeUpdate &rArr; __aeabi_uldivmod
 </UL>
 <BR>[Calls]<UL><LI><a href="#[66]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_ul2f
@@ -613,15 +613,11 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Encoder_Read_Reg
 </UL>
 
-<P><STRONG><a name="[99]"></a>Encoder_SPI_Get_Angle</STRONG> (Thumb, 26 bytes, Stack size 0 bytes, periph_encoder_spi.o(i.Encoder_SPI_Get_Angle))
-<BR><BR>[Called By]<UL><LI><a href="#[98]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FOC_Main_Loop_H_Freq
+<P><STRONG><a name="[a3]"></a>Encoder_SPI_Get_Angle</STRONG> (Thumb, 26 bytes, Stack size 0 bytes, periph_encoder_spi.o(i.Encoder_SPI_Get_Angle))
+<BR><BR>[Called By]<UL><LI><a href="#[a2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FOC_Main_Loop_L_Freq
 </UL>
 
-<P><STRONG><a name="[a4]"></a>Encoder_SPI_Get_Angular_Speed</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, periph_encoder_spi.o(i.Encoder_SPI_Get_Angular_Speed))
-<BR><BR>[Called By]<UL><LI><a href="#[a3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FOC_Main_Loop_L_Freq
-</UL>
-
-<P><STRONG><a name="[87]"></a>Encoder_SPI_Init</STRONG> (Thumb, 616 bytes, Stack size 40 bytes, periph_encoder_spi.o(i.Encoder_SPI_Init))
+<P><STRONG><a name="[87]"></a>Encoder_SPI_Init</STRONG> (Thumb, 646 bytes, Stack size 40 bytes, periph_encoder_spi.o(i.Encoder_SPI_Init))
 <BR><BR>[Stack]<UL><LI>Max Depth = 168<LI>Call Chain = Encoder_SPI_Init &rArr; HAL_SPI_TransmitReceive &rArr; SPI_EndRxTxTransaction &rArr; SPI_WaitFifoStateUntilTimeout
 </UL>
 <BR>[Calls]<UL><LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_WritePin
@@ -663,8 +659,12 @@ Global Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32g431xx.o(RESET)
 </UL>
-<P><STRONG><a name="[8c]"></a>FOC_Main_Init</STRONG> (Thumb, 168 bytes, Stack size 16 bytes, foc_control.o(i.FOC_Main_Init))
-<BR><BR>[Stack]<UL><LI>Max Depth = 184<LI>Call Chain = FOC_Main_Init &rArr; Encoder_SPI_Init &rArr; HAL_SPI_TransmitReceive &rArr; SPI_EndRxTxTransaction &rArr; SPI_WaitFifoStateUntilTimeout
+<P><STRONG><a name="[99]"></a>FOC_ElecTheta_Calc</STRONG> (Thumb, 62 bytes, Stack size 0 bytes, foc_control.o(i.FOC_ElecTheta_Calc))
+<BR><BR>[Called By]<UL><LI><a href="#[98]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FOC_Main_Loop_H_Freq
+</UL>
+
+<P><STRONG><a name="[8c]"></a>FOC_Main_Init</STRONG> (Thumb, 174 bytes, Stack size 24 bytes, foc_control.o(i.FOC_Main_Init))
+<BR><BR>[Stack]<UL><LI>Max Depth = 192<LI>Call Chain = FOC_Main_Init &rArr; Encoder_SPI_Init &rArr; HAL_SPI_TransmitReceive &rArr; SPI_EndRxTxTransaction &rArr; SPI_WaitFifoStateUntilTimeout
 </UL>
 <BR>[Calls]<UL><LI><a href="#[96]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;setVolume
 <LI><a href="#[97]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;playStartupTune
@@ -685,51 +685,51 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[50]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[98]"></a>FOC_Main_Loop_H_Freq</STRONG> (Thumb, 260 bytes, Stack size 8 bytes, foc_control.o(i.FOC_Main_Loop_H_Freq))
+<P><STRONG><a name="[98]"></a>FOC_Main_Loop_H_Freq</STRONG> (Thumb, 262 bytes, Stack size 8 bytes, foc_control.o(i.FOC_Main_Loop_H_Freq))
 <BR><BR>[Stack]<UL><LI>Max Depth = 88<LI>Call Chain = FOC_Main_Loop_H_Freq &rArr; PID_Calc &rArr; Filter_Lowpass
 </UL>
-<BR>[Calls]<UL><LI><a href="#[9e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PID_SetRef
-<LI><a href="#[9d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PID_SetFdb
-<LI><a href="#[9f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PID_Calc
-<LI><a href="#[a2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Get_ADC_Value
-<LI><a href="#[99]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Encoder_SPI_Get_Angle
+<BR>[Calls]<UL><LI><a href="#[9d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PID_SetRef
+<LI><a href="#[9c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PID_SetFdb
+<LI><a href="#[9e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PID_Calc
+<LI><a href="#[a1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Get_ADC_Value
 <LI><a href="#[7a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Adc_Val_Decode
-<LI><a href="#[9c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Park_transform
-<LI><a href="#[a0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Inv_Park_transform
-<LI><a href="#[9a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FOC_Theta_Calc
-<LI><a href="#[9b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Clarke_transform
-<LI><a href="#[a1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CALC_SVPWM
+<LI><a href="#[9b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Park_transform
+<LI><a href="#[9f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Inv_Park_transform
+<LI><a href="#[99]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FOC_ElecTheta_Calc
+<LI><a href="#[9a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Clarke_transform
+<LI><a href="#[a0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CALC_SVPWM
 </UL>
 <BR>[Called By]<UL><LI><a href="#[af]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_ADCEx_InjectedConvCpltCallback
 </UL>
 
-<P><STRONG><a name="[a3]"></a>FOC_Main_Loop_L_Freq</STRONG> (Thumb, 66 bytes, Stack size 8 bytes, foc_control.o(i.FOC_Main_Loop_L_Freq))
+<P><STRONG><a name="[a2]"></a>FOC_Main_Loop_L_Freq</STRONG> (Thumb, 76 bytes, Stack size 8 bytes, foc_control.o(i.FOC_Main_Loop_L_Freq))
 <BR><BR>[Stack]<UL><LI>Max Depth = 136<LI>Call Chain = FOC_Main_Loop_L_Freq &rArr; Encoder_Read_Reg &rArr; Encoder_SPI_Data_Process &rArr; DWT_GetTimeline_us &rArr; DWT_SysTimeUpdate &rArr; __aeabi_uldivmod
 </UL>
-<BR>[Calls]<UL><LI><a href="#[9e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PID_SetRef
-<LI><a href="#[9d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PID_SetFdb
+<BR>[Calls]<UL><LI><a href="#[9d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PID_SetRef
+<LI><a href="#[9c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PID_SetFdb
 <LI><a href="#[a5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PID_GetOutput
-<LI><a href="#[9f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PID_Calc
-<LI><a href="#[a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Encoder_SPI_Get_Angular_Speed
+<LI><a href="#[9e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PID_Calc
+<LI><a href="#[a3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Encoder_SPI_Get_Angle
 <LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Encoder_Read_Reg
+<LI><a href="#[a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FOC_Theta_Calc
 </UL>
 <BR>[Called By]<UL><LI><a href="#[f6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_TIM_PeriodElapsedCallback
 </UL>
 
-<P><STRONG><a name="[90]"></a>FOC_PID_Init</STRONG> (Thumb, 226 bytes, Stack size 24 bytes, foc_control.o(i.FOC_PID_Init))
-<BR><BR>[Stack]<UL><LI>Max Depth = 40<LI>Call Chain = FOC_PID_Init &rArr; PID_Init
+<P><STRONG><a name="[90]"></a>FOC_PID_Init</STRONG> (Thumb, 230 bytes, Stack size 32 bytes, foc_control.o(i.FOC_PID_Init))
+<BR><BR>[Stack]<UL><LI>Max Depth = 48<LI>Call Chain = FOC_PID_Init &rArr; PID_Init
 </UL>
 <BR>[Calls]<UL><LI><a href="#[a6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PID_Init
 </UL>
 <BR>[Called By]<UL><LI><a href="#[8c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FOC_Main_Init
 </UL>
 
-<P><STRONG><a name="[8d]"></a>FOC_Struct_Init</STRONG> (Thumb, 82 bytes, Stack size 0 bytes, foc_control.o(i.FOC_Struct_Init))
+<P><STRONG><a name="[8d]"></a>FOC_Struct_Init</STRONG> (Thumb, 96 bytes, Stack size 0 bytes, foc_control.o(i.FOC_Struct_Init))
 <BR><BR>[Called By]<UL><LI><a href="#[8c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FOC_Main_Init
 </UL>
 
-<P><STRONG><a name="[9a]"></a>FOC_Theta_Calc</STRONG> (Thumb, 62 bytes, Stack size 0 bytes, foc_control.o(i.FOC_Theta_Calc))
-<BR><BR>[Called By]<UL><LI><a href="#[98]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FOC_Main_Loop_H_Freq
+<P><STRONG><a name="[a4]"></a>FOC_Theta_Calc</STRONG> (Thumb, 34 bytes, Stack size 0 bytes, foc_control.o(i.FOC_Theta_Calc))
+<BR><BR>[Called By]<UL><LI><a href="#[a2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FOC_Main_Loop_L_Freq
 </UL>
 
 <P><STRONG><a name="[a7]"></a>Filter_Lowpass</STRONG> (Thumb, 178 bytes, Stack size 24 bytes, lib_filter.o(i.Filter_Lowpass))
@@ -737,14 +737,14 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[6f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GetTick
 </UL>
-<BR>[Called By]<UL><LI><a href="#[9f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PID_Calc
+<BR>[Called By]<UL><LI><a href="#[9e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PID_Calc
 </UL>
 
 <P><STRONG><a name="[11a]"></a>Filter_Lowpass_Init</STRONG> (Thumb, 14 bytes, Stack size 0 bytes, lib_filter.o(i.Filter_Lowpass_Init))
 <BR><BR>[Called By]<UL><LI><a href="#[a6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PID_Init
 </UL>
 
-<P><STRONG><a name="[a2]"></a>Get_ADC_Value</STRONG> (Thumb, 10 bytes, Stack size 0 bytes, util_adc.o(i.Get_ADC_Value))
+<P><STRONG><a name="[a1]"></a>Get_ADC_Value</STRONG> (Thumb, 10 bytes, Stack size 0 bytes, util_adc.o(i.Get_ADC_Value))
 <BR><BR>[Stack]<UL><LI>Max Depth = 52<LI>Call Chain = Get_ADC_Value &rArr; HAL_ADC_Start_DMA &rArr; HAL_DMA_Start_IT &rArr; DMA_SetConfig
 </UL>
 <BR>[Calls]<UL><LI><a href="#[a8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_ADC_Start_DMA
@@ -899,7 +899,7 @@ Global Symbols
 <LI><a href="#[b3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LL_ADC_REG_IsConversionOngoing
 <LI><a href="#[c6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_DMA_Start_IT
 </UL>
-<BR>[Called By]<UL><LI><a href="#[a2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Get_ADC_Value
+<BR>[Called By]<UL><LI><a href="#[a1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Get_ADC_Value
 </UL>
 
 <P><STRONG><a name="[e4]"></a>HAL_DMA_Abort_IT</STRONG> (Thumb, 120 bytes, Stack size 16 bytes, stm32g4xx_hal_dma.o(i.HAL_DMA_Abort_IT))
@@ -1467,7 +1467,7 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 144<LI>Call Chain = HAL_TIM_PeriodElapsedCallback &rArr; FOC_Main_Loop_L_Freq &rArr; Encoder_Read_Reg &rArr; Encoder_SPI_Data_Process &rArr; DWT_GetTimeline_us &rArr; DWT_SysTimeUpdate &rArr; __aeabi_uldivmod
 </UL>
 <BR>[Calls]<UL><LI><a href="#[10a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_IncTick
-<LI><a href="#[a3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FOC_Main_Loop_L_Freq
+<LI><a href="#[a2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FOC_Main_Loop_L_Freq
 <LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Error_Main_Loop
 </UL>
 <BR>[Called By]<UL><LI><a href="#[f2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_TIM_IRQHandler
@@ -1488,7 +1488,7 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[97]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;playStartupTune
 </UL>
 
-<P><STRONG><a name="[a0]"></a>Inv_Park_transform</STRONG> (Thumb, 84 bytes, Stack size 32 bytes, foc_control.o(i.Inv_Park_transform))
+<P><STRONG><a name="[9f]"></a>Inv_Park_transform</STRONG> (Thumb, 84 bytes, Stack size 32 bytes, foc_control.o(i.Inv_Park_transform))
 <BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = Inv_Park_transform
 </UL>
 <BR>[Calls]<UL><LI><a href="#[10c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;arm_sin_f32
@@ -1576,7 +1576,7 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[119]"></a>Math_Differential</STRONG> (Thumb, 44 bytes, Stack size 0 bytes, lib_math.o(i.Math_Differential))
-<BR><BR>[Called By]<UL><LI><a href="#[9f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PID_Calc
+<BR><BR>[Called By]<UL><LI><a href="#[9e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PID_Calc
 </UL>
 
 <P><STRONG><a name="[3]"></a>MemManage_Handler</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, stm32g4xx_it.o(i.MemManage_Handler))
@@ -1595,18 +1595,18 @@ Global Symbols
 <P><STRONG><a name="[1]"></a>NMI_Handler</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, stm32g4xx_it.o(i.NMI_Handler))
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32g431xx.o(RESET)
 </UL>
-<P><STRONG><a name="[9f]"></a>PID_Calc</STRONG> (Thumb, 644 bytes, Stack size 56 bytes, alg_pid.o(i.PID_Calc))
+<P><STRONG><a name="[9e]"></a>PID_Calc</STRONG> (Thumb, 644 bytes, Stack size 56 bytes, alg_pid.o(i.PID_Calc))
 <BR><BR>[Stack]<UL><LI>Max Depth = 80<LI>Call Chain = PID_Calc &rArr; Filter_Lowpass
 </UL>
 <BR>[Calls]<UL><LI><a href="#[119]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Math_Differential
 <LI><a href="#[a7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Filter_Lowpass
 </UL>
-<BR>[Called By]<UL><LI><a href="#[a3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FOC_Main_Loop_L_Freq
+<BR>[Called By]<UL><LI><a href="#[a2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FOC_Main_Loop_L_Freq
 <LI><a href="#[98]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FOC_Main_Loop_H_Freq
 </UL>
 
 <P><STRONG><a name="[a5]"></a>PID_GetOutput</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, alg_pid.o(i.PID_GetOutput))
-<BR><BR>[Called By]<UL><LI><a href="#[a3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FOC_Main_Loop_L_Freq
+<BR><BR>[Called By]<UL><LI><a href="#[a2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FOC_Main_Loop_L_Freq
 </UL>
 
 <P><STRONG><a name="[a6]"></a>PID_Init</STRONG> (Thumb, 66 bytes, Stack size 16 bytes, alg_pid.o(i.PID_Init))
@@ -1617,17 +1617,17 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[90]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FOC_PID_Init
 </UL>
 
-<P><STRONG><a name="[9d]"></a>PID_SetFdb</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, alg_pid.o(i.PID_SetFdb))
-<BR><BR>[Called By]<UL><LI><a href="#[a3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FOC_Main_Loop_L_Freq
+<P><STRONG><a name="[9c]"></a>PID_SetFdb</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, alg_pid.o(i.PID_SetFdb))
+<BR><BR>[Called By]<UL><LI><a href="#[a2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FOC_Main_Loop_L_Freq
 <LI><a href="#[98]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FOC_Main_Loop_H_Freq
 </UL>
 
-<P><STRONG><a name="[9e]"></a>PID_SetRef</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, alg_pid.o(i.PID_SetRef))
-<BR><BR>[Called By]<UL><LI><a href="#[a3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FOC_Main_Loop_L_Freq
+<P><STRONG><a name="[9d]"></a>PID_SetRef</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, alg_pid.o(i.PID_SetRef))
+<BR><BR>[Called By]<UL><LI><a href="#[a2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FOC_Main_Loop_L_Freq
 <LI><a href="#[98]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FOC_Main_Loop_H_Freq
 </UL>
 
-<P><STRONG><a name="[9c]"></a>Park_transform</STRONG> (Thumb, 84 bytes, Stack size 32 bytes, foc_control.o(i.Park_transform))
+<P><STRONG><a name="[9b]"></a>Park_transform</STRONG> (Thumb, 84 bytes, Stack size 32 bytes, foc_control.o(i.Park_transform))
 <BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = Park_transform
 </UL>
 <BR>[Calls]<UL><LI><a href="#[10c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;arm_sin_f32

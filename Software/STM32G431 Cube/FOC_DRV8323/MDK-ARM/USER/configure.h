@@ -12,17 +12,14 @@
 //Hardware Version
 #define HARDWARE_VERSION VERSION_1
 //Motor Type
-#define MOTOR_TYPE DJI_SNAIL_2305
+#define MOTOR_TYPE HT4315
 //Encoder Type
-#define ENCODER_TYPE MA600
-
-//-----------PID Setting---------------//
- 
+#define ENCODER_TYPE MA600 
 
 //-----------Mode Setting--------------//
 
 //闭环模式
-#define FOC_CLOSE_LOOP_MODE MODE_ON
+#define FOC_CLOSE_LOOP_MODE MODE_POSITION
 //ADC电压校准模式
 #define ADC_VREF_MODE MODE_OFF
 //滤波模式, Sliding Window Filter
@@ -33,10 +30,15 @@
 //nFAULT中断处理模式 MODE_ON:中断 MODE_OFF:轮询
 #define N_FAULT_MODE MODE_OFF
 //MA600差分滤波窗口宽度
-#define DIFF_SLIDING_WINDOW_SIZE 64
+#define DIFF_SLIDING_WINDOW_SIZE 32
+//MA600角度滤波窗口宽度
+#define ANGLE_SLIDING_WINDOW_SIZE 1
+
 
 #define MODE_ON 1
 #define MODE_OFF 0
+#define MODE_SPEED 2
+#define MODE_POSITION 3
 
 //------------PWM Setting-------------//
 #define CKTIM 170000000//定时器时钟频率

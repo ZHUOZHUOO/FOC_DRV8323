@@ -45,19 +45,24 @@ typedef struct
     float Ibeta;
     float Iamp;//电流幅值
     float Id;
+    float Id_ref;
     float Iq;
 		float Iq_ref;
     float Vd;//D轴电压_期望
     float Vq;//Q轴电压_期望
     float Valpha;
     float Vbeta;
+
+    float Theta;//电角度_反馈
+    float Theta_Ref;//电角度_期望
+    float Open_Loop_Theta;//开环角度_ref
+    
+    float Speed_Rpm;//速度
+    float Speed_Rpm_Ref;//期望速度
+
     uint16_t hTimePhA;
     uint16_t hTimePhB;
     uint16_t hTimePhC;
-		float Open_Loop_Theta;//开环角度_ref
-    float Theta;//电角度_反馈
-    float Speed_Rpm_Expect;//期望速度
-    float Speed_Rpm;//速度
     float PWM_A_DutyCycle;//占空比A相
     float PWM_B_DutyCycle;//占空比B相
     float PWM_C_DutyCycle;//占空比C相

@@ -16,10 +16,13 @@
 
 Encoder_SPI_HandleTypeDef MA600_spi;
 SlidingWindowFilter MA600_diff_Filter;
+SlidingWindowFilter MA600_angle_Filter;
 float MA600_diff_buffer[DIFF_SLIDING_WINDOW_SIZE];
+float MA600_angle_buffer[ANGLE_SLIDING_WINDOW_SIZE];
 
 void Encoder_SPI_Init(Encoder_SPI_HandleTypeDef *encoder,
 											SlidingWindowFilter *diff_filter,float *diff_buffer,
+                      SlidingWindowFilter *angle_filter,float *angle_buffer,
                       SPI_HandleTypeDef *hspi, GPIO_TypeDef *cs_port,
                       uint16_t cs_pin, float radius) {
   encoder->hspi = hspi;
@@ -34,11 +37,16 @@ void Encoder_SPI_Init(Encoder_SPI_HandleTypeDef *encoder,
   encoder->angular_speed = 0;
   encoder->linear_speed = 0;
 	encoder->rawAngle = 0;
+  encoder->last_rawAngle = 0;
+  encoder->rawAngle_diff = 0;
   encoder->last_update_time = HAL_GetTick();
 	encoder->angle_diff_Filter = diff_filter;
 	encoder->angle_diff_buffer = diff_buffer;
+  encoder->angle_filter = angle_filter;
+  encoder->angle_buffer = angle_buffer;
 	SlidingWindowFilter_Init(encoder->angle_diff_Filter, encoder->angle_diff_buffer, DIFF_SLIDING_WINDOW_SIZE);
-	
+	SlidingWindowFilter_Init(encoder->angle_filter, encoder->angle_buffer, ANGLE_SLIDING_WINDOW_SIZE);
+
   memset(encoder->rx_buffer, 0, 4);
 
   uint8_t tx_buffer[4] = {0,0,0,0};
@@ -135,25 +143,23 @@ void Encoder_SPI_Data_Process(Encoder_SPI_HandleTypeDef *encoder,
   // 读取多圈信息
   int16_t turns = (int16_t)((buffer[2] << 8) | buffer[3]);
   // 计算角度的差值，考虑过零点情况
-  float angle_diff = encoder->rawAngle - encoder->last_angle;
-  if (angle_diff > 180.0f) {
+  encoder->rawAngle_diff = encoder->rawAngle - encoder->last_rawAngle;
+  if (encoder->rawAngle_diff > 180.0f) {
     // 说明角度从负值跳到正值（即过零点）
-    angle_diff -= 360.0f;
-  } else if (angle_diff < -180.0f) {
+    encoder->rawAngle_diff -= 360.0f;
+  } else if (encoder->rawAngle_diff < -180.0f) {
     // 说明角度从正值跳到负值（即过零点）
-    angle_diff += 360.0f;
+    encoder->rawAngle_diff += 360.0f;
   }
-	
-	encoder->angle_diff = SlidingWindowFilter_Update(encoder->angle_diff_Filter, angle_diff);
 
   // 根据角度差值判断圈数变化
-  if (angle_diff > 0 && encoder->last_angle < -90 && encoder->rawAngle > 90) {
-    // 过零点（从负数跨到正数），圈数加一
-    encoder->multi_turn++;
-  } else if (angle_diff < 0 && encoder->last_angle > 90 && encoder->rawAngle < -90) {
-    // 过零点（从正数跨到负数），圈数减一
+  if (encoder->rawAngle_diff < 0 && encoder->last_rawAngle < -90 && encoder->rawAngle > 90) {
     encoder->multi_turn--;
+  } else if (encoder->rawAngle_diff > 0 && encoder->last_rawAngle > 90 && encoder->rawAngle < -90) {
+    encoder->multi_turn++;
   }
+	
+	encoder->angle_diff = SlidingWindowFilter_Update(encoder->angle_diff_Filter, encoder->rawAngle_diff);
 
   // 将角度差转换为角速度 (rad/s)
   float sampling_period =
@@ -166,7 +172,8 @@ void Encoder_SPI_Data_Process(Encoder_SPI_HandleTypeDef *encoder,
   encoder->linear_speed = encoder->angular_speed * encoder->radius;
 
   // 保存上次的角度和多圈数
-  encoder->last_angle = encoder->rawAngle;
+  encoder->last_rawAngle = encoder->rawAngle;
+  encoder->last_angle = SlidingWindowFilter_Update(encoder->angle_filter, encoder->rawAngle);
   encoder->last_multi_turn = encoder->multi_turn;
 }
 
