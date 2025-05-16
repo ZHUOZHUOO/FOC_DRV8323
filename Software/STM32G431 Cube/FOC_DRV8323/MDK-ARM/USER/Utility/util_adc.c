@@ -92,11 +92,8 @@ void HAL_ADCEx_InjectedConvCpltCallback(ADC_HandleTypeDef *hadc)
 			else {
 				// 向下溢出（Down-counting overflow）
 				TIM1->SR &= ~TIM_SR_UIF; // 清除标志
-				HAL_GPIO_TogglePin(LED_PORT, LED_Pin);
 				Adc_Injected_Val_Decode(&hadc1);
-
 				FOC_Main_Loop_H_Freq();
-				HAL_GPIO_TogglePin(LED_PORT, LED_Pin);
 			}
 		}
 	}

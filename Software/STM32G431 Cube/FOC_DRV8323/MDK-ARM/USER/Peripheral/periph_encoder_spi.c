@@ -209,9 +209,6 @@ float Encoder_SPI_Get_Angular_Speed(Encoder_SPI_HandleTypeDef *encoder) {
 }
 
 void Encoder_Read_Reg(Encoder_SPI_HandleTypeDef *encoder) {
-	
-	Encoder_SPI_Data_Process(&MA600_spi, MA600_spi.rx_buffer);
-	
   uint8_t txbuffer[4];
   txbuffer[0] = 0x00;
   txbuffer[1] = 0x00;
@@ -219,9 +216,12 @@ void Encoder_Read_Reg(Encoder_SPI_HandleTypeDef *encoder) {
   txbuffer[3] = 0x00;
 	
   HAL_GPIO_WritePin(encoder->cs_port, encoder->cs_pin, GPIO_PIN_RESET);
-	HAL_SPI_Receive_DMA(encoder->hspi, encoder->rx_buffer, 4);
-	HAL_SPI_Transmit_DMA(encoder->hspi, txbuffer, 4);
+//	HAL_SPI_Receive_DMA(encoder->hspi, encoder->rx_buffer, 4);
+//	HAL_SPI_Transmit_DMA(encoder->hspi, txbuffer, 4);
+	HAL_SPI_TransmitReceive(encoder->hspi, txbuffer, encoder->rx_buffer, 4, 0);
   HAL_GPIO_WritePin(encoder->cs_port, encoder->cs_pin, GPIO_PIN_SET);
+	
+	Encoder_SPI_Data_Process(&MA600_spi, MA600_spi.rx_buffer);
 	
 	Motor_Run.spi_flag++;
 }

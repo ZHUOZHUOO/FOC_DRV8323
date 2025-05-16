@@ -85,14 +85,16 @@ void CALC_SVPWM(float Valpha, float Vbeta) {
     uint16_t hTimePhB = (uint16_t)times[order[1]];
     uint16_t hTimePhC = (uint16_t)times[order[2]];
 
-    // 更新寄存器
+		// 更新寄存器
+#if 	THREE_PHASE_LINE_SEQUENCCE == A_B_C
     TIM1->CCR1 = hTimePhA;
     TIM1->CCR2 = hTimePhB;
     TIM1->CCR3 = hTimePhC;
-		
-    TIM1->CCR1 = 0;
-    TIM1->CCR2 = 0;
-    TIM1->CCR3 = 0;
+#elif 	THREE_PHASE_LINE_SEQUENCCE == A_C_B
+		TIM1->CCR1 = hTimePhA;
+    TIM1->CCR2 = hTimePhC;
+    TIM1->CCR3 = hTimePhB;
+#endif
 		
     // 保存到结构体
     Motor_FOC.hTimePhA = hTimePhA;
@@ -150,7 +152,7 @@ void FOC_Struct_Init(FOC_Struct *foc)
     foc->Valpha = 0;
     foc->Vbeta = 0;
 
-    foc->Speed_Rpm_Ref = (MOTOR_SPEED_MAX - 4.5f);
+    foc->Speed_Rpm_Ref = (MOTOR_SPEED_MAX - 14.5f);
     foc->Speed_Rpm = 0;
     foc->Theta = 0;
     foc->Theta_Ref = 180 / 360.0f * TWO_PI;
@@ -171,7 +173,7 @@ void FOC_PID_Init(void)
     PID_Init(&Speed_PID, PID_DELTA, 0.009f, 0.000011f, 0.0000003f, 0.0f, 0.0f, 500.0f, 1.5f, 0.1f, 0.1f, 0.1f);//HT4315
 		PID_Init(&Position_PID, PID_POSITION, 0.04f, 0.001f, 0.0f, 0.0f, 0.0f, 10.0f, 2.0f, 0.1f, 0.1f, 0.1f);
 		#elif FOC_CLOSE_LOOP_MODE == MODE_OFF
-		PID_Init(&Speed_PID, PID_DELTA, 0.00021f, 0.00000015f, 0.00f, 0.0f, 0.0f, 500.0f, 1.5f, 0.1f, 0.1f, 0.1f);//HT4315
+		PID_Init(&Speed_PID, PID_DELTA, 0.081f, 0.00015f, 0.00f, 0.0f, 0.0f, 500.0f, 1.5f, 0.1f, 0.1f, 0.1f);//HT4315
 		PID_Init(&Position_PID, PID_POSITION, 0.001f, 0.001f, 0.0f, 0.0f, 0.0f, 200, 200, 0.1f, 0.1f, 0.1f);
 		#endif
 	
@@ -184,6 +186,18 @@ void FOC_PID_Init(void)
 		PID_Init(&Position_PID, PID_POSITION, 0.001f, 0.001f, 0.0f, 0.0f, 0.0f, 200, 200, 0.1f, 0.1f, 0.1f);
 		#elif FOC_CLOSE_LOOP_MODE == MODE_OFF
     PID_Init(&Speed_PID, PID_DELTA, 0.00003f, 0.00000003f, 0.0000000f, 0.0f, 0.0f, 3000, 300, 0.1f, 0.000004f, 0.1f);//snail
+		PID_Init(&Position_PID, PID_POSITION, 0.001f, 0.001f, 0.0f, 0.0f, 0.0f, 200, 200, 0.1f, 0.1f, 0.1f);
+		#endif
+		
+		//===========HT2806==========//
+		#elif MOTOR_TYPE == HT2806
+    PID_Init(&Current_Id_PID, PID_DELTA, 5.5f, 0.52f, 0.00f, 0.0f, 0.0f, 8.8f, 0.14f, 0.1f, 0.1f, 0.1f);
+    PID_Init(&Current_Iq_PID, PID_DELTA, 5.5f, 0.52f, 0.00f, 0.0f, 0.0f, 8.8f, 0.14f, 0.1f, 0.1f, 0.1f);
+		#if FOC_CLOSE_LOOP_MODE == MODE_POSITION || FOC_CLOSE_LOOP_MODE == MODE_SPEED
+    PID_Init(&Speed_PID, PID_DELTA, 0.022f, 0.000124f, 0.0000000f, 0.0f, 0.0f, 500.0f, 0.12f, 0.1f, 0.1f, 0.1f);//HT4315
+		PID_Init(&Position_PID, PID_POSITION, 0.004f, 0.0001f, 0.0f, 0.0f, 0.0f, 10.0f, 2.0f, 0.1f, 0.1f, 0.1f);
+		#elif FOC_CLOSE_LOOP_MODE == MODE_OFF
+		PID_Init(&Speed_PID, PID_DELTA, 0.21f, 0.00035f, 0.00f, 0.0f, 0.0f, 500.0f, 2.5f, 0.1f, 0.1f, 0.1f);//HT4315
 		PID_Init(&Position_PID, PID_POSITION, 0.001f, 0.001f, 0.0f, 0.0f, 0.0f, 200, 200, 0.1f, 0.1f, 0.1f);
 		#endif
     #endif
@@ -280,9 +294,11 @@ void FOC_Main_Loop_H_Freq(void)
 #if FOC_CLOSE_LOOP_MODE == MODE_OFF
     Motor_FOC.Vd = 0.00f;
 		#if MOTOR_TYPE == HT4315
-    Motor_FOC.Vq = (0.5 * Motor_FOC.Speed_Rpm / Motor_FOC.Speed_Rpm_Ref + 0.5)*8.8f; 
+    Motor_FOC.Vq = (0.4 * Motor_FOC.Speed_Rpm / Motor_FOC.Speed_Rpm_Ref + 0.6)*8.8f; 
 		#elif MOTOR_TYPE == DJI_SNAIL_2305
 		Motor_FOC.Vq = (0.8 * Motor_FOC.Speed_Rpm / Motor_FOC.Speed_Rpm_Ref + 0.2)*12.0f;
+		#elif MOTOR_TYPE == HT2806
+		Motor_FOC.Vq = (0.4 * Motor_FOC.Speed_Rpm / Motor_FOC.Speed_Rpm_Ref + 0.6)*3.5f; 
 		#endif
 
 #elif FOC_CLOSE_LOOP_MODE == MODE_POSITION || FOC_CLOSE_LOOP_MODE == MODE_SPEED
@@ -292,14 +308,14 @@ void FOC_Main_Loop_H_Freq(void)
 
     PID_SetFdb(&Current_Iq_PID, Motor_FOC.Iq);
     PID_SetRef(&Current_Iq_PID, Motor_FOC.Iq_ref);
-//    PID_SetRef(&Current_Iq_PID, 0.42f);
+//    PID_SetRef(&Current_Iq_PID, 0.15f);
     Motor_FOC.Vq += PID_Calc(&Current_Iq_PID);
 #endif
 
-		Max(Motor_FOC.Vq,12.0f);
-		Min(Motor_FOC.Vq,12.0f);
-		Max(Motor_FOC.Vd,12.0f);
-		Min(Motor_FOC.Vd,12.0f);
+		Max(Motor_FOC.Vq,13.0f);
+		Min(Motor_FOC.Vq,13.0f);
+		Max(Motor_FOC.Vd,13.0f);
+		Min(Motor_FOC.Vd,13.0f);
 		
 //---------Inv_Park_transform----------//
 #if FOC_CLOSE_LOOP_MODE == MODE_OFF
@@ -315,7 +331,7 @@ void FOC_Main_Loop_H_Freq(void)
     if (Motor_Run.state_led_flag == 10000)
     {
         Motor_Run.state_led_flag = 0;
-//        HAL_GPIO_TogglePin(LED_PORT, LED_Pin);
+        HAL_GPIO_TogglePin(LED_PORT, LED_Pin);
     }
 		if ((Motor_Run.state_led_flag & 0x07) == 0)
     {
@@ -323,19 +339,14 @@ void FOC_Main_Loop_H_Freq(void)
 			  Get_ADC_Value();
 				Motor_Run.Adc_flag++;
 		}
+		
     Motor_Run.state_led_flag++;
     Motor_Run.run_flag++;
 }
 
 void FOC_Main_Loop_L_Freq(void)
-{
-    static uint16_t k = 0;
-    if(k == 2)
-    {
-		  Encoder_Read_Reg(&MA600_spi);
-      k = 0;
-    }
-    k++;
+{		
+		Encoder_Read_Reg(&MA600_spi);
 #if FOC_CLOSE_LOOP_MODE == MODE_OFF
 		PID_SetFdb(&Speed_PID, Motor_FOC.Speed_Rpm);
     PID_SetRef(&Speed_PID, Motor_FOC.Speed_Rpm_Ref);//单位：rad/s
@@ -345,12 +356,12 @@ void FOC_Main_Loop_L_Freq(void)
 		PID_SetFdb(&Speed_PID, MOTOR_ENCODER_DIR * Encoder_SPI_Get_Angular_Speed(&MA600_spi));
     PID_SetRef(&Speed_PID, Motor_FOC.Speed_Rpm_Ref * TWO_PI);//单位：rad/s
     PID_Calc(&Speed_PID);
-		Motor_FOC.Iq_ref += PID_GetOutput(&Speed_PID);
+		Motor_FOC.Iq_ref = Min(Max(Motor_FOC.Iq_ref + PID_GetOutput(&Speed_PID), -1.3f), 1.3f);
 #elif FOC_CLOSE_LOOP_MODE == MODE_POSITION
     PID_SetFdb(&Position_PID, MOTOR_ENCODER_DIR * FOC_Theta_Calc(Encoder_SPI_Get_Angle(&MA600_spi)));//单位：rad
     PID_SetRef(&Position_PID, Motor_FOC.Theta_Ref);//单位：rad
     PID_Calc(&Position_PID);
-    Motor_FOC.Iq_ref = PID_GetOutput(&Position_PID);
+    Motor_FOC.Iq_ref = Min(Max( PID_GetOutput(&Position_PID), -1.3f), 1.3f);
 #endif
 }
 

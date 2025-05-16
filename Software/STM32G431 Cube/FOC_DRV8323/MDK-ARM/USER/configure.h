@@ -10,16 +10,16 @@
 
 //-----------Version Setting------------//
 //Hardware Version
-#define HARDWARE_VERSION VERSION_1
+#define HARDWARE_VERSION VERSION_2
 //Motor Type
-#define MOTOR_TYPE HT4315
+#define MOTOR_TYPE HT2806
 //Encoder Type
 #define ENCODER_TYPE MA600 
 
 //-----------Mode Setting--------------//
 
 //闭环模式
-#define FOC_CLOSE_LOOP_MODE MODE_POSITION
+#define FOC_CLOSE_LOOP_MODE MODE_SPEED
 //ADC电压校准模式
 #define ADC_VREF_MODE MODE_OFF
 //滤波模式, Sliding Window Filter
@@ -30,7 +30,7 @@
 //nFAULT中断处理模式 MODE_ON:中断 MODE_OFF:轮询
 #define N_FAULT_MODE MODE_OFF
 //MA600差分滤波窗口宽度
-#define DIFF_SLIDING_WINDOW_SIZE 32
+#define DIFF_SLIDING_WINDOW_SIZE 64
 //MA600角度滤波窗口宽度
 #define ANGLE_SLIDING_WINDOW_SIZE 1
 
@@ -61,6 +61,7 @@
 
 #define HT4315 0
 #define DJI_SNAIL_2305 1
+#define HT2806 2
 
 #define MA600 0
 
@@ -74,6 +75,8 @@
 	#define MOTOR_CURRENT_MAX 0.92 //电机最大电流
 	#define SPEED_CONSTANT 20 //转速常数Kn
 	#define TORQUE_CONSTANT 0.45 //转矩常数KT
+	
+	#define MAX_Iq
 #elif MOTOR_TYPE == DJI_SNAIL_2305
 	#define MOTOR_POLE_PAIRS 7 //电机极对数
 	#define MOTOR_VOLTAGE 14.8 //电机电压
@@ -84,15 +87,33 @@
 	#define SPEED_CONSTANT 2400 //转速常数Kn
 	#define TORQUE_CONSTANT 0.0054267 //转矩常数KT
 	#define	BACK_ELEC_FORCE_CONSTANT	0.056364//反电动势常数Ke
+#elif MOTOR_TYPE == HT2806
+	#define MOTOR_POLE_PAIRS 7 //电机极对数
+	#define MOTOR_VOLTAGE 12 //电机电压
+	#define MOTOR_RESISTANCE 5.1 //电机电阻
+	#define MOTOR_INDUCTANCE 0.0023 //电机电感
+	#define MOTOR_SPEED_MAX  20//电机最大速度(空载)
+	#define MOTOR_CURRENT_MAX 0.8 //电机最大电流
+	#define SPEED_CONSTANT 183 //转速常数Kn
+	#define TORQUE_CONSTANT 0.06 //转矩常数KT
 #endif
 
 //---------Encoder Parameter Define---------//
 #if ENCODER_TYPE == MA600 && MOTOR_TYPE == HT4315
 	#define MOTOR_ENCODER_DIR 	-1 //电机编码器方向
 	#define MOTOR_ENCODER_LINES 8192 //电机编码器线数_MA600
+	#define THREE_PHASE_LINE_SEQUENCCE A_B_C
 #elif ENCODER_TYPE == MA600 && MOTOR_TYPE == DJI_SNAIL_2305
 	#define MOTOR_ENCODER_DIR 	1 //电机编码器方向
 	#define MOTOR_ENCODER_LINES 8192 //电机编码器线数_MA600
+	#define THREE_PHASE_LINE_SEQUENCCE A_B_C
+#elif ENCODER_TYPE == MA600 && MOTOR_TYPE == HT2806
+	#define MOTOR_ENCODER_DIR 	-1 //电机编码器方向
+	#define MOTOR_ENCODER_LINES 8192 //电机编码器线数_MA600
+	#define THREE_PHASE_LINE_SEQUENCCE A_C_B
 #endif
+
+#define A_B_C  1
+#define A_C_B -1
 
 #endif

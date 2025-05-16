@@ -176,11 +176,10 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
   /* USER CODE BEGIN Callback 0 */
 	if (htim->Instance == TIM1) {
-    uint32_t dir = (htim1.Instance->CR1 & TIM_CR1_DIR);
-    if (dir != 0) {
-
+//    uint32_t dir = (htim1.Instance->CR1 & TIM_CR1_DIR);
+//    if (dir != 0) {
 //      FOC_Main_Loop_H_Freq();
-		}
+//		}
 	}
   else if (htim->Instance == TIM3)
   {
