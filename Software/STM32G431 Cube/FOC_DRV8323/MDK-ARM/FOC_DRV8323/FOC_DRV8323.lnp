@@ -13,6 +13,7 @@
 "foc_drv8323\foc_control.o"
 "foc_drv8323\foc_error.o"
 "foc_drv8323\init_music.o"
+"foc_drv8323\foc_comm.o"
 "foc_drv8323\util_adc.o"
 "foc_drv8323\util_fdcan.o"
 "foc_drv8323\util_gpio.o"

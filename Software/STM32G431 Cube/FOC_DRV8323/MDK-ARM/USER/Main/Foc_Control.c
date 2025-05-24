@@ -23,6 +23,10 @@ PID_TypeDef Position_PID;
 #define MA600_CS_GPIO_Port GPIOA
 #define MA600_CS_Pin GPIO_PIN_15
 
+#define MAX_IQ 1.7f
+#define MAX_VQ 6.8f
+#define MAX_VD 2.3f
+
 static float inv_motor_voltage;
 static float sqrt3_inv_mv;
 static float half_inv_mv;
@@ -86,15 +90,19 @@ void CALC_SVPWM(float Valpha, float Vbeta) {
     uint16_t hTimePhC = (uint16_t)times[order[2]];
 
 		// 更新寄存器
-#if 	THREE_PHASE_LINE_SEQUENCCE == A_B_C
-    TIM1->CCR1 = hTimePhA;
-    TIM1->CCR2 = hTimePhB;
-    TIM1->CCR3 = hTimePhC;
-#elif 	THREE_PHASE_LINE_SEQUENCCE == A_C_B
-		TIM1->CCR1 = hTimePhA;
-    TIM1->CCR2 = hTimePhC;
-    TIM1->CCR3 = hTimePhB;
-#endif
+//#if 	THREE_PHASE_LINE_SEQUENCCE == A_B_C
+//    TIM1->CCR1 = hTimePhA;
+//    TIM1->CCR2 = hTimePhB;
+//    TIM1->CCR3 = hTimePhC;
+//#elif 	THREE_PHASE_LINE_SEQUENCCE == A_C_B
+//		TIM1->CCR1 = hTimePhA;
+//    TIM1->CCR2 = hTimePhC;
+//    TIM1->CCR3 = hTimePhB;
+//#endif
+		
+		TIM1->CCR1 = 0;
+    TIM1->CCR2 = 0;
+    TIM1->CCR3 = 0;
 		
     // 保存到结构体
     Motor_FOC.hTimePhA = hTimePhA;
@@ -155,7 +163,8 @@ void FOC_Struct_Init(FOC_Struct *foc)
     foc->Speed_Rpm_Ref = (MOTOR_SPEED_MAX - 14.5f);
     foc->Speed_Rpm = 0;
     foc->Theta = 0;
-    foc->Theta_Ref = 180 / 360.0f * TWO_PI;
+    foc->Theta_Ref = -180 / 360.0f * TWO_PI;
+    foc->ElecTheta = 0;
     foc->Open_Loop_Theta = 0;
 
     foc->hTimePhA = 0;
@@ -194,8 +203,8 @@ void FOC_PID_Init(void)
     PID_Init(&Current_Id_PID, PID_DELTA, 5.5f, 0.52f, 0.00f, 0.0f, 0.0f, 8.8f, 0.14f, 0.1f, 0.1f, 0.1f);
     PID_Init(&Current_Iq_PID, PID_DELTA, 5.5f, 0.52f, 0.00f, 0.0f, 0.0f, 8.8f, 0.14f, 0.1f, 0.1f, 0.1f);
 		#if FOC_CLOSE_LOOP_MODE == MODE_POSITION || FOC_CLOSE_LOOP_MODE == MODE_SPEED
-    PID_Init(&Speed_PID, PID_DELTA, 0.022f, 0.000124f, 0.0000000f, 0.0f, 0.0f, 500.0f, 0.12f, 0.1f, 0.1f, 0.1f);//HT4315
-		PID_Init(&Position_PID, PID_POSITION, 0.004f, 0.0001f, 0.0f, 0.0f, 0.0f, 10.0f, 2.0f, 0.1f, 0.1f, 0.1f);
+    PID_Init(&Speed_PID, PID_DELTA, 0.015f, 0.000094f, 0.0000010f, 0.0f, 0.0f, 500.0f, 0.12f, 0.1f, 0.1f, 0.1f);//HT4315
+		PID_Init(&Position_PID, PID_DELTA, 0.5f, 0.002f, 0.0f, 0.0f, 0.0f, 3.0f, 0.5f, 0.1f, 0.1f, 0.1f);
 		#elif FOC_CLOSE_LOOP_MODE == MODE_OFF
 		PID_Init(&Speed_PID, PID_DELTA, 0.21f, 0.00035f, 0.00f, 0.0f, 0.0f, 500.0f, 2.5f, 0.1f, 0.1f, 0.1f);//HT4315
 		PID_Init(&Position_PID, PID_POSITION, 0.001f, 0.001f, 0.0f, 0.0f, 0.0f, 200, 200, 0.1f, 0.1f, 0.1f);
@@ -214,6 +223,7 @@ void FOC_Main_Init(void)
     Encoder_SPI_Init (&MA600_spi, &MA600_diff_Filter , MA600_diff_buffer, 
                       &MA600_angle_Filter, MA600_angle_buffer,
                       &hspi1, MA600_CS_GPIO_Port, MA600_CS_Pin, 0.01f);
+    FDCAN_IntFilterAndStart();
 		Adc_Init();
 		DRV8323_Init();
     FOC_PID_Init();
@@ -248,47 +258,21 @@ void FOC_Main_Loop_H_Freq(void)
     Motor_FOC.Open_Loop_Theta = TWO_PI * t;         // 生成 sin(πt) 信号             
     t += Motor_FOC.Speed_Rpm * SPEED_STEP;          // 时间步进
     if (t >= 1.0f) t -= 1.0f;                       // 周期1秒
-		Motor_FOC.Theta = FOC_ElecTheta_Calc(MA600_spi.last_angle);
+		Motor_FOC.ElecTheta = FOC_ElecTheta_Calc(MA600_spi.last_angle);
 #elif FOC_CLOSE_LOOP_MODE == MODE_POSITION || FOC_CLOSE_LOOP_MODE == MODE_SPEED
-    Motor_FOC.Theta = FOC_ElecTheta_Calc(MA600_spi.last_angle);
+    Motor_FOC.ElecTheta = FOC_ElecTheta_Calc(MA600_spi.last_angle);
 #endif
 		
 	
 //----------Ia Ib Ic Calc----------//
-//		static uint16_t k = 10;
-//	
-//			Motor_FOC.Ia = (DRV8323_VREF_DIV_TWO - Motor_ADC.Valtage_Current_A) / DRV8323_ADC_GAIN;
-//			Motor_FOC.Ib = (DRV8323_VREF_DIV_TWO - Motor_ADC.Valtage_Current_B) / DRV8323_ADC_GAIN;
-//			Motor_FOC.Ic = (DRV8323_VREF_DIV_TWO - Motor_ADC.Valtage_Current_C) / DRV8323_ADC_GAIN;
-//		if(Motor_FOC.hTimePhA > (Motor_FOC.hTimePhB + k) & Motor_FOC.hTimePhA > (Motor_FOC.hTimePhC + k))
-//		{
-//			Motor_FOC.Ib = (DRV8323_VREF_DIV_TWO - Motor_ADC.Valtage_Current_B);
-//			Motor_FOC.Ic = (DRV8323_VREF_DIV_TWO - Motor_ADC.Valtage_Current_C);
-//			Motor_FOC.Ia = - Motor_FOC.Ib - Motor_FOC.Ic;
-//		}
-//		else if(Motor_FOC.hTimePhB > (Motor_FOC.hTimePhA + k) & Motor_FOC.hTimePhB > (Motor_FOC.hTimePhC + k))
-//		{
-//			Motor_FOC.Ia = (DRV8323_VREF_DIV_TWO - Motor_ADC.Valtage_Current_A);
-//			Motor_FOC.Ic = (DRV8323_VREF_DIV_TWO - Motor_ADC.Valtage_Current_C);
-//			Motor_FOC.Ib = - Motor_FOC.Ia - Motor_FOC.Ic;
-//		}
-//		else if(Motor_FOC.hTimePhC > (Motor_FOC.hTimePhA + k) & Motor_FOC.hTimePhC > (Motor_FOC.hTimePhB + k))
-//		{
-//			Motor_FOC.Ia = (DRV8323_VREF_DIV_TWO - Motor_ADC.Valtage_Current_A);
-//			Motor_FOC.Ib = (DRV8323_VREF_DIV_TWO - Motor_ADC.Valtage_Current_B);
-//			Motor_FOC.Ic = - Motor_FOC.Ia - Motor_FOC.Ib;
-//		}
-//		else 
-//		{
-			Motor_FOC.Ia = (DRV8323_VREF_DIV_TWO - Motor_ADC.Valtage_Current_A);
-			Motor_FOC.Ib = (DRV8323_VREF_DIV_TWO - Motor_ADC.Valtage_Current_B);
-			Motor_FOC.Ic = (DRV8323_VREF_DIV_TWO - Motor_ADC.Valtage_Current_C);
-//		}
+    Motor_FOC.Ia = (DRV8323_VREF_DIV_TWO - Motor_ADC.Valtage_Current_A);
+    Motor_FOC.Ib = (DRV8323_VREF_DIV_TWO - Motor_ADC.Valtage_Current_B);
+    Motor_FOC.Ic = (DRV8323_VREF_DIV_TWO - Motor_ADC.Valtage_Current_C);
 		
 //----------Clarke_Park_transform----------//
     Clarke_transform(Motor_FOC.Ia, Motor_FOC.Ib, Motor_FOC.Ic, &Motor_FOC.Ialpha, &Motor_FOC.Ibeta);
 		
-    Park_transform(Motor_FOC.Ialpha, Motor_FOC.Ibeta, &Motor_FOC.Id, &Motor_FOC.Iq, Motor_FOC.Theta);
+    Park_transform(Motor_FOC.Ialpha, Motor_FOC.Ibeta, &Motor_FOC.Id, &Motor_FOC.Iq, Motor_FOC.ElecTheta);
 
 //----------Vd_Vq_Calc----------//
 #if FOC_CLOSE_LOOP_MODE == MODE_OFF
@@ -312,16 +296,14 @@ void FOC_Main_Loop_H_Freq(void)
     Motor_FOC.Vq += PID_Calc(&Current_Iq_PID);
 #endif
 
-		Max(Motor_FOC.Vq,13.0f);
-		Min(Motor_FOC.Vq,13.0f);
-		Max(Motor_FOC.Vd,13.0f);
-		Min(Motor_FOC.Vd,13.0f);
+		Motor_FOC.Vq = Min(Max(Motor_FOC.Vq, -MAX_VQ), MAX_VQ);
+		Motor_FOC.Vd = Min(Max(Motor_FOC.Vd, -MAX_VD), MAX_VD);
 		
 //---------Inv_Park_transform----------//
 #if FOC_CLOSE_LOOP_MODE == MODE_OFF
     Inv_Park_transform(Motor_FOC.Vd, Motor_FOC.Vq, &Motor_FOC.Valpha, &Motor_FOC.Vbeta, Motor_FOC.Open_Loop_Theta);
 #elif FOC_CLOSE_LOOP_MODE == MODE_POSITION || FOC_CLOSE_LOOP_MODE == MODE_SPEED
-		Inv_Park_transform(Motor_FOC.Vd, Motor_FOC.Vq, &Motor_FOC.Valpha, &Motor_FOC.Vbeta, Motor_FOC.Theta);
+		Inv_Park_transform(Motor_FOC.Vd, Motor_FOC.Vq, &Motor_FOC.Valpha, &Motor_FOC.Vbeta, Motor_FOC.ElecTheta);
 #endif
 		
 //---------SVPWM_transform----------//
@@ -347,21 +329,33 @@ void FOC_Main_Loop_H_Freq(void)
 void FOC_Main_Loop_L_Freq(void)
 {		
 		Encoder_Read_Reg(&MA600_spi);
+
+		// static int k = 0;
+		// if(k == 20){
+		// 	uint8_t txdata[8];
+		// 	FOC_Comm_TxData_Encoder(txdata);
+		// 	FDCAN_SendMessageWithBaudSwitch(&hfdcan1, txdata, FDCAN_DLC_BYTES_8, Master_ID);
+		// 	k=0;
+		// }
+		// k++;
+
 #if FOC_CLOSE_LOOP_MODE == MODE_OFF
 		PID_SetFdb(&Speed_PID, Motor_FOC.Speed_Rpm);
     PID_SetRef(&Speed_PID, Motor_FOC.Speed_Rpm_Ref);//单位：rad/s
     PID_Calc(&Speed_PID);
 		Motor_FOC.Speed_Rpm += PID_GetOutput(&Speed_PID);
 #elif FOC_CLOSE_LOOP_MODE == MODE_SPEED
-		PID_SetFdb(&Speed_PID, MOTOR_ENCODER_DIR * Encoder_SPI_Get_Angular_Speed(&MA600_spi));
+    Motor_FOC.Speed_Rpm = MOTOR_ENCODER_DIR * Encoder_SPI_Get_Angular_Speed(&MA600_spi);
+		PID_SetFdb(&Speed_PID, Motor_FOC.Speed_Rpm);
     PID_SetRef(&Speed_PID, Motor_FOC.Speed_Rpm_Ref * TWO_PI);//单位：rad/s
     PID_Calc(&Speed_PID);
-		Motor_FOC.Iq_ref = Min(Max(Motor_FOC.Iq_ref + PID_GetOutput(&Speed_PID), -1.3f), 1.3f);
+		Motor_FOC.Iq_ref = Min(Max(Motor_FOC.Iq_ref + PID_GetOutput(&Speed_PID), -MAX_IQ), MAX_IQ);
 #elif FOC_CLOSE_LOOP_MODE == MODE_POSITION
-    PID_SetFdb(&Position_PID, MOTOR_ENCODER_DIR * FOC_Theta_Calc(Encoder_SPI_Get_Angle(&MA600_spi)));//单位：rad
+    Motor_FOC.Theta = MOTOR_ENCODER_DIR * FOC_Theta_Calc(Encoder_SPI_Get_Angle(&MA600_spi));//单位：rad
+    PID_SetFdb(&Position_PID, Motor_FOC.Theta);//单位：rad
     PID_SetRef(&Position_PID, Motor_FOC.Theta_Ref);//单位：rad
     PID_Calc(&Position_PID);
-    Motor_FOC.Iq_ref = Min(Max( PID_GetOutput(&Position_PID), -1.3f), 1.3f);
+    Motor_FOC.Iq_ref = Min(Max(Motor_FOC.Iq_ref + PID_GetOutput(&Position_PID), -MAX_IQ), MAX_IQ);
 #endif
 }
 

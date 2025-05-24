@@ -22,29 +22,23 @@ Dialog DLL:      TCM.DLL V1.27.0.0
  
 <h2>Project:</h2>
 H:\ZHUOZHUOO--Github\FOC_DRV8323\Software\STM32G431 Cube\FOC_DRV8323\MDK-ARM\FOC_DRV8323.uvprojx
-Project File Date:  05/16/2025
+Project File Date:  05/21/2025
 
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 4 (build 422)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
 Build target 'FOC_DRV8323'
-compiling Foc_Control.c...
-../MDK-ARM/USER/configure.h(46): warning:  #47-D: incompatible redefinition of macro "PWM_FREQ"  (declared at line 63 of "../Core/Inc/main.h")
+compiling Foc_Comm.c...
+../MDK-ARM/USER/configure.h(60): warning:  #47-D: incompatible redefinition of macro "PWM_FREQ"  (declared at line 63 of "../Core/Inc/main.h")
   #define PWM_FREQ 20000//PWM频率, T=1000us
-../MDK-ARM/USER/Algorithm/alg_swf.h(19): warning:  #1-D: last line of file ends without a newline
-  #endif // __ALG_SWF_H
 ../MDK-ARM/USER/Peripheral/drv8323_util.h(35): warning:  #47-D: incompatible redefinition of macro "LED_Pin"  (declared at line 80 of "../Core/Inc/main.h")
   	#define LED_Pin GPIO_PIN_1
-USER\Main\Foc_Control.c(338): warning:  #223-D: function "Adc_Val_Decode" declared implicitly
-  				Adc_Val_Decode();
-USER\Main\Foc_Control.c(27): warning:  #550-D: variable "sqrt3_inv_mv"  was set but never used
-  static float sqrt3_inv_mv;
-USER\Main\Foc_Control.c(28): warning:  #550-D: variable "half_inv_mv"  was set but never used
-  static float half_inv_mv;
-USER\Main\Foc_Control.c: 6 warnings, 0 errors
+../MDK-ARM/USER/Algorithm/alg_swf.h(19): warning:  #1-D: last line of file ends without a newline
+  #endif // __ALG_SWF_H
+USER\Main\Foc_Comm.c: 3 warnings, 0 errors
 linking...
-Program Size: Code=24468 RO-data=2612 RW-data=248 ZI-data=3360  
+Program Size: Code=26024 RO-data=2628 RW-data=248 ZI-data=3536  
 FromELF: creating hex file...
-"FOC_DRV8323\FOC_DRV8323.axf" - 0 Error(s), 6 Warning(s).
+"FOC_DRV8323\FOC_DRV8323.axf" - 0 Error(s), 3 Warning(s).
 
 <h2>Software Packages used:</h2>
 

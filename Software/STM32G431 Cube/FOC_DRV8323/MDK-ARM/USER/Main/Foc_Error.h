@@ -11,8 +11,8 @@
 #include "stm32g4xx_hal.h"
 #include "Foc_Control.h"
 
-#define VOLTAGE_MAX 26 //V
-#define VOLTAGE_MIN 5 //V
+#define VOLTAGE_MAX MOTOR_VOLTAGE + 3//V
+#define VOLTAGE_MIN MOTOR_VOLTAGE - 3 //V
 #define CURRENT_MAX 15 //A
 #define TEMPERATURE_MAX 300 //°C
 #define OVER_SPEED 1000 //rpm

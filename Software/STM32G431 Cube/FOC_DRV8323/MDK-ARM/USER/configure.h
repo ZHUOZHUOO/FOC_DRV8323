@@ -14,12 +14,26 @@
 //Motor Type
 #define MOTOR_TYPE HT2806
 //Encoder Type
-#define ENCODER_TYPE MA600 
+#define ENCODER_TYPE MA600
+
+//-----------FDCAN ID Setting------------//
+#define WHO_AM_I Slave2_Arm_ID
+
+#define Tx_Master_ID 	WHO_AM_I | 0x100
+#define Rx_Master_ID 	WHO_AM_I
+
+#define Master_ID 		0x410
+#define Slave0_Arm_ID 	0x420
+#define Slave1_Arm_ID 	0x430
+#define Slave2_Arm_ID 	0x440
+#define Slave0_End_ID 	0x450
+#define Slave1_End_ID 	0x460
+#define Slave2_End_ID 	0x470
 
 //-----------Mode Setting--------------//
 
 //闭环模式
-#define FOC_CLOSE_LOOP_MODE MODE_SPEED
+#define FOC_CLOSE_LOOP_MODE MODE_POSITION
 //ADC电压校准模式
 #define ADC_VREF_MODE MODE_OFF
 //滤波模式, Sliding Window Filter
@@ -34,11 +48,11 @@
 //MA600角度滤波窗口宽度
 #define ANGLE_SLIDING_WINDOW_SIZE 1
 
-
 #define MODE_ON 1
 #define MODE_OFF 0
 #define MODE_SPEED 2
 #define MODE_POSITION 3
+#define MODE_SECOND_ORDER_DAMPING 4
 
 //------------PWM Setting-------------//
 #define CKTIM 170000000//定时器时钟频率

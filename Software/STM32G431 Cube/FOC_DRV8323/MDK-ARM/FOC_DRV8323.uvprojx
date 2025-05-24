@@ -459,6 +459,11 @@
               <FileType>1</FileType>
               <FilePath>.\USER\Main\Init_music.c</FilePath>
             </File>
+            <File>
+              <FileName>Foc_Comm.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\USER\Main\Foc_Comm.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
