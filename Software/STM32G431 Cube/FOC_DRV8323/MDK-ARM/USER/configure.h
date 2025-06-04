@@ -48,11 +48,11 @@
 //MA600角度滤波窗口宽度
 #define ANGLE_SLIDING_WINDOW_SIZE 1
 
-#define MODE_ON 1
 #define MODE_OFF 0
+#define MODE_ON 1
 #define MODE_SPEED 2
 #define MODE_POSITION 3
-#define MODE_SECOND_ORDER_DAMPING 4
+#define MODE_FORCE 4
 
 //------------PWM Setting-------------//
 #define CKTIM 170000000//定时器时钟频率

@@ -27,9 +27,9 @@
 #define TWO_DIV_SQRT3   (float)1.1547005383793
 
 //SVPWM_SETTING
-#define T_2		    	(PWM_PERIOD * 4)   //TIM1 ARR值的4倍
-#define T		    	(PWM_PERIOD * 2)   //TIM1 ARR值的2倍
-#define T_SQRT3   (uint16_t)(T * SQRT3)
+#define T_2		    (PWM_PERIOD * 4)   //TIM1 ARR值的4倍
+#define T		    (PWM_PERIOD * 2)   //TIM1 ARR值的2倍
+#define T_SQRT3   	(uint16_t)(T * SQRT3)
 #define SECTOR_1	(uint8_t)1
 #define SECTOR_2	(uint8_t)2
 #define SECTOR_3	(uint8_t)3
@@ -37,6 +37,14 @@
 #define SECTOR_5	(uint8_t)5
 #define SECTOR_6	(uint8_t)6
 
+typedef enum
+{
+    Speed_Open_Loop = 0,
+    Speed_Mode = 2,
+    Position_Mode = 3,
+    Force_Mode = 4
+}Close_Loop_Mode_t;
+ 
 typedef struct
 {
     float Ia;//A相电流_反馈
@@ -48,7 +56,7 @@ typedef struct
     float Id;
     float Id_ref;
     float Iq;
-		float Iq_ref;
+	float Iq_ref;
     float Vd;//D轴电压_期望
     float Vq;//Q轴电压_期望
     float Valpha;
@@ -67,6 +75,8 @@ typedef struct
     
     float Speed_Rpm;//速度
     float Speed_Rpm_Ref;//期望速度
+
+    Close_Loop_Mode_t Motor_Close_Loop_Mode;
 } FOC_Struct;
 
 typedef struct 
@@ -75,13 +85,18 @@ typedef struct
     uint32_t run_Hz;
     uint16_t state_led_flag;
     uint16_t Adc_flag;
-		uint16_t Adc_Hz;
-		uint16_t spi_flag;
-		uint16_t spi_Hz;
+	uint16_t Adc_Hz;
+	uint16_t spi_flag;
+	uint16_t spi_Hz;
 }FOC_Running_Struct;
 
 extern FOC_Struct Motor_FOC;
 extern FOC_Running_Struct Motor_Run;
+
+extern PID_TypeDef Current_Id_PID;
+extern PID_TypeDef Current_Iq_PID;
+extern PID_TypeDef Speed_PID;
+extern PID_TypeDef Position_PID;
 
 void FOC_Struct_Init(FOC_Struct *foc);
 void FOC_Main_Init(void);

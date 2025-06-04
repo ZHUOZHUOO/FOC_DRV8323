@@ -31,34 +31,62 @@ void FDCAN_IntFilterAndStart(void) {
 	}
 }
 
-void FOC_Comm_TxData_Encoder(uint8_t *txdata)
+void FOC_Comm_TxData_Encoder(uint32_t cmd, uint8_t *txdata)
 {
     // Encode the data to be transmitted
-	txdata[0] = Motor_Error.SAFETY_STATE |
-				Motor_Error.OVER_VOLTAGE_STATE << 1 |
-				Motor_Error.UNDER_VOLTAGE_STATE << 2 |
-				Motor_Error.OVER_CURRENT_STATE << 3 |
-				Motor_Error.OVER_SPEED_STATE << 4 |
-				Motor_Error.OVER_TEMPERATURE_STATE << 5 |
-				Motor_Error.OVER_LOAD_STATE << 6 |
-				Motor_Error.DRV8323_ERROR_STATE << 7;
-    txdata[1] = *((uint8_t *)&Motor_FOC.Theta);
-    txdata[2] = *((uint8_t *)&Motor_FOC.Theta + 1);
-    txdata[3] = *((uint8_t *)&Motor_FOC.Theta + 2);
-    txdata[4] = *((uint8_t *)&Motor_FOC.Theta + 3);
+	if(cmd == CMD_THETA_CURRENT_FEEDBACK)
+	{	
+		txdata[0] = *((uint8_t *)&Motor_FOC.Theta);
+    	txdata[1] = *((uint8_t *)&Motor_FOC.Theta + 1);
+    	txdata[2] = *((uint8_t *)&Motor_FOC.Theta + 2);
+    	txdata[3] = *((uint8_t *)&Motor_FOC.Theta + 3);
+		txdata[4] = *((uint8_t *)&Motor_FOC.Iq);
+    	txdata[5] = *((uint8_t *)&Motor_FOC.Iq + 1);
+    	txdata[6] = *((uint8_t *)&Motor_FOC.Iq + 2);
+    	txdata[7] = *((uint8_t *)&Motor_FOC.Iq + 3);
+	}
+	else if (cmd == CMD_ERROR_FEEDBACK)
+	{
+		txdata[0] = Motor_Error.SAFETY_STATE |
+					Motor_Error.OVER_VOLTAGE_STATE << 1 |
+					Motor_Error.UNDER_VOLTAGE_STATE << 2 |
+					Motor_Error.OVER_CURRENT_STATE << 3 |
+					Motor_Error.OVER_SPEED_STATE << 4 |
+					Motor_Error.OVER_TEMPERATURE_STATE << 5 |
+					Motor_Error.OVER_LOAD_STATE << 6 |
+					Motor_Error.DRV8323_ERROR_STATE << 7;
+	}
 }
 
 void FOC_Comm_Handler(uint32_t cmd, uint8_t *rxdata)
 {
-	if(cmd == 0x01)
+	if(cmd == CMD_THETA_SET)
 	{
-		// Decode the received data
+		uint8_t last_mode = Motor_FOC.Motor_Close_Loop_Mode;
+		if(last_mode != Position_Mode)
+		{
+			PID_Clear(&Position_PID);
+			Motor_FOC.Motor_Close_Loop_Mode = Position_Mode;
+		}
 		Motor_FOC.Theta_Ref = (float)(rxdata[0] | (rxdata[1] << 8) | (rxdata[2] << 16) | (rxdata[3] << 24));
-	    // Transmit data
 		uint8_t txdata[5];
-		FOC_Comm_TxData_Encoder(txdata);
-		FDCAN_SendMessageWithBaudSwitch(&hfdcan1, txdata, FDCAN_DLC_BYTES_5, Tx_Master_ID | 0x02);
+		FOC_Comm_TxData_Encoder(CMD_THETA_CURRENT_FEEDBACK, txdata);
+		FDCAN_SendMessageWithBaudSwitch(&hfdcan1, txdata, FDCAN_DLC_BYTES_5, Tx_Master_ID | CMD_THETA_CURRENT_FEEDBACK);
 	}
+	else if (cmd == CMD_CURRENT_SET)
+	{
+		uint8_t last_mode = Motor_FOC.Motor_Close_Loop_Mode;
+		if(last_mode != Force_Mode)
+		{
+			//don't Clear Iq PID !!
+			Motor_FOC.Motor_Close_Loop_Mode = Force_Mode;
+		}
+		Motor_FOC.Iq_ref = (float)(rxdata[0] | (rxdata[1] << 8) | (rxdata[2] << 16) | (rxdata[3] << 24));
+		uint8_t txdata[5];
+		FOC_Comm_TxData_Encoder(CMD_THETA_CURRENT_FEEDBACK, txdata);
+		FDCAN_SendMessageWithBaudSwitch(&hfdcan1, txdata, FDCAN_DLC_BYTES_5, Tx_Master_ID | CMD_THETA_CURRENT_FEEDBACK);
+	}
+	
 }
 
 

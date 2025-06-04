@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "foc_comm.h": "c",
+        "foc_control.h": "c"
+    }
+}
