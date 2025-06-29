@@ -71,6 +71,7 @@ typedef struct
     float Theta;//机械角度_反馈
     float Theta_Ref;//机械角度_期望
     float ElecTheta;//电角度_反馈
+		float ElecTheta_Offset;
     float Open_Loop_Theta;//开环角度_ref
     
     float Speed_Rpm;//速度

@@ -10,9 +10,9 @@
 
 void DRV8323_Init(void)
 {
-//		HAL_Delay(100);
-//		DRV8323_GPIO_Init();
-//	  HAL_Delay(100);
+		HAL_Delay(100);
+		DRV8323_GPIO_Init();
+	  HAL_Delay(100);
 		HAL_GPIO_WritePin(DRV8323_ENABLE_PORT, DRV8323_ENABLE, GPIO_PIN_SET);
     HAL_Delay(100);
     HAL_GPIO_WritePin(DRV8323_CAL_PORT, DRV8323_CAL, GPIO_PIN_SET);

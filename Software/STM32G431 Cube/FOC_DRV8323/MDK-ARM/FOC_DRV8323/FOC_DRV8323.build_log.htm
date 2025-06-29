@@ -21,36 +21,86 @@ Target DLL:      Segger\JL2CM3.dll V2.99.23.0
 Dialog DLL:      TCM.DLL V1.27.0.0
  
 <h2>Project:</h2>
-H:\ZHUOZHUOO--Github\FOC_DRV8323\Software\STM32G431 Cube\FOC_DRV8323\MDK-ARM\FOC_DRV8323.uvprojx
-Project File Date:  05/21/2025
+H:\ZHUOZHUOO--Github\DreamChaser-Arm\FOC_DRV8323\Software\STM32G431 Cube\FOC_DRV8323\MDK-ARM\FOC_DRV8323.uvprojx
+Project File Date:  06/09/2025
 
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 4 (build 422)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
 Build target 'FOC_DRV8323'
-compiling Foc_Control.c...
-../MDK-ARM/USER/configure.h(60): warning:  #47-D: incompatible redefinition of macro "PWM_FREQ"  (declared at line 63 of "../Core/Inc/main.h")
+compiling alg_swf.c...
+compiling drv8323_util.c...
+compiling tim.c...
+../MDK-ARM/USER/configure.h(62): warning:  #47-D: incompatible redefinition of macro "PWM_FREQ"  (declared at line 63 of "../Core/Inc/main.h")
   #define PWM_FREQ 20000//PWM频率, T=1000us
-../MDK-ARM/USER/Algorithm/alg_swf.h(19): warning:  #1-D: last line of file ends without a newline
-  #endif // __ALG_SWF_H
-USER\Main\Foc_Control.c(162): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+../Core/Src/tim.c: 1 warning, 0 errors
+compiling Init_music.c...
+../Core/Inc/main.h(63): warning:  #47-D: incompatible redefinition of macro "PWM_FREQ"  (declared at line 62 of "../MDK-ARM/USER/configure.h")
+  #define PWM_FREQ 25000
+USER\Main\Init_music.c(72): warning:  #186-D: pointless comparison of unsigned integer with zero
+  	if (volume < 0) {
+USER\Main\Init_music.c: 2 warnings, 0 errors
+compiling Foc_Error.c...
+../MDK-ARM/USER/configure.h(62): warning:  #47-D: incompatible redefinition of macro "PWM_FREQ"  (declared at line 63 of "../Core/Inc/main.h")
+  #define PWM_FREQ 20000//PWM频率, T=1000us
+../MDK-ARM/USER/Peripheral/drv8323_util.h(35): warning:  #47-D: incompatible redefinition of macro "LED_Pin"  (declared at line 80 of "../Core/Inc/main.h")
+  	#define LED_Pin GPIO_PIN_1
+USER\Main\Foc_Error.c: 2 warnings, 0 errors
+compiling Foc_Comm.c...
+../MDK-ARM/USER/configure.h(62): warning:  #47-D: incompatible redefinition of macro "PWM_FREQ"  (declared at line 63 of "../Core/Inc/main.h")
+  #define PWM_FREQ 20000//PWM频率, T=1000us
+../MDK-ARM/USER/Peripheral/drv8323_util.h(35): warning:  #47-D: incompatible redefinition of macro "LED_Pin"  (declared at line 80 of "../Core/Inc/main.h")
+  	#define LED_Pin GPIO_PIN_1
+USER\Main\Foc_Comm.c: 2 warnings, 0 errors
+compiling Foc_Control.c...
+../MDK-ARM/USER/configure.h(62): warning:  #47-D: incompatible redefinition of macro "PWM_FREQ"  (declared at line 63 of "../Core/Inc/main.h")
+  #define PWM_FREQ 20000//PWM频率, T=1000us
+../MDK-ARM/USER/Peripheral/drv8323_util.h(35): warning:  #47-D: incompatible redefinition of macro "LED_Pin"  (declared at line 80 of "../Core/Inc/main.h")
+  	#define LED_Pin GPIO_PIN_1
+USER\Main\Foc_Control.c(184): warning:  #1035-D: single-precision operand implicitly converted to double-precision
       foc->Speed_Rpm_Ref = (
-OTOR_SPEED_MAX - 4.5f);
-USER\Main\Foc_Control.c(173): warning:  #188-D: enumerated type mixed with another type
+OTOR_SPEED_MAX - 3.5f);
+USER\Main\Foc_Control.c(196): warning:  #188-D: enumerated type mixed with another type
       foc->Motor_Close_Loop_Mode = 
 OC_CLOSE_LOOP_MODE;
-USER\Main\Foc_Control.c(267): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+USER\Main\Foc_Control.c(335): warning:  #1035-D: single-precision operand implicitly converted to double-precision
           Motor_FOC.Vq = (0.4 * Motor_FOC.Speed_Rpm / Motor_FOC.Speed_Rpm_Ref + 0.6)*8.8f; 
-USER\Main\Foc_Control.c(304): warning:  #223-D: function "Adc_Val_Decode" declared implicitly
+USER\Main\Foc_Control.c(372): warning:  #223-D: function "Adc_Val_Decode" declared implicitly
   		Adc_Val_Decode();
-USER\Main\Foc_Control.c(33): warning:  #550-D: variable "sqrt3_inv_mv"  was set but never used
+USER\Main\Foc_Control.c(51): warning:  #550-D: variable "sqrt3_inv_mv"  was set but never used
   static float sqrt3_inv_mv;
-USER\Main\Foc_Control.c(34): warning:  #550-D: variable "half_inv_mv"  was set but never used
+USER\Main\Foc_Control.c(52): warning:  #550-D: variable "half_inv_mv"  was set but never used
   static float half_inv_mv;
 USER\Main\Foc_Control.c: 8 warnings, 0 errors
+compiling main.c...
+../MDK-ARM/USER/configure.h(62): warning:  #47-D: incompatible redefinition of macro "PWM_FREQ"  (declared at line 63 of "../Core/Inc/main.h")
+  #define PWM_FREQ 20000//PWM频率, T=1000us
+../MDK-ARM/USER/Peripheral/drv8323_util.h(35): warning:  #47-D: incompatible redefinition of macro "LED_Pin"  (declared at line 80 of "../Core/Inc/main.h")
+  	#define LED_Pin GPIO_PIN_1
+../Core/Src/main.c: 2 warnings, 0 errors
+compiling periph_encoder_spi.c...
+../MDK-ARM/USER/configure.h(62): warning:  #47-D: incompatible redefinition of macro "PWM_FREQ"  (declared at line 63 of "../Core/Inc/main.h")
+  #define PWM_FREQ 20000//PWM频率, T=1000us
+../MDK-ARM/USER/Peripheral/drv8323_util.h(35): warning:  #47-D: incompatible redefinition of macro "LED_Pin"  (declared at line 80 of "../Core/Inc/main.h")
+  	#define LED_Pin GPIO_PIN_1
+USER\Peripheral\periph_encoder_spi.c(144): warning:  #177-D: variable "turns"  was declared but never referenced
+    int16_t turns = (int16_t)((buffer[2] << 8) | buffer[3]);
+USER\Peripheral\periph_encoder_spi.c: 3 warnings, 0 errors
+compiling stm32g4xx_it.c...
+../MDK-ARM/USER/configure.h(62): warning:  #47-D: incompatible redefinition of macro "PWM_FREQ"  (declared at line 63 of "../Core/Inc/main.h")
+  #define PWM_FREQ 20000//PWM频率, T=1000us
+../MDK-ARM/USER/Peripheral/drv8323_util.h(35): warning:  #47-D: incompatible redefinition of macro "LED_Pin"  (declared at line 80 of "../Core/Inc/main.h")
+  	#define LED_Pin GPIO_PIN_1
+../Core/Src/stm32g4xx_it.c: 2 warnings, 0 errors
+compiling util_adc.c...
+../MDK-ARM/USER/configure.h(62): warning:  #47-D: incompatible redefinition of macro "PWM_FREQ"  (declared at line 63 of "../Core/Inc/main.h")
+  #define PWM_FREQ 20000//PWM频率, T=1000us
+../MDK-ARM/USER/Peripheral/drv8323_util.h(35): warning:  #47-D: incompatible redefinition of macro "LED_Pin"  (declared at line 80 of "../Core/Inc/main.h")
+  	#define LED_Pin GPIO_PIN_1
+USER\Utility\util_adc.c: 2 warnings, 0 errors
 linking...
-Program Size: Code=27784 RO-data=2628 RW-data=248 ZI-data=3696  
+Program Size: Code=28224 RO-data=2628 RW-data=248 ZI-data=3704  
 FromELF: creating hex file...
-"FOC_DRV8323\FOC_DRV8323.axf" - 0 Error(s), 8 Warning(s).
+"FOC_DRV8323\FOC_DRV8323.axf" - 0 Error(s), 24 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -68,7 +118,7 @@ Package Vendor: ARM
 <h2>Collection of Component Files used:</h2>
 
    * Component: ARM::CMSIS:CORE:5.0.1
-Build Time Elapsed:  00:00:04
+Build Time Elapsed:  00:00:20
 </pre>
 </body>
 </html>

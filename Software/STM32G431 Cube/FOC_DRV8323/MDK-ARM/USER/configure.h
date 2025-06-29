@@ -12,12 +12,12 @@
 //Hardware Version
 #define HARDWARE_VERSION VERSION_2
 //Motor Type
-#define MOTOR_TYPE HT2806
+#define MOTOR_TYPE HT4315
 //Encoder Type
 #define ENCODER_TYPE MA600
 
 //-----------FDCAN ID Setting------------//
-#define WHO_AM_I Slave2_Arm_ID
+#define WHO_AM_I Slave1_Arm_ID
 
 #define Tx_Master_ID 	WHO_AM_I | 0x100
 #define Rx_Master_ID 	WHO_AM_I
@@ -34,6 +34,8 @@
 
 //闭环模式
 #define FOC_CLOSE_LOOP_MODE MODE_POSITION
+//零点校准模式
+#define ZERO_POINT_MODE MODE_OFF
 //ADC电压校准模式
 #define ADC_VREF_MODE MODE_OFF
 //滤波模式, Sliding Window Filter
@@ -113,18 +115,37 @@
 #endif
 
 //---------Encoder Parameter Define---------//
-#if ENCODER_TYPE == MA600 && MOTOR_TYPE == HT4315
+#if ENCODER_TYPE == MA600 && MOTOR_TYPE == HT4315 && HARDWARE_VERSION == VERSION_1
 	#define MOTOR_ENCODER_DIR 	-1 //电机编码器方向
 	#define MOTOR_ENCODER_LINES 8192 //电机编码器线数_MA600
 	#define THREE_PHASE_LINE_SEQUENCCE A_B_C
+	#define MAX_IQ 2.0f
+	#define MAX_VQ 12.0f
+	#define MAX_VD 2.3f
+	
+#elif ENCODER_TYPE == MA600 && MOTOR_TYPE == HT4315 && HARDWARE_VERSION == VERSION_2
+	#define MOTOR_ENCODER_DIR 	-1 //电机编码器方向
+	#define MOTOR_ENCODER_LINES 8192 //电机编码器线数_MA600
+	#define THREE_PHASE_LINE_SEQUENCCE A_C_B
+	#define MAX_IQ 2.0f
+	#define MAX_VQ 12.0f
+	#define MAX_VD 10.0f
+	
 #elif ENCODER_TYPE == MA600 && MOTOR_TYPE == DJI_SNAIL_2305
 	#define MOTOR_ENCODER_DIR 	1 //电机编码器方向
 	#define MOTOR_ENCODER_LINES 8192 //电机编码器线数_MA600
 	#define THREE_PHASE_LINE_SEQUENCCE A_B_C
+	#define MAX_IQ 1.7f
+	#define MAX_VQ 6.8f
+	#define MAX_VD 2.3f
+	
 #elif ENCODER_TYPE == MA600 && MOTOR_TYPE == HT2806
 	#define MOTOR_ENCODER_DIR 	-1 //电机编码器方向
 	#define MOTOR_ENCODER_LINES 8192 //电机编码器线数_MA600
 	#define THREE_PHASE_LINE_SEQUENCCE A_C_B
+	#define MAX_IQ 1.7f
+	#define MAX_VQ 6.8f
+	#define MAX_VD 2.3f
 #endif
 
 #define A_B_C  1
