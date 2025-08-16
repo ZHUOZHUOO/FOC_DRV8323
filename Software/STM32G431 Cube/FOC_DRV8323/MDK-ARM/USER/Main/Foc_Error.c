@@ -7,7 +7,7 @@
  */
 #include "Foc_Error.h"
 
-ERROR_Struct Motor_Error = {1, 1, 1, 1, 1, 1, 1, 1, {0, 0, 0, 0, 0, 0, 0, 0}};
+ERROR_Struct Motor_Error = {1, 1, 1, 1, 1, 1, 1, {0, 0, 0, 0, 0, 0, 0, 0}};
 
 void Error_Struct_Init(ERROR_Struct *error)
 {
@@ -17,7 +17,6 @@ void Error_Struct_Init(ERROR_Struct *error)
     error->OVER_CURRENT_STATE = 1;
     error->OVER_SPEED_STATE = 1;
     error->OVER_TEMPERATURE_STATE = 1;
-    error->OVER_LOAD_STATE = 1;
     error->DRV8323_ERROR_STATE = 1;
 }
 

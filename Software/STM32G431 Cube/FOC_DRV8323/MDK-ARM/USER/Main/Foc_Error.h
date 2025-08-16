@@ -39,7 +39,6 @@ typedef struct
     uint8_t OVER_CURRENT_STATE;     //0:OverCurrent     1:Normal
     uint8_t OVER_SPEED_STATE;       //0:OverSpeed       1:Normal
     uint8_t OVER_TEMPERATURE_STATE; //0:OverTemperature 1:Normal
-    uint8_t OVER_LOAD_STATE;        //0:OverLoad        1:Normal
     uint8_t DRV8323_ERROR_STATE;    //0:DRV8323 Error   1:Normal
     Error_State_Window STATE_WINDOW;
 } ERROR_Struct;

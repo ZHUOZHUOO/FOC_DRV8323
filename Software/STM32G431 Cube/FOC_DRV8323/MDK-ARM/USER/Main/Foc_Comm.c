@@ -53,8 +53,7 @@ void FOC_Comm_TxData_Encoder(uint32_t cmd, uint8_t *txdata)
 					Motor_Error.OVER_CURRENT_STATE << 3 |
 					Motor_Error.OVER_SPEED_STATE << 4 |
 					Motor_Error.OVER_TEMPERATURE_STATE << 5 |
-					Motor_Error.OVER_LOAD_STATE << 6 |
-					Motor_Error.DRV8323_ERROR_STATE << 7;
+					Motor_Error.DRV8323_ERROR_STATE << 6;
 	}
 }
 

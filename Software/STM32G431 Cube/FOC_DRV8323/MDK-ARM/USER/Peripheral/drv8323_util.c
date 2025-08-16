@@ -8,16 +8,31 @@
 #include "drv8323_util.h"
 
 
-void DRV8323_Init(void)
+void DRV8323_Enable(void)
+{
+		HAL_GPIO_WritePin(DRV8323_ENABLE_PORT, DRV8323_ENABLE, GPIO_PIN_SET);
+		HAL_Delay(10);
+}
+
+void DRV8323_Disable(void)
+{
+		HAL_GPIO_WritePin(DRV8323_ENABLE_PORT, DRV8323_ENABLE, GPIO_PIN_RESET);
+		HAL_Delay(10);
+}
+
+void DRV8323_CAL_Align(void)
 {
 		HAL_Delay(100);
-		DRV8323_GPIO_Init();
-	  HAL_Delay(100);
-		HAL_GPIO_WritePin(DRV8323_ENABLE_PORT, DRV8323_ENABLE, GPIO_PIN_SET);
-    HAL_Delay(100);
-    HAL_GPIO_WritePin(DRV8323_CAL_PORT, DRV8323_CAL, GPIO_PIN_SET);
+		HAL_GPIO_WritePin(DRV8323_CAL_PORT, DRV8323_CAL, GPIO_PIN_SET);
     HAL_Delay(100);
     HAL_GPIO_WritePin(DRV8323_CAL_PORT, DRV8323_CAL, GPIO_PIN_RESET);
+}
+
+void DRV8323_Init(void)
+{
+		DRV8323_GPIO_Init();
+		DRV8323_Enable();
+		DRV8323_CAL_Align();
 }
 
 void DRV8323_GPIO_Init(void)

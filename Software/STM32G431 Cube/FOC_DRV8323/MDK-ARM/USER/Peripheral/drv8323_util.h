@@ -45,6 +45,9 @@
 
 
 void DRV8323_GPIO_Init(void);						//初始化GPIO
-void DRV8323_Init(void);						//放大器初始化, 保持高电平
+void DRV8323_Init(void);						//运放校准, 保持高电平
+void DRV8323_Enable(void);
+void DRV8323_Disable(void);
+void DRV8323_CAL_Align(void);
 
 #endif

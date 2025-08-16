@@ -372,7 +372,7 @@ void FOC_Main_Loop_H_Freq(void)
 		Adc_Val_Decode();
 		Get_ADC_Value();
 		Motor_Run.Adc_flag++;
-	}
+		}
 		
     Motor_Run.state_led_flag++;
     Motor_Run.run_flag++;
