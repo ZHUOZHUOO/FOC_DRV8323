@@ -233,19 +233,19 @@ void FOC_PID_Init(void)
 		PID_Init(&Current_Id_PID, PID_DELTA, 5.5f, 0.52f, 0.00f, 0.0f, 0.0f, 8.8f, 0.14f, 0.1f, 0.1f, 0.1f);
 		PID_Init(&Current_Iq_PID, PID_DELTA, 5.5f, 0.52f, 0.00f, 0.0f, 0.0f, 8.8f, 0.14f, 0.1f, 0.1f, 0.1f);
 		PID_Init(&Speed_PID, PID_DELTA, 0.015f, 0.000094f, 0.0000010f, 0.0f, 0.0f, 500.0f, 0.12f, 0.1f, 0.1f, 0.1f);
-		PID_Init(&Position_PID, PID_DELTA, 0.4f, 0.000f, 0.0f, 0.0f, 0.0f, 3.0f, 0.5f, 0.1f, 0.1f, 0.1f);
+		PID_Init(&Position_PID, PID_POSITION, 0.4f, 0.000f, 0.0f, 0.0f, 0.0f, 3.0f, 0.5f, 0.1f, 0.1f, 0.1f);
 		PID_Init(&Open_Loop_Speed_PID, PID_DELTA, 0.21f, 0.00035f, 0.00f, 0.0f, 0.0f, 500.0f, 2.5f, 0.1f, 0.1f, 0.1f);
 		#elif WHO_AM_I == Slave1_End_ID
 		PID_Init(&Current_Id_PID, PID_DELTA, 5.5f, 0.52f, 0.00f, 0.0f, 0.0f, 8.8f, 0.14f, 0.1f, 0.1f, 0.1f);
 		PID_Init(&Current_Iq_PID, PID_DELTA, 5.5f, 0.52f, 0.00f, 0.0f, 0.0f, 8.8f, 0.14f, 0.1f, 0.1f, 0.1f);
 		PID_Init(&Speed_PID, PID_DELTA, 0.015f, 0.000094f, 0.0000010f, 0.0f, 0.0f, 500.0f, 0.12f, 0.1f, 0.1f, 0.1f);
-		PID_Init(&Position_PID, PID_DELTA, 2.0f, 0.001f, 0.0f, 0.0f, 0.0f, 3.0f, 0.5f, 0.1f, 0.1f, 0.1f);
+		PID_Init(&Position_PID, PID_POSITION, 2.0f, 0.001f, 0.0f, 0.0f, 0.0f, 3.0f, 0.5f, 0.1f, 0.1f, 0.1f);
 		PID_Init(&Open_Loop_Speed_PID, PID_DELTA, 0.21f, 0.00035f, 0.00f, 0.0f, 0.0f, 500.0f, 2.5f, 0.1f, 0.1f, 0.1f);
 		#elif WHO_AM_I == Slave2_End_ID
 		PID_Init(&Current_Id_PID, PID_DELTA, 5.5f, 0.52f, 0.00f, 0.0f, 0.0f, 8.8f, 0.14f, 0.1f, 0.1f, 0.1f);
 		PID_Init(&Current_Iq_PID, PID_DELTA, 5.5f, 0.52f, 0.00f, 0.0f, 0.0f, 8.8f, 0.14f, 0.1f, 0.1f, 0.1f);
 		PID_Init(&Speed_PID, PID_DELTA, 0.015f, 0.000094f, 0.0000010f, 0.0f, 0.0f, 500.0f, 0.12f, 0.1f, 0.1f, 0.1f);
-		PID_Init(&Position_PID, PID_DELTA, 1.0f, 0.0005f, 0.0f, 0.0f, 0.0f, 3.0f, 0.5f, 0.1f, 0.1f, 0.1f);
+		PID_Init(&Position_PID, PID_POSITION, 1.0f, 0.0005f, 0.0f, 0.0f, 0.0f, 3.0f, 0.5f, 0.1f, 0.1f, 0.1f);
 		PID_Init(&Open_Loop_Speed_PID, PID_DELTA, 0.21f, 0.00035f, 0.00f, 0.0f, 0.0f, 500.0f, 2.5f, 0.1f, 0.1f, 0.1f);
 		#endif
 	#endif

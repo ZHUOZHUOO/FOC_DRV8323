@@ -12,12 +12,12 @@
 //Hardware Version
 #define HARDWARE_VERSION VERSION_2
 //Motor Type
-#define MOTOR_TYPE HT4315
+#define MOTOR_TYPE HT2806
 //Encoder Type
 #define ENCODER_TYPE MA600
 
 //-----------FDCAN ID Setting------------//
-#define WHO_AM_I Slave1_Arm_ID
+#define WHO_AM_I Slave1_End_ID
 
 #define Tx_Master_ID 	WHO_AM_I | 0x100
 #define Rx_Master_ID 	WHO_AM_I
@@ -30,12 +30,30 @@
 #define Slave1_End_ID 	0x460
 #define Slave2_End_ID 	0x470
 
+#define FILTER_ID_1     0x500
+#define FILTER_ID_2     0x780
+#define DEVICE_ID_MASK  0x7F0
+#define CMD_MASK        0x00F
+
+//-----------FDCAN Command Setting------------//
+
+#define CMD_THETA_SET           0x001
+#define CMD_CURRENT_SET         0x002
+#define CMD_THETA_CURRENT_FDB   0x003
+#define CMD_ERROR_FDB           0x004
+#define CMD_IQ_PID_SET          0x005
+#define CMD_IQ_PID_FDB          0x006
+#define CMD_ID_PID_SET          0x007
+#define CMD_ID_PID_FDB          0x008
+#define CMD_POSITION_PID_SET    0x009
+#define CMD_POSITION_PID_FDB    0x00A
+
 //-----------Mode Setting--------------//
 
 //闭环模式
 #define FOC_CLOSE_LOOP_MODE MODE_POSITION
 //零点校准模式
-#define ZERO_POINT_MODE MODE_OFF
+#define ZERO_POINT_MODE MODE_ON
 //ADC电压校准模式
 #define ADC_VREF_MODE MODE_OFF
 //滤波模式, Sliding Window Filter
