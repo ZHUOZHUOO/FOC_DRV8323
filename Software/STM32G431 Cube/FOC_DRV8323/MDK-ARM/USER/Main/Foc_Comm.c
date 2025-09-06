@@ -8,7 +8,7 @@ void FDCAN_IntFilterAndStart(void) {
 	sFilterConfig.FilterType = FDCAN_FILTER_MASK;
 	sFilterConfig.FilterConfig = FDCAN_FILTER_TO_RXFIFO0;
 	sFilterConfig.FilterID1 = Rx_Master_ID;
-	sFilterConfig.FilterID2 = 0x7FA;
+	sFilterConfig.FilterID2 = 0x780;
 	if (HAL_FDCAN_ConfigFilter(&hfdcan1, &sFilterConfig) != HAL_OK)
 	{
 		FDCAN_ErrorHandler();
@@ -205,8 +205,8 @@ void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs)
 		if(hfdcan->Instance == FDCAN1) 
 		{
 			HAL_FDCAN_GetRxMessage(hfdcan, FDCAN_RX_FIFO0, &RxHeader, RxData);
-			uint32_t cmd = RxHeader.Identifier & DEVICE_ID_MASK;
-			uint32_t device_id = RxHeader.Identifier & CMD_MASK;
+			uint32_t cmd = RxHeader.Identifier & CMD_MASK;
+			uint32_t device_id = RxHeader.Identifier & DEVICE_ID_MASK;
 			switch(device_id) 
 			{
 				case Rx_Master_ID:

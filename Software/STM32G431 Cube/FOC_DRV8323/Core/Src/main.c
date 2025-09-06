@@ -99,7 +99,7 @@ int main(void)
   MX_SPI1_Init();
   MX_TIM3_Init();
   /* USER CODE BEGIN 2 */
-  HAL_Delay(500);
+  HAL_Delay(1000);   //暂时解决上电时序问题
   FOC_Main_Init();
 
   /* USER CODE END 2 */

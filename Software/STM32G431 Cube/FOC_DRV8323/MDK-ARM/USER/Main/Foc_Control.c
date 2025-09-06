@@ -161,7 +161,7 @@ float FOC_ElecTheta_Calc(float Theta)
 float FOC_Theta_Calc(float Theta)
 {
     float angle;
-    angle = ((int32_t) (Theta + 360)) / 360.0f * TWO_PI - Motor_FOC.ElecTheta_Offset / MOTOR_POLE_PAIRS;
+    angle = ((int32_t) (Theta + 360) % 360) / 360.0f * TWO_PI - Motor_FOC.ElecTheta_Offset / MOTOR_POLE_PAIRS;
     return angle;//rad
 }
 
@@ -186,7 +186,7 @@ void FOC_Struct_Init(FOC_Struct *foc)
     foc->Theta = 0;
     foc->Theta_Ref = -360 / 360.0f * TWO_PI;
     foc->ElecTheta = 0;
-		foc->ElecTheta_Offset = Elec_Theta_Zero_Point;
+		foc->ElecTheta_Offset = 0;
     foc->Open_Loop_Theta = 0;
 
     foc->hTimePhA = 0;
@@ -252,6 +252,7 @@ void FOC_PID_Init(void)
 }
 
 //======================FOC main=======================//
+
 
 void FOC_Main_Init(void)
 {
@@ -399,6 +400,7 @@ void FOC_Main_Loop_L_Freq(void)
     }
     else if (Motor_FOC.Motor_Close_Loop_Mode == Position_Mode){
         Motor_FOC.Theta = MOTOR_ENCODER_DIR * FOC_Theta_Calc(Encoder_SPI_Get_Angle(&MA600_spi));//单位：rad
+		Motor_FOC.Speed_Rpm = MOTOR_ENCODER_DIR * Encoder_SPI_Get_Angular_Speed(&MA600_spi);
         PID_SetFdb(&Position_PID, Motor_FOC.Theta);//rad
         PID_SetRef(&Position_PID, Motor_FOC.Theta_Ref);//rad
         PID_Calc(&Position_PID);
@@ -411,5 +413,13 @@ void FOC_Main_Loop_L_Freq(void)
 						Motor_FOC.Iq_ref = Min(Max(Motor_FOC.Iq_ref + PID_GetOutput(&Position_PID), -MAX_IQ), MAX_IQ);
 				}
     }
+	else if (Motor_FOC.Motor_Close_Loop_Mode == Force_Mode){
+		Motor_FOC.Speed_Rpm = MOTOR_ENCODER_DIR * Encoder_SPI_Get_Angular_Speed(&MA600_spi);
+		Motor_FOC.Theta = MOTOR_ENCODER_DIR * FOC_Theta_Calc(Encoder_SPI_Get_Angle(&MA600_spi));//单位：rad
+		PID_SetFdb(&Current_Iq_PID, Motor_FOC.Iq);
+		PID_SetRef(&Current_Iq_PID, Motor_FOC.Iq_ref);
+		PID_Calc(&Current_Iq_PID);
+		Motor_FOC.Iq_ref = Min(Max(Force_Factor * Motor_FOC.Speed_Rpm, -MAX_IQ), MAX_IQ);
+	}
 }
 

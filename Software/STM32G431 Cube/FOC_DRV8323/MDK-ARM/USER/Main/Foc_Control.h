@@ -42,7 +42,7 @@ typedef enum
     Speed_Open_Loop = 0,
     Speed_Mode = 2,
     Position_Mode = 3,
-    Force_Mode = 4
+    Force_Mode = 4 //阻尼模式
 }Close_Loop_Mode_t;
  
 typedef struct
