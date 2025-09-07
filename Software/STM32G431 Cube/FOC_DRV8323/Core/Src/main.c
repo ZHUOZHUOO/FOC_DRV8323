@@ -99,7 +99,7 @@ int main(void)
   MX_SPI1_Init();
   MX_TIM3_Init();
   /* USER CODE BEGIN 2 */
-  HAL_Delay(1000);   //ÔÝÊ±½â¾öÉÏµçÊ±ÐòÎÊÌâ
+  HAL_Delay(1000);   //ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½Ïµï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
   FOC_Main_Init();
 
   /* USER CODE END 2 */
@@ -221,8 +221,7 @@ void Error_Handler(void)
 
   /* USER CODE END Error_Handler_Debug */
 }
-
-#ifdef  USE_FULL_ASSERT
+#ifdef USE_FULL_ASSERT
 /**
   * @brief  Reports the name of the source file and the source line number
   *         where the assert_param error has occurred.

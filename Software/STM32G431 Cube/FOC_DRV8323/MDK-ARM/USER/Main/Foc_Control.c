@@ -10,7 +10,7 @@
 
 #define Min(a, b) ((a) < (b) ? (a) : (b))
 #define Max(a, b) ((a) > (b) ? (a) : (b))
-#define Max_3(a, b, c) Max(Max(a, b), c)
+#define Max_3(a, b, c) Max(Max(a, b), c)  
 
 FOC_Struct Motor_FOC;
 FOC_Running_Struct Motor_Run = {0, 0, 0, 0, 0};
