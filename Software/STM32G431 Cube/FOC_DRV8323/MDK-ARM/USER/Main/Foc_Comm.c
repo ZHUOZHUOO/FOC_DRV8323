@@ -124,7 +124,8 @@ void FOC_Comm_Handler(uint32_t cmd, uint8_t *rxdata)
 			PID_Clear(&Position_PID);
 			Motor_FOC.Motor_Close_Loop_Mode = Position_Mode;
 		}
-		Motor_FOC.Theta_Ref = (float)(rxdata[0] | (rxdata[1] << 8) | (rxdata[2] << 16) | (rxdata[3] << 24));
+		//Motor_FOC.Theta_Ref = (float)(rxdata[0] | (rxdata[1] << 8) | (rxdata[2] << 16) | (rxdata[3] << 24));
+		Motor_FOC.Theta_Ref =*(float*)(rxdata);
 		uint8_t txdata[8];
 		FOC_Comm_TxData_Encoder(CMD_THETA_CURRENT_FEEDBACK, txdata);
 		FDCAN_SendMessageWithBaudSwitch(&hfdcan1, txdata, FDCAN_DLC_BYTES_8, Tx_Master_ID | CMD_THETA_CURRENT_FEEDBACK);
@@ -137,7 +138,8 @@ void FOC_Comm_Handler(uint32_t cmd, uint8_t *rxdata)
 			//don't Clear Iq PID !!
 			Motor_FOC.Motor_Close_Loop_Mode = Force_Mode;
 		}
-		Motor_FOC.Iq_ref = (float)(rxdata[0] | (rxdata[1] << 8) | (rxdata[2] << 16) | (rxdata[3] << 24));
+		//Motor_FOC.Iq_ref = (float)(rxdata[0] | (rxdata[1] << 8) | (rxdata[2] << 16) | (rxdata[3] << 24));
+		Motor_FOC.Iq_ref =*(float*)(rxdata);
 		uint8_t txdata[8];
 		FOC_Comm_TxData_Encoder(CMD_THETA_CURRENT_FEEDBACK, txdata);
 		FDCAN_SendMessageWithBaudSwitch(&hfdcan1, txdata, FDCAN_DLC_BYTES_8, Tx_Master_ID | CMD_THETA_CURRENT_FEEDBACK);
@@ -150,11 +152,16 @@ void FOC_Comm_Handler(uint32_t cmd, uint8_t *rxdata)
 			//don't Clear Iq PID !!
 			Motor_FOC.Motor_Close_Loop_Mode = Force_Mode;
 		}
-		Current_Iq_PID.kp = (float)(rxdata[0] | (rxdata[1] << 8) | (rxdata[2] << 16) | (rxdata[3] << 24));
-		Current_Iq_PID.ki = (float)(rxdata[4] | (rxdata[5] << 8) | (rxdata[6] << 16) | (rxdata[7] << 24));
-		Current_Iq_PID.kd = (float)(rxdata[8] | (rxdata[9] << 8) | (rxdata[10] << 16) | (rxdata[11] << 24));
-		Current_Iq_PID.sum_max = (float)(rxdata[12] | (rxdata[13] << 8) | (rxdata[14] << 16) | (rxdata[15] << 24));
-		Current_Iq_PID.output_max = (float)(rxdata[16] | (rxdata[17] << 8) | (rxdata[18] << 16) | (rxdata[19] << 24));
+		// Current_Iq_PID.kp = (float)(rxdata[0] | (rxdata[1] << 8) | (rxdata[2] << 16) | (rxdata[3] << 24));
+		// Current_Iq_PID.ki = (float)(rxdata[4] | (rxdata[5] << 8) | (rxdata[6] << 16) | (rxdata[7] << 24));
+		// Current_Iq_PID.kd = (float)(rxdata[8] | (rxdata[9] << 8) | (rxdata[10] << 16) | (rxdata[11] << 24));
+		// Current_Iq_PID.sum_max = (float)(rxdata[12] | (rxdata[13] << 8) | (rxdata[14] << 16) | (rxdata[15] << 24));
+		// Current_Iq_PID.output_max = (float)(rxdata[16] | (rxdata[17] << 8) | (rxdata[18] << 16) | (rxdata[19] << 24));
+		Current_Iq_PID.kp = *(float*)(rxdata);
+		Current_Iq_PID.ki = *(float*)(rxdata + 4);
+		Current_Iq_PID.kd = *(float*)(rxdata + 8);
+		Current_Iq_PID.sum_max = *(float*)(rxdata + 12);
+		Current_Iq_PID.output_max = *(float*)(rxdata + 16);
 		uint8_t txdata[16];
 		FOC_Comm_TxData_Encoder(CMD_IQ_PID_FDB, txdata);
 		FDCAN_SendMessageWithBaudSwitch(&hfdcan1, txdata, FDCAN_DLC_BYTES_16, Tx_Master_ID | CMD_IQ_PID_FDB);
@@ -167,11 +174,16 @@ void FOC_Comm_Handler(uint32_t cmd, uint8_t *rxdata)
 			//don't Clear Iq PID !!
 			Motor_FOC.Motor_Close_Loop_Mode = Force_Mode;
 		}
-		Current_Id_PID.kp = (float)(rxdata[0] | (rxdata[1] << 8) | (rxdata[2] << 16) | (rxdata[3] << 24));
-		Current_Id_PID.ki = (float)(rxdata[4] | (rxdata[5] << 8) | (rxdata[6] << 16) | (rxdata[7] << 24));
-		Current_Id_PID.kd = (float)(rxdata[8] | (rxdata[9] << 8) | (rxdata[10] << 16) | (rxdata[11] << 24));
-		Current_Id_PID.sum_max = (float)(rxdata[12] | (rxdata[13] << 8) | (rxdata[14] << 16) | (rxdata[15] << 24));
-		Current_Id_PID.output_max = (float)(rxdata[16] | (rxdata[17] << 8) | (rxdata[18] << 16) | (rxdata[19] << 24));
+		// Current_Id_PID.kp = (float)(rxdata[0] | (rxdata[1] << 8) | (rxdata[2] << 16) | (rxdata[3] << 24));
+		// Current_Id_PID.ki = (float)(rxdata[4] | (rxdata[5] << 8) | (rxdata[6] << 16) | (rxdata[7] << 24));
+		// Current_Id_PID.kd = (float)(rxdata[8] | (rxdata[9] << 8) | (rxdata[10] << 16) | (rxdata[11] << 24));
+		// Current_Id_PID.sum_max = (float)(rxdata[12] | (rxdata[13] << 8) | (rxdata[14] << 16) | (rxdata[15] << 24));
+		// Current_Id_PID.output_max = (float)(rxdata[16] | (rxdata[17] << 8) | (rxdata[18] << 16) | (rxdata[19] << 24));
+		Current_Id_PID.kp = *(float*)(rxdata);
+		Current_Id_PID.ki = *(float*)(rxdata + 4);
+		Current_Id_PID.kd = *(float*)(rxdata + 8);
+		Current_Id_PID.sum_max = *(float*)(rxdata + 12);
+		Current_Id_PID.output_max = *(float*)(rxdata + 16);
 		uint8_t txdata[16];
 		FOC_Comm_TxData_Encoder(CMD_ID_PID_FDB, txdata);
 		FDCAN_SendMessageWithBaudSwitch(&hfdcan1, txdata, FDCAN_DLC_BYTES_16, Tx_Master_ID | CMD_ID_PID_FDB);
@@ -184,11 +196,16 @@ void FOC_Comm_Handler(uint32_t cmd, uint8_t *rxdata)
 			PID_Clear(&Position_PID);
 			Motor_FOC.Motor_Close_Loop_Mode = Position_Mode;
 		}
-		Position_PID.kp = (float)(rxdata[0] | (rxdata[1] << 8) | (rxdata[2] << 16) | (rxdata[3] << 24));
-		Position_PID.ki = (float)(rxdata[4] | (rxdata[5] << 8) | (rxdata[6] << 16) | (rxdata[7] << 24));
-		Position_PID.kd = (float)(rxdata[8] | (rxdata[9] << 8) | (rxdata[10] << 16) | (rxdata[11] << 24));
-		Position_PID.sum_max = (float)(rxdata[12] | (rxdata[13] << 8) | (rxdata[14] << 16) | (rxdata[15] << 24));
-		Position_PID.output_max = (float)(rxdata[16] | (rxdata[17] << 8) | (rxdata[18] << 16) | (rxdata[19] << 24));
+			// Position_PID.kp = (float)(rxdata[0] | (rxdata[1] << 8) | (rxdata[2] << 16) | (rxdata[3] << 24));
+			// Position_PID.ki = (float)(rxdata[4] | (rxdata[5] << 8) | (rxdata[6] << 16) | (rxdata[7] << 24));
+			// Position_PID.kd = (float)(rxdata[8] | (rxdata[9] << 8) | (rxdata[10] << 16) | (rxdata[11] << 24));
+			// Position_PID.sum_max = (float)(rxdata[12] | (rxdata[13] << 8) | (rxdata[14] << 16) | (rxdata[15] << 24));
+			// Position_PID.output_max = (float)(rxdata[16] | (rxdata[17] << 8) | (rxdata[18] << 16) | (rxdata[19] << 24));
+		Position_PID.kp = *(float*)(rxdata);
+		Position_PID.ki = *(float*)(rxdata + 4);
+		Position_PID.kd = *(float*)(rxdata + 8);
+		Position_PID.sum_max = *(float*)(rxdata + 12);
+		Position_PID.output_max = *(float*)(rxdata + 16);
 		uint8_t txdata[16];
 		FOC_Comm_TxData_Encoder(CMD_POSITION_PID_FDB, txdata);
 		FDCAN_SendMessageWithBaudSwitch(&hfdcan1, txdata, FDCAN_DLC_BYTES_16, Tx_Master_ID | CMD_POSITION_PID_FDB);
