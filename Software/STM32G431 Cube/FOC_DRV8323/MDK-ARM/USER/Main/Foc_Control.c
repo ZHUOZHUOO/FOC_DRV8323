@@ -422,7 +422,8 @@ void FOC_Main_Loop_L_Freq(void)
 		PID_SetFdb(&Current_Iq_PID, Motor_FOC.Iq);
 		PID_SetRef(&Current_Iq_PID, Motor_FOC.Iq_ref);
 		PID_Calc(&Current_Iq_PID);
-		Motor_FOC.Iq_ref = Min(Max(Force_Factor * Motor_FOC.Speed_Rpm, -MAX_IQ), MAX_IQ);
+		if (WHO_AM_I > Slave2_Arm_ID) Motor_FOC.Iq_ref = Min(Max(Force_Factor * Motor_FOC.Speed_Rpm, -MAX_IQ), MAX_IQ);//end
+		else Motor_FOC.Iq_ref = Min(Max(Motor_FOC.Iq_ref, -MAX_IQ), MAX_IQ);//arm
 	}
 }
 
