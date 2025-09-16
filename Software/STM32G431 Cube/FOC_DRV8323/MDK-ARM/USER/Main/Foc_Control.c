@@ -28,11 +28,14 @@ PID_TypeDef Open_Loop_Speed_PID;
 //===========HT4315==========//
 #if MOTOR_TYPE == HT4315
 	#if WHO_AM_I == Slave0_Arm_ID
-	#define Elec_Theta_Zero_Point 2.11184835f
+	#define Elec_Theta_Zero_Point 0.33
+	#define Initial_Theta -360 / 360.0f * TWO_PI
 	#elif WHO_AM_I == Slave1_Arm_ID
-	#define Elec_Theta_Zero_Point -0.51111114f
+	#define Elec_Theta_Zero_Point 0.0805555582
+	#define Initial_Theta -180 / 360.0f * TWO_PI 
 	#elif WHO_AM_I == Slave2_Arm_ID
-	#define Elec_Theta_Zero_Point 1.39999998f
+	#define Elec_Theta_Zero_Point 0.413888901
+	#define Initial_Theta -180 / 360.0f * TWO_PI
 	#endif
 
 //===========HT2806==========//
@@ -154,14 +157,14 @@ void Inv_Park_transform(float Id, float Iq, float *Ialpha, float *Ibeta, float T
 float FOC_ElecTheta_Calc(float Theta)
 {
     float electrode_angle;
-    electrode_angle = ((int32_t)(MOTOR_POLE_PAIRS * (Theta + 360))% 360) / 360.0f * TWO_PI - Motor_FOC.ElecTheta_Offset;
+    electrode_angle = ((int32_t)(MOTOR_POLE_PAIRS * (Theta + 360)- Motor_FOC.ElecTheta_Offset * TWO_PI)% 360) / 360.0f * TWO_PI ;
     return electrode_angle;//rad
 }
 
 float FOC_Theta_Calc(float Theta)
 {
     float angle;
-    angle = ((int32_t) (Theta + 360) % 360) / 360.0f * TWO_PI - Motor_FOC.ElecTheta_Offset / MOTOR_POLE_PAIRS;
+    angle = ((int32_t) (Theta + 360 - (Motor_FOC.ElecTheta_Offset * TWO_PI) /MOTOR_POLE_PAIRS) % 360) / 360.0f * TWO_PI;//记得改
     return angle;//rad
 }
 
@@ -184,9 +187,9 @@ void FOC_Struct_Init(FOC_Struct *foc)
     foc->Speed_Rpm_Ref = (MOTOR_SPEED_MAX - 3.5f);
     foc->Speed_Rpm = 0;
     foc->Theta = 0;
-    foc->Theta_Ref = -360 / 360.0f * TWO_PI;
+    foc->Theta_Ref = Initial_Theta;
     foc->ElecTheta = 0;
-		foc->ElecTheta_Offset = 0;
+		foc->ElecTheta_Offset = Elec_Theta_Zero_Point;
     foc->Open_Loop_Theta = 0;
 
     foc->hTimePhA = 0;
@@ -216,7 +219,7 @@ void FOC_PID_Init(void)
 		PID_Init(&Current_Id_PID, PID_DELTA, 20.8f, 1.24f, 0.00f, 0.0f, 0.0f, 5.8f, 0.5f, 0.1f, 0.1f, 0.1f);
 		PID_Init(&Current_Iq_PID, PID_DELTA, 20.8f, 1.24f, 0.00f, 0.0f, 0.0f, 5.8f, 0.5f, 0.1f, 0.1f, 0.1f);
 		PID_Init(&Speed_PID, PID_DELTA, 0.009f, 0.000011f, 0.0000003f, 0.0f, 0.0f, 500.0f, 1.5f, 0.1f, 0.1f, 0.1f);//HT4315
-		PID_Init(&Position_PID, PID_POSITION, 3.0f, 0.0004f, 0.0f, 0.0f, 0.0f, 800.0f, 1.5f, 0.1f, 0.1f, 0.1f);
+		PID_Init(&Position_PID, PID_POSITION, 3.0f, 0.0004f, 0.0f, 0.0f, 0.0f, 500.0f, 1.5f, 0.1f, 0.1f, 0.1f);
 		PID_Init(&Open_Loop_Speed_PID, PID_DELTA, 0.081f, 0.00015f, 0.00f, 0.0f, 0.0f, 500.0f, 1.5f, 0.1f, 0.1f, 0.1f);//HT4315
 		#endif
 	//===========DJI_SNAIL_2305==========//
@@ -295,11 +298,11 @@ void FOC_Main_Init(void)
 	
 	Inv_Park_transform(Motor_FOC.Vd, Motor_FOC.Vq, &Motor_FOC.Valpha, &Motor_FOC.Vbeta, Motor_FOC.ElecTheta);
 	CALC_SVPWM(Motor_FOC.Valpha, Motor_FOC.Vbeta);
-	HAL_Delay(1000);
+	HAL_Delay(5000);
 
 	Encoder_Read_Reg(&MA600_spi);
 	Motor_FOC.ElecTheta_Offset = ((int32_t)(MOTOR_POLE_PAIRS * (MA600_spi.last_angle + 360))% 360) / 360.0f;
-	
+	HAL_Delay(1000);
 	
 	Motor_FOC.Iq_ref = 0.0f;
 	Motor_FOC.Id_ref = 0.0f;

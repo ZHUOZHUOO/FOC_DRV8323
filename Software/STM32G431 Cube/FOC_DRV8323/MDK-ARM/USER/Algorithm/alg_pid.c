@@ -50,6 +50,9 @@ float PID_Calc(PID_TypeDef *pid)
         // Calculate the difference
         float dError, Error, ref_dError, ref_ddError;
         Error = pid->ref - pid->fdb;
+		if (Error <= -3.14) Error += 6.28;
+		else if (Error > 3.14) Error -= 6.28;
+		else Error = Error;
         pid->err[2] = pid->err[1];
         pid->err[1] = pid->err[0];
         pid->err[0] = Error;

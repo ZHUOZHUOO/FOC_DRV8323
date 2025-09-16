@@ -17,7 +17,7 @@
 #define ENCODER_TYPE MA600
 
 //-----------FDCAN ID Setting------------//
-#define WHO_AM_I Slave2_Arm_ID
+#define WHO_AM_I Slave0_Arm_ID
 
 #define Tx_Master_ID 	WHO_AM_I | 0x100
 #define Rx_Master_ID 	WHO_AM_I
@@ -110,7 +110,6 @@
 	#define SPEED_CONSTANT 20 //转速常数Kn
 	#define TORQUE_CONSTANT 0.45 //转矩常数KT
 	
-	#define MAX_Iq
 #elif MOTOR_TYPE == DJI_SNAIL_2305
 	#define MOTOR_POLE_PAIRS 7 //电机极对数
 	#define MOTOR_VOLTAGE 14.8 //电机电压
