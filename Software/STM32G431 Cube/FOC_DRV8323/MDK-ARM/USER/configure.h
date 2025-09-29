@@ -5,19 +5,19 @@
  * @FilePath: \MDK-ARM\USER\configure.h
  * @Description: Do not edit
  */
-#ifndef __CONFIGURE_H
+#ifndef __CONFIGURE_H 
 #define __CONFIGURE_H
 
 //-----------Version Setting------------//
 //Hardware Version
 #define HARDWARE_VERSION VERSION_2
 //Motor Type
-#define MOTOR_TYPE HT4315
+#define MOTOR_TYPE HT2806
 //Encoder Type
 #define ENCODER_TYPE MA600
 
 //-----------FDCAN ID Setting------------//
-#define WHO_AM_I Slave0_Arm_ID
+#define WHO_AM_I Slave2_End_ID
 
 #define Tx_Master_ID 	WHO_AM_I | 0x100
 #define Rx_Master_ID 	WHO_AM_I
@@ -164,7 +164,7 @@
 	#define MAX_IQ 1.0f
 	#define MAX_VQ 6.8f
 	#define MAX_VD 2.3f
-	#define Force_Factor 0.02 //阻尼系数
+	#define Force_Factor 0.02 //阻尼系数 
 #endif
 
 #define A_B_C  1

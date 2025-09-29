@@ -42,10 +42,13 @@ PID_TypeDef Open_Loop_Speed_PID;
 #elif MOTOR_TYPE == HT2806
 	#if WHO_AM_I == Slave0_End_ID
 	#define Elec_Theta_Zero_Point 0
+	#define Initial_Theta -360 / 360.0f * TWO_PI
 	#elif WHO_AM_I == Slave1_End_ID
 	#define Elec_Theta_Zero_Point 0
+	#define Initial_Theta -360 / 360.0f * TWO_PI
 	#elif WHO_AM_I == Slave2_End_ID
 	#define Elec_Theta_Zero_Point 0
+	#define Initial_Theta -360 / 360.0f * TWO_PI
 	#endif
 #endif
 
