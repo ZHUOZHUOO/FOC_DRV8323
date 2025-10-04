@@ -22,12 +22,109 @@ Dialog DLL:      TCM.DLL V1.56.4.0
  
 <h2>Project:</h2>
 D:\rm\FOC_DRV8323\Software\STM32G431 Cube\FOC_DRV8323\MDK-ARM\FOC_DRV8323.uvprojx
-Project File Date:  09/06/2025
+Project File Date:  10/02/2025
 
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 5 (build 528)', folder: 'D:\keil5\ARM\ARMCC\Bin'
 Build target 'FOC_DRV8323'
-"FOC_DRV8323\FOC_DRV8323.elf" - 0 Error(s), 0 Warning(s).
+compiling alg_swf.c...
+compiling Init_music.c...
+../Core/Inc/main.h(63): warning:  #47-D: incompatible redefinition of macro "PWM_FREQ"  (declared at line 81 of "../MDK-ARM/USER/configure.h")
+  #define PWM_FREQ 25000
+USER\Main\Init_music.c(72): warning:  #186-D: pointless comparison of unsigned integer with zero
+  	if (volume < 0) {
+USER\Main\Init_music.c: 2 warnings, 0 errors
+compiling tim.c...
+../MDK-ARM/USER/configure.h(81): warning:  #47-D: incompatible redefinition of macro "PWM_FREQ"  (declared at line 63 of "../Core/Inc/main.h")
+  #define PWM_FREQ 20000//PWM频率, T=1000us
+../Core/Src/tim.c: 1 warning, 0 errors
+compiling drv8323_util.c...
+compiling stm32g4xx_it.c...
+../MDK-ARM/USER/configure.h(81): warning:  #47-D: incompatible redefinition of macro "PWM_FREQ"  (declared at line 63 of "../Core/Inc/main.h")
+  #define PWM_FREQ 20000//PWM频率, T=1000us
+../MDK-ARM/USER/Peripheral/drv8323_util.h(35): warning:  #47-D: incompatible redefinition of macro "LED_Pin"  (declared at line 80 of "../Core/Inc/main.h")
+  	#define LED_Pin GPIO_PIN_1
+../MDK-ARM/USER/Main/Foc_Comm.h(17): warning:  #47-D: incompatible redefinition of macro "CMD_THETA_SET"  (declared at line 41 of "../MDK-ARM/USER/configure.h")
+  #define CMD_THETA_SET 0x01
+../MDK-ARM/USER/Main/Foc_Comm.h(18): warning:  #47-D: incompatible redefinition of macro "CMD_CURRENT_SET"  (declared at line 42 of "../MDK-ARM/USER/configure.h")
+  #define CMD_CURRENT_SET 0x02
+../Core/Src/stm32g4xx_it.c: 4 warnings, 0 errors
+compiling util_adc.c...
+../MDK-ARM/USER/configure.h(81): warning:  #47-D: incompatible redefinition of macro "PWM_FREQ"  (declared at line 63 of "../Core/Inc/main.h")
+  #define PWM_FREQ 20000//PWM频率, T=1000us
+../MDK-ARM/USER/Peripheral/drv8323_util.h(35): warning:  #47-D: incompatible redefinition of macro "LED_Pin"  (declared at line 80 of "../Core/Inc/main.h")
+  	#define LED_Pin GPIO_PIN_1
+../MDK-ARM/USER/Main/Foc_Comm.h(17): warning:  #47-D: incompatible redefinition of macro "CMD_THETA_SET"  (declared at line 41 of "../MDK-ARM/USER/configure.h")
+  #define CMD_THETA_SET 0x01
+../MDK-ARM/USER/Main/Foc_Comm.h(18): warning:  #47-D: incompatible redefinition of macro "CMD_CURRENT_SET"  (declared at line 42 of "../MDK-ARM/USER/configure.h")
+  #define CMD_CURRENT_SET 0x02
+USER\Utility\util_adc.c: 4 warnings, 0 errors
+compiling Foc_Comm.c...
+../MDK-ARM/USER/configure.h(81): warning:  #47-D: incompatible redefinition of macro "PWM_FREQ"  (declared at line 63 of "../Core/Inc/main.h")
+  #define PWM_FREQ 20000//PWM频率, T=1000us
+../MDK-ARM/USER/Peripheral/drv8323_util.h(35): warning:  #47-D: incompatible redefinition of macro "LED_Pin"  (declared at line 80 of "../Core/Inc/main.h")
+  	#define LED_Pin GPIO_PIN_1
+USER\Main\Foc_Comm.h(17): warning:  #47-D: incompatible redefinition of macro "CMD_THETA_SET"  (declared at line 41 of "../MDK-ARM/USER/configure.h")
+  #define CMD_THETA_SET 0x01
+USER\Main\Foc_Comm.h(18): warning:  #47-D: incompatible redefinition of macro "CMD_CURRENT_SET"  (declared at line 42 of "../MDK-ARM/USER/configure.h")
+  #define CMD_CURRENT_SET 0x02
+USER\Main\Foc_Comm.c: 4 warnings, 0 errors
+compiling Foc_Control.c...
+../MDK-ARM/USER/configure.h(81): warning:  #47-D: incompatible redefinition of macro "PWM_FREQ"  (declared at line 63 of "../Core/Inc/main.h")
+  #define PWM_FREQ 20000//PWM频率, T=1000us
+../MDK-ARM/USER/Peripheral/drv8323_util.h(35): warning:  #47-D: incompatible redefinition of macro "LED_Pin"  (declared at line 80 of "../Core/Inc/main.h")
+  	#define LED_Pin GPIO_PIN_1
+USER\Main\Foc_Comm.h(17): warning:  #47-D: incompatible redefinition of macro "CMD_THETA_SET"  (declared at line 41 of "../MDK-ARM/USER/configure.h")
+  #define CMD_THETA_SET 0x01
+USER\Main\Foc_Comm.h(18): warning:  #47-D: incompatible redefinition of macro "CMD_CURRENT_SET"  (declared at line 42 of "../MDK-ARM/USER/configure.h")
+  #define CMD_CURRENT_SET 0x02
+USER\Main\Foc_Control.c(202): warning:  #188-D: enumerated type mixed with another type
+      foc->Motor_Close_Loop_Mode = 
+OC_CLOSE_LOOP_MODE;
+USER\Main\Foc_Control.c(346): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+          Motor_FOC.Vq = (0.4 * Motor_FOC.Speed_Rpm / Motor_FOC.Speed_Rpm_Ref + 0.6)*3.5f; 
+USER\Main\Foc_Control.c(379): warning:  #223-D: function "Adc_Val_Decode" declared implicitly
+  		Adc_Val_Decode();
+USER\Main\Foc_Control.c(57): warning:  #550-D: variable "sqrt3_inv_mv"  was set but never used
+  static float sqrt3_inv_mv;
+USER\Main\Foc_Control.c(58): warning:  #550-D: variable "half_inv_mv"  was set but never used
+  static float half_inv_mv;
+USER\Main\Foc_Control.c: 9 warnings, 0 errors
+compiling main.c...
+../MDK-ARM/USER/configure.h(81): warning:  #47-D: incompatible redefinition of macro "PWM_FREQ"  (declared at line 63 of "../Core/Inc/main.h")
+  #define PWM_FREQ 20000//PWM频率, T=1000us
+../MDK-ARM/USER/Peripheral/drv8323_util.h(35): warning:  #47-D: incompatible redefinition of macro "LED_Pin"  (declared at line 80 of "../Core/Inc/main.h")
+  	#define LED_Pin GPIO_PIN_1
+../MDK-ARM/USER/Main/Foc_Comm.h(17): warning:  #47-D: incompatible redefinition of macro "CMD_THETA_SET"  (declared at line 41 of "../MDK-ARM/USER/configure.h")
+  #define CMD_THETA_SET 0x01
+../MDK-ARM/USER/Main/Foc_Comm.h(18): warning:  #47-D: incompatible redefinition of macro "CMD_CURRENT_SET"  (declared at line 42 of "../MDK-ARM/USER/configure.h")
+  #define CMD_CURRENT_SET 0x02
+../Core/Src/main.c: 4 warnings, 0 errors
+compiling Foc_Error.c...
+../MDK-ARM/USER/configure.h(81): warning:  #47-D: incompatible redefinition of macro "PWM_FREQ"  (declared at line 63 of "../Core/Inc/main.h")
+  #define PWM_FREQ 20000//PWM频率, T=1000us
+../MDK-ARM/USER/Peripheral/drv8323_util.h(35): warning:  #47-D: incompatible redefinition of macro "LED_Pin"  (declared at line 80 of "../Core/Inc/main.h")
+  	#define LED_Pin GPIO_PIN_1
+USER\Main\Foc_Comm.h(17): warning:  #47-D: incompatible redefinition of macro "CMD_THETA_SET"  (declared at line 41 of "../MDK-ARM/USER/configure.h")
+  #define CMD_THETA_SET 0x01
+USER\Main\Foc_Comm.h(18): warning:  #47-D: incompatible redefinition of macro "CMD_CURRENT_SET"  (declared at line 42 of "../MDK-ARM/USER/configure.h")
+  #define CMD_CURRENT_SET 0x02
+USER\Main\Foc_Error.c: 4 warnings, 0 errors
+compiling periph_encoder_spi.c...
+../MDK-ARM/USER/configure.h(81): warning:  #47-D: incompatible redefinition of macro "PWM_FREQ"  (declared at line 63 of "../Core/Inc/main.h")
+  #define PWM_FREQ 20000//PWM频率, T=1000us
+../MDK-ARM/USER/Peripheral/drv8323_util.h(35): warning:  #47-D: incompatible redefinition of macro "LED_Pin"  (declared at line 80 of "../Core/Inc/main.h")
+  	#define LED_Pin GPIO_PIN_1
+../MDK-ARM/USER/Main/Foc_Comm.h(17): warning:  #47-D: incompatible redefinition of macro "CMD_THETA_SET"  (declared at line 41 of "../MDK-ARM/USER/configure.h")
+  #define CMD_THETA_SET 0x01
+../MDK-ARM/USER/Main/Foc_Comm.h(18): warning:  #47-D: incompatible redefinition of macro "CMD_CURRENT_SET"  (declared at line 42 of "../MDK-ARM/USER/configure.h")
+  #define CMD_CURRENT_SET 0x02
+USER\Peripheral\periph_encoder_spi.c(144): warning:  #177-D: variable "turns"  was declared but never referenced
+    int16_t turns = (int16_t)((buffer[2] << 8) | buffer[3]);
+USER\Peripheral\periph_encoder_spi.c: 5 warnings, 0 errors
+linking...
+Program Size: Code=28796 RO-data=2628 RW-data=248 ZI-data=3704  
+"FOC_DRV8323\FOC_DRV8323.elf" - 0 Error(s), 37 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -50,7 +147,7 @@ Package Vendor: Keil
 <h2>Collection of Component Files used:</h2>
 
    * Component: ARM::CMSIS:CORE:5.6.0
-Build Time Elapsed:  00:00:00
+Build Time Elapsed:  00:00:05
 </pre>
 </body>
 </html>

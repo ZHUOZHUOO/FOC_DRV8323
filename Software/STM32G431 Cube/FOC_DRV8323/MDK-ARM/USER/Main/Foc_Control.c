@@ -44,7 +44,7 @@ PID_TypeDef Open_Loop_Speed_PID;
 	#define Elec_Theta_Zero_Point 0
 	#define Initial_Theta -360 / 360.0f * TWO_PI
 	#elif WHO_AM_I == Slave1_End_ID
-	#define Elec_Theta_Zero_Point 0
+	#define Elec_Theta_Zero_Point 0.51111114
 	#define Initial_Theta -360 / 360.0f * TWO_PI
 	#elif WHO_AM_I == Slave2_End_ID
 	#define Elec_Theta_Zero_Point 0
@@ -425,7 +425,7 @@ void FOC_Main_Loop_L_Freq(void)
 		PID_SetFdb(&Current_Iq_PID, Motor_FOC.Iq);
 		PID_SetRef(&Current_Iq_PID, Motor_FOC.Iq_ref);
 		PID_Calc(&Current_Iq_PID);
-		if (WHO_AM_I > Slave2_Arm_ID) Motor_FOC.Iq_ref = Min(Max(Force_Factor * Motor_FOC.Speed_Rpm, -MAX_IQ), MAX_IQ);//end
+		if (WHO_AM_I > Slave2_Arm_ID) Motor_FOC.Iq_ref = Min(Max(Motor_FOC.Iq_ref, -MAX_IQ), MAX_IQ);//end
 		else Motor_FOC.Iq_ref = Min(Max(Motor_FOC.Iq_ref, -MAX_IQ), MAX_IQ);//arm
 	}
 }

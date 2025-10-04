@@ -109,11 +109,9 @@ int main(void)
     while (1)
     {
     /* USER CODE END WHILE */
-	uint8_t txdata[8];
-	FOC_Comm_TxData_Encoder(CMD_THETA_CURRENT_FEEDBACK, txdata);
-	FDCAN_SendMessageWithBaudSwitch(&hfdcan1, txdata, FDCAN_DLC_BYTES_8, Tx_Master_ID | CMD_THETA_CURRENT_FEEDBACK);
-	HAL_Delay(100);
+
     /* USER CODE BEGIN 3 */
+
     } 
   /* USER CODE END 3 */
 }

@@ -17,7 +17,7 @@
 #define ENCODER_TYPE MA600
 
 //-----------FDCAN ID Setting------------//
-#define WHO_AM_I Slave2_End_ID
+#define WHO_AM_I Slave1_End_ID
 
 #define Tx_Master_ID 	WHO_AM_I | 0x100
 #define Rx_Master_ID 	WHO_AM_I
@@ -33,6 +33,7 @@
 #define FILTER_ID_1     0x500
 #define FILTER_ID_2     0x780
 #define DEVICE_ID_MASK  0x7F0
+#define DEVICE_ID_NOMASK 0xFFF
 #define CMD_MASK        0x00F
 
 //-----------FDCAN Command Setting------------//

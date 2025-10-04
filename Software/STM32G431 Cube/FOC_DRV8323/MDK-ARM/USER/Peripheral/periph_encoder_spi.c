@@ -204,11 +204,11 @@ float Encoder_SPI_Get_Angle(Encoder_SPI_HandleTypeDef *encoder) {
  * @return float
  */
 float Encoder_SPI_Get_Angular_Speed(Encoder_SPI_HandleTypeDef *encoder) {
-	
+	 
   return encoder->angular_speed;
 }
 
-void Encoder_Read_Reg(Encoder_SPI_HandleTypeDef *encoder) {
+ void Encoder_Read_Reg(Encoder_SPI_HandleTypeDef *encoder) {
   uint8_t txbuffer[4];
   txbuffer[0] = 0x00;
   txbuffer[1] = 0x00;
